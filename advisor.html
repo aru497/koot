@@ -385,252 +385,46 @@
  * COURSE DATA: CRICOS / university published data
  * VISA INFO: Department of Home Affairs subclass 485 / 189 / 190
  */
-const OCCUPATIONS = [
-  // ─── IT & Technology ───
-  { id:'sw-eng', cat:'IT',
-    title:'Software Engineer / Developer',
-    anzsco:'261313',
-    shortage:'national',
-    keywords:['software','programming','coding','computer science','IT','information technology','development','web','mobile','app','computing','systems'],
-    aqfReq:[7,8,9],
-    salary:{min:85000,max:135000,med:107000},
-    employment:89, growth:18, outlook:'Very Strong',
-    source:'SPL 2024 — Shortage nationally. 18% projected growth (LMIP 2024)',
-    jobs:['Software Engineer','Backend Developer','Full Stack Developer','Frontend Developer','Mobile App Developer','DevOps Engineer','Cloud Engineer','Platform Engineer'],
-    courses:['Bachelor of Computer Science','Bachelor of Software Engineering','Master of Information Technology','Master of Applied Computing','Master of Data Science'],
-    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','190 State Nominated'],
-  },
-  { id:'data-sci', cat:'IT',
-    title:'Data Scientist / Analyst',
-    anzsco:'262113',
-    shortage:'national',
-    keywords:['data','analytics','machine learning','AI','artificial intelligence','statistics','data science','business intelligence','BI','ML','deep learning'],
-    aqfReq:[7,8,9],
-    salary:{min:88000,max:145000,med:115000},
-    employment:91, growth:22, outlook:'Very Strong',
-    source:'SPL 2024 — Data Scientists in national shortage. AI/ML roles growing 22% (LMIP 2024)',
-    jobs:['Data Scientist','Data Analyst','ML Engineer','AI Engineer','Business Intelligence Analyst','Data Engineer','Research Scientist'],
-    courses:['Bachelor of Data Science','Master of Data Science','Master of Artificial Intelligence','Master of Business Analytics','Master of Information Systems'],
-    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','186 Employer Sponsored'],
-  },
-  { id:'cyber', cat:'IT',
-    title:'Cybersecurity Specialist',
-    anzsco:'262112',
-    shortage:'national',
-    keywords:['cybersecurity','security','cyber','information security','network security','ethical hacking','penetration testing','CISSP','infosec'],
-    aqfReq:[7,8,9],
-    salary:{min:90000,max:148000,med:118000},
-    employment:92, growth:25, outlook:'Exceptional',
-    source:'SPL 2024 — Critical national shortage. Australia short 30,000 cybersecurity workers (AustCyber 2024)',
-    jobs:['Cybersecurity Analyst','Security Engineer','Penetration Tester','SOC Analyst','Cloud Security Engineer','Information Security Manager','Incident Responder'],
-    courses:['Master of Cybersecurity','Graduate Certificate in Cybersecurity','Master of Information Technology (Security)','Bachelor of Cybersecurity'],
-    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','186 Employer Sponsored'],
-  },
-  { id:'ict-ba', cat:'IT',
-    title:'ICT Business Analyst',
-    anzsco:'261111',
-    shortage:'national',
-    keywords:['business analyst','ICT','systems analyst','requirements','agile','scrum','project management','BA'],
-    aqfReq:[7,8,9],
-    salary:{min:85000,max:125000,med:103000},
-    employment:86, growth:12, outlook:'Strong',
-    source:'SPL 2024 — ICT Business Analysts in national shortage',
-    jobs:['ICT Business Analyst','Systems Analyst','Product Manager','Scrum Master','Business Systems Analyst','Requirements Analyst'],
-    courses:['Master of Information Technology','Master of Business Information Systems','MBA (IT)','Graduate Diploma in IT Management'],
-    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent'],
-  },
-  // ─── Healthcare ───
-  { id:'nursing', cat:'Healthcare',
-    title:'Registered Nurse',
-    anzsco:'254499',
-    shortage:'national',
-    keywords:['nursing','nurse','healthcare','hospital','clinical','medical','RN','midwife','aged care','mental health'],
-    aqfReq:[7,8,9],
-    salary:{min:62000,max:98000,med:76000},
-    employment:94, growth:16, outlook:'Very Strong',
-    source:'SPL 2024 — Registered Nurses in critical national shortage. 40,000 vacancy gap projected by 2025 (Health Workforce Australia)',
-    jobs:['Registered Nurse','Clinical Nurse Specialist','Nurse Practitioner','ICU Nurse','Emergency Nurse','Mental Health Nurse','Aged Care Nurse'],
-    courses:['Bachelor of Nursing','Master of Nursing (Graduate Entry)','Graduate Certificate in Nursing','Master of Midwifery'],
-    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','190 State Nominated','Employer Sponsored 482'],
-  },
-  { id:'physio', cat:'Healthcare',
-    title:'Physiotherapist',
-    anzsco:'252511',
-    shortage:'national',
-    keywords:['physiotherapy','physio','rehabilitation','sports medicine','occupational therapy','physical therapy','musculoskeletal'],
-    aqfReq:[7,8,9],
-    salary:{min:65000,max:98000,med:80000},
-    employment:93, growth:14, outlook:'Strong',
-    source:'SPL 2024 — Physiotherapists in national shortage, particularly in regional and rural areas',
-    jobs:['Physiotherapist','Sports Physiotherapist','Neurological Physiotherapist','Paediatric Physiotherapist','Musculoskeletal Physio'],
-    courses:['Bachelor of Physiotherapy','Master of Physiotherapy','Doctor of Physiotherapy'],
-    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','190 State Nominated'],
-  },
-  { id:'social-work', cat:'SocialWork',
-    title:'Social Worker',
-    anzsco:'272511',
-    shortage:'national',
-    keywords:['social work','community services','welfare','counselling','youth work','family services','disability support','NDIS','mental health support'],
-    aqfReq:[7,8,9],
-    salary:{min:60000,max:88000,med:73000},
-    employment:91, growth:13, outlook:'Strong',
-    source:'SPL 2024 — Social Workers in national shortage, high demand in regional areas and NDIS services',
-    jobs:['Social Worker','Case Manager','Community Development Officer','Child Protection Officer','NDIS Coordinator','Family Support Worker'],
-    courses:['Bachelor of Social Work','Master of Social Work (Qualifying)','Master of Social Work'],
-    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','190 State Nominated'],
-  },
-  { id:'occ-therapy', cat:'Healthcare',
-    title:'Occupational Therapist',
-    anzsco:'252411',
-    shortage:'national',
-    keywords:['occupational therapy','OT','rehabilitation','disability','NDIS','aged care','mental health OT'],
-    aqfReq:[7,8,9],
-    salary:{min:64000,max:96000,med:78000},
-    employment:92, growth:14, outlook:'Strong',
-    source:'SPL 2024 — Occupational Therapists in national shortage, NDIS expansion driving demand',
-    jobs:['Occupational Therapist','NDIS Occupational Therapist','Paediatric OT','Aged Care OT','Mental Health OT'],
-    courses:['Bachelor of Occupational Therapy','Master of Occupational Therapy'],
-    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','190 State Nominated'],
-  },
-  // ─── Engineering ───
-  { id:'civil-eng', cat:'Engineering',
-    title:'Civil Engineer',
-    anzsco:'233211',
-    shortage:'national',
-    keywords:['civil engineering','structural','infrastructure','construction','transport','roads','bridges','water','geotechnical','environmental'],
-    aqfReq:[7,8,9],
-    salary:{min:76000,max:125000,med:97000},
-    employment:88, growth:14, outlook:'Strong',
-    source:'SPL 2024 — Civil Engineers in national shortage. Infrastructure pipeline projects (NAIF, BBRF) driving demand',
-    jobs:['Civil Engineer','Structural Engineer','Transport Engineer','Geotechnical Engineer','Water Engineer','Project Engineer','Site Engineer'],
-    courses:['Bachelor of Civil Engineering','Master of Engineering (Civil)','Master of Structural Engineering','Master of Infrastructure Engineering'],
-    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','190 State Nominated','186 Employer Sponsored'],
-  },
-  { id:'elec-eng', cat:'Engineering',
-    title:'Electrical Engineer',
-    anzsco:'233311',
-    shortage:'national',
-    keywords:['electrical engineering','electronics','power systems','renewable energy','solar','grid','EV','control systems','automation'],
-    aqfReq:[7,8,9],
-    salary:{min:80000,max:130000,med:102000},
-    employment:87, growth:17, outlook:'Very Strong',
-    source:'SPL 2024 — Electrical Engineers in national shortage. Renewable energy transition driving record demand',
-    jobs:['Electrical Engineer','Power Systems Engineer','Renewable Energy Engineer','Control Systems Engineer','Automation Engineer','Electrical Project Manager'],
-    courses:['Bachelor of Electrical Engineering','Master of Electrical Engineering','Master of Renewable Energy'],
-    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','190 State Nominated'],
-  },
-  // ─── Education ───
-  { id:'teacher-sec', cat:'Education',
-    title:'Secondary School Teacher',
-    anzsco:'241411',
-    shortage:'national',
-    keywords:['teaching','education','secondary','high school','STEM teacher','maths teacher','science teacher','English teacher'],
-    aqfReq:[7,8,9],
-    salary:{min:68000,max:98000,med:82000},
-    employment:96, growth:10, outlook:'Stable-Strong',
-    source:'SPL 2024 — Secondary Teachers (especially STEM) in national shortage. Teacher shortage acute in regional areas',
-    jobs:['Secondary Teacher','STEM Teacher','Maths Teacher','Science Teacher','ESL Teacher','Special Needs Teacher','Head of Department'],
-    courses:['Master of Teaching (Secondary)','Bachelor of Education (Secondary)','Graduate Diploma of Education','Master of Education'],
-    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','190 State Nominated'],
-  },
-  { id:'teacher-early', cat:'Education',
-    title:'Early Childhood Teacher / Educator',
-    anzsco:'241111',
-    shortage:'national',
-    keywords:['early childhood','kindergarten','childcare','preschool','ECE','ECEC','early education','child development'],
-    aqfReq:[7,8,9],
-    salary:{min:55000,max:82000,med:67000},
-    employment:95, growth:15, outlook:'Strong',
-    source:'SPL 2024 — Early Childhood Teachers in national shortage. Childcare Subsidy expansion creating 30,000+ new positions',
-    jobs:['Early Childhood Teacher','Centre Director','Room Leader','Educational Leader','Family Day Care Educator'],
-    courses:['Bachelor of Early Childhood Education','Master of Teaching (Early Childhood)','Diploma of Early Childhood Education and Care'],
-    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','190 State Nominated'],
-  },
-  // ─── Business & Commerce ───
-  { id:'accounting', cat:'Business',
-    title:'Accountant / Management Accountant',
-    anzsco:'221112',
-    shortage:'difficulty',
-    keywords:['accounting','finance','CPA','CA','ACCA','audit','tax','management accounting','financial analysis','bookkeeping','commerce','financial reporting'],
-    aqfReq:[7,8,9],
-    salary:{min:65000,max:115000,med:87000},
-    employment:84, growth:6, outlook:'Moderate',
-    source:'SPL 2024 — Recruitment Difficulty nationally. Strong demand for CPAs. Note: oversupply of junior roles.',
-    jobs:['Management Accountant','Financial Analyst','Tax Accountant','Audit Manager','CFO','Finance Business Partner','Forensic Accountant'],
-    courses:['Master of Professional Accounting','Master of Commerce (Accounting)','Bachelor of Accounting','Graduate Diploma of Accounting'],
-    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent (CPA/CA required)','190 State Nominated'],
-  },
-  // ─── Creative & Design ───
-  { id:'ux-design', cat:'Creative',
-    title:'UX / Product Designer',
-    anzsco:'232411',
-    shortage:'difficulty',
-    keywords:['design','UX','UI','user experience','graphic design','product design','visual design','interaction design','HCI','Figma'],
-    aqfReq:[7,8,9],
-    salary:{min:72000,max:120000,med:93000},
-    employment:82, growth:11, outlook:'Moderate-Strong',
-    source:'SPL 2024 — Recruitment Difficulty. Strong demand in tech sector. Senior UX roles highly sought.',
-    jobs:['UX Designer','UI Designer','Product Designer','Visual Designer','Service Designer','Design Lead','Research Designer'],
-    courses:['Bachelor of Design (Digital)','Master of Interaction Design','Master of Design','Graduate Certificate in UX Design'],
-    visaPathways:['485 Graduate (2–4 yrs)','190 State Nominated'],
-  },
-  // ─── Agriculture ───
-  { id:'agri-sci', cat:'Agriculture',
-    title:'Agricultural Scientist / Agronomist',
-    anzsco:'234111',
-    shortage:'regional',
-    keywords:['agriculture','agronomy','farming','crops','livestock','food science','soil science','environmental management','horticulture','viticulture'],
-    aqfReq:[7,8,9],
-    salary:{min:60000,max:95000,med:74000},
-    employment:86, growth:9, outlook:'Stable in regional areas',
-    source:'SPL 2024 — Regional Shortage. Strong demand in rural NSW, VIC, QLD. Ideal for regional study + visa.',
-    jobs:['Agronomist','Agricultural Scientist','Farm Manager','Extension Officer','Agricultural Adviser','Soil Scientist','Horticulturalist'],
-    courses:['Bachelor of Agricultural Science','Master of Agribusiness','Bachelor of Science (Agriculture)'],
-    visaPathways:['485 Graduate (2–4 yrs — extended for regional)','190 Regional State Nominated','191 Permanent Residence'],
-  },
-  // ─── Hospitality ───
-  { id:'hospitality', cat:'Hospitality',
-    title:'Hospitality Manager / Chef',
-    anzsco:'141311',
-    shortage:'national',
-    keywords:['hospitality','hotel management','tourism','chefs','cooking','culinary','food','beverage','events','restaurant','accommodation'],
-    aqfReq:[5,6,7,8],
-    salary:{min:52000,max:85000,med:65000},
-    employment:80, growth:9, outlook:'Stable',
-    source:'SPL 2024 — Chefs in national shortage. Post-COVID hospitality recovery driving demand across Australia.',
-    jobs:['Hotel Manager','Restaurant Manager','Executive Chef','Sous Chef','Events Manager','Food & Beverage Manager','Tourism Manager'],
-    courses:['Bachelor of Hospitality Management','Diploma of Hospitality Management','Bachelor of Tourism Management'],
-    visaPathways:['485 Graduate (2 yrs)','190 State Nominated (limited)','482 Employer Sponsored'],
-  },
-];
+// ══ LIVE DATA — loaded from Supabase (occupations · salaries · courses) ══
+// Real government-sourced data; refreshed server-side by the sync-gov-data Edge Function.
+let OCCUPATIONS = [], UNIVERSITIES = [], ALL_KEYWORDS = [], _dataReady = null;
+function ensureData(){ if(!_dataReady) _dataReady = loadGovData(); return _dataReady; }
+window.addEventListener('DOMContentLoaded', ensureData);
 
-// Regional universities (CRICOS registered)
-// Source: CRICOS https://cricos.education.gov.au
-// Regional classification for 485 visa purposes (outside: Sydney, Melbourne, Brisbane, Perth)
-const UNIVERSITIES = [
-  {name:'University of Newcastle (UON)',        city:'Newcastle',   state:'NSW', regional:true,  ielts:6.0, qsRange:'301-350', fees:{u:38500,p:41000}, cricos:'00109J', url:'newcastle.edu.au'},
-  {name:'University of Wollongong (UOW)',        city:'Wollongong',  state:'NSW', regional:true,  ielts:6.0, qsRange:'201-250', fees:{u:37000,p:40000}, cricos:'00102E', url:'uow.edu.au'},
-  {name:'University of South Australia (UniSA)', city:'Adelaide',    state:'SA',  regional:true,  ielts:6.0, qsRange:'401-450', fees:{u:36000,p:38500}, cricos:'00121B', url:'unisa.edu.au'},
-  {name:'Flinders University',                   city:'Adelaide',    state:'SA',  regional:true,  ielts:6.0, qsRange:'401-500', fees:{u:35000,p:37500}, cricos:'00114A', url:'flinders.edu.au'},
-  {name:'University of Tasmania (UTAS)',         city:'Hobart',      state:'TAS', regional:true,  ielts:6.0, qsRange:'401-500', fees:{u:34000,p:36000}, cricos:'00586B', url:'utas.edu.au'},
-  {name:'James Cook University (JCU)',           city:'Townsville',  state:'QLD', regional:true,  ielts:6.0, qsRange:'501-550', fees:{u:34500,p:37000}, cricos:'00117J', url:'jcu.edu.au'},
-  {name:'Charles Darwin University (CDU)',       city:'Darwin',      state:'NT',  regional:true,  ielts:6.0, qsRange:'601+',   fees:{u:32000,p:34500}, cricos:'00300K', url:'cdu.edu.au'},
-  {name:'CQ University Australia',               city:'Rockhampton', state:'QLD', regional:true,  ielts:6.0, qsRange:'601+',   fees:{u:31000,p:33000}, cricos:'00219C', url:'cqu.edu.au'},
-  {name:'University of New England (UNE)',       city:'Armidale',    state:'NSW', regional:true,  ielts:6.0, qsRange:'601+',   fees:{u:32500,p:34000}, cricos:'00003G', url:'une.edu.au'},
-  {name:'UNSW Sydney',                           city:'Sydney',      state:'NSW', regional:false, ielts:6.5, qsRange:'19',     fees:{u:53000,p:54500}, cricos:'00098G', url:'unsw.edu.au'},
-  {name:'University of Sydney',                  city:'Sydney',      state:'NSW', regional:false, ielts:6.5, qsRange:'18',     fees:{u:52000,p:54000}, cricos:'00026A', url:'sydney.edu.au'},
-  {name:'University of Melbourne',               city:'Melbourne',   state:'VIC', regional:false, ielts:6.5, qsRange:'14',     fees:{u:52000,p:53500}, cricos:'00116K', url:'unimelb.edu.au'},
-  {name:'Monash University',                     city:'Melbourne',   state:'VIC', regional:false, ielts:6.0, qsRange:'37',     fees:{u:49000,p:51000}, cricos:'00008C', url:'monash.edu'},
-  {name:'RMIT University',                       city:'Melbourne',   state:'VIC', regional:false, ielts:6.0, qsRange:'201-250',fees:{u:41000,p:43000}, cricos:'00122A', url:'rmit.edu.au'},
-  {name:'UTS Sydney',                            city:'Sydney',      state:'NSW', regional:false, ielts:6.0, qsRange:'133',    fees:{u:46000,p:48000}, cricos:'00099F', url:'uts.edu.au'},
-  {name:'University of Queensland (UQ)',         city:'Brisbane',    state:'QLD', regional:false, ielts:6.5, qsRange:'40',     fees:{u:50000,p:52000}, cricos:'00025B', url:'uq.edu.au'},
-  {name:'Griffith University',                   city:'Brisbane',    state:'QLD', regional:false, ielts:6.0, qsRange:'401-450',fees:{u:35500,p:38000}, cricos:'00233E', url:'griffith.edu.au'},
-  {name:'University of Adelaide',               city:'Adelaide',    state:'SA',  regional:true,  ielts:6.5, qsRange:'89',     fees:{u:49000,p:51000}, cricos:'00123M', url:'adelaide.edu.au'},
-  {name:'University of Western Australia (UWA)', city:'Perth',       state:'WA',  regional:false, ielts:6.5, qsRange:'90',     fees:{u:49000,p:51000}, cricos:'00126G', url:'uwa.edu.au'},
-  {name:'Curtin University',                     city:'Perth',       state:'WA',  regional:false, ielts:6.0, qsRange:'201-250',fees:{u:40000,p:43000}, cricos:'00301J', url:'curtin.edu.au'},
-  {name:'Deakin University',                     city:'Melbourne',   state:'VIC', regional:false, ielts:6.0, qsRange:'301-350',fees:{u:38000,p:41000}, cricos:'00113B', url:'deakin.edu.au'},
-  {name:'La Trobe University',                   city:'Melbourne',   state:'VIC', regional:false, ielts:6.0, qsRange:'501-550',fees:{u:36000,p:38500}, cricos:'00115M', url:'latrobe.edu.au'},
-];
+async function loadGovData(){
+  const sb = window.sb;
+  try {
+    const [occRes, salRes, uniRes] = await Promise.all([
+      sb.from('occupations').select('*'),
+      sb.from('salaries').select('*'),
+      sb.from('courses').select('*'),
+    ]);
+    const err = occRes.error || salRes.error || uniRes.error;
+    if (err) throw err;
+    const salById = {};
+    (salRes.data || []).forEach(x => { salById[x.occupation_id] = x; });
+    OCCUPATIONS = (occRes.data || []).map(o => ({
+      id:o.id, cat:o.cat, title:o.title, anzsco:o.anzsco, shortage:o.shortage,
+      keywords:o.keywords || [], aqfReq:o.aqf_req || [],
+      salary: salById[o.id]
+        ? { min:salById[o.id].sal_min, max:salById[o.id].sal_max, med:salById[o.id].sal_med }
+        : { min:0, max:0, med:0 },
+      employment:o.employment, growth:o.growth, outlook:o.outlook, source:o.source,
+      jobs:o.jobs || [], courses:o.course_names || [], visaPathways:o.visa_pathways || [],
+    }));
+    UNIVERSITIES = (uniRes.data || []).map(u => ({
+      name:u.name, city:u.city, state:u.state, regional:u.regional,
+      ielts:u.ielts, qsRange:u.qs_range, fees:{ u:u.fee_ug, p:u.fee_pg },
+      cricos:u.cricos, url:u.url,
+    }));
+    ALL_KEYWORDS = OCCUPATIONS.flatMap(o => o.keywords.map(k => ({ k, occ:o })));
+    console.log(`Koott: loaded ${OCCUPATIONS.length} occupations, ${UNIVERSITIES.length} courses live from Supabase`);
+    return true;
+  } catch (e) {
+    console.error('Koott: could not load gov data from Supabase —', (e && e.message) || e);
+    return false;
+  }
+}
 
 // ══ UI state ══
 let scoreType = 'pct';
@@ -662,7 +456,7 @@ function toggleSingle(btn, groupId) {
   if (groupId==='priorityChips') selectedPriority=btn.dataset.val;
 }
 
-const ALL_KEYWORDS = OCCUPATIONS.flatMap(o=>o.keywords.map(k=>({k,occ:o})));
+// ALL_KEYWORDS is populated by loadGovData()
 function fieldSuggest(val) {
   const d=document.getElementById('fieldSuggs'); if(!val||val.length<2){d.style.display='none';return;}
   const v=val.toLowerCase();
@@ -702,7 +496,15 @@ function startAnalysis() {
 }
 
 // ══ Results generation ══
-function showResults() {
+async function showResults() {
+  await ensureData();
+  if (!OCCUPATIONS.length) {
+    document.getElementById('analysing').style.display='none';
+    document.getElementById('wizard').style.display='block';
+    goStep2();
+    alert('Could not reach the live database. Please check your connection and try again.');
+    return;
+  }
   document.getElementById('analysing').style.display='none';
   document.getElementById('results').style.display='block';
 

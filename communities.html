@@ -245,7 +245,7 @@ koottAuth.onChange(async (u)=>{
     document.getElementById('lockedState').style.display='none';
     document.getElementById('msgFeed').style.display='flex';
     document.getElementById('composer').style.display='block';
-    if(activeCom && activeCh) loadChan(activeCom, activeCh); else selectComm(activeCom||'sydney');
+    if(activeCom && activeCh) loadChan(activeCom, activeCh); else if(COMMS.length) selectComm(activeCom||COMMS[0].id);
   } else {
     joined=new Set();
     applySignedOut();
@@ -259,26 +259,8 @@ async function loadMemberships(){
   buildCommList();
 }
 
-const COMMS=[
-  {id:'sydney',    cat:'city',  icon:'🏙️',name:'Sydney Students',      members:342},
-  {id:'melb',      cat:'city',  icon:'🌆',name:'Melbourne Students',    members:281},
-  {id:'brisbane',  cat:'city',  icon:'🌇',name:'Brisbane Students',     members:156},
-  {id:'perth',     cat:'city',  icon:'🌅',name:'Perth Students',        members:127},
-  {id:'adelaide',  cat:'city',  icon:'🏘️',name:'Adelaide Students',    members:89},
-  {id:'newcastle', cat:'city',  icon:'⛪',name:'Newcastle Students',    members:74},
-  {id:'wollongong',cat:'city',  icon:'🏄',name:'Wollongong Students',   members:61},
-  {id:'unsw25',    cat:'uni',   icon:'🎓',name:'UNSW 2025',             members:118},
-  {id:'unimelb25', cat:'uni',   icon:'🎓',name:'UniMelb 2025',          members:97},
-  {id:'monash25',  cat:'uni',   icon:'🎓',name:'Monash 2025',           members:84},
-  {id:'uon25',     cat:'uni',   icon:'🎓',name:'UON Newcastle 2025',    members:52},
-  {id:'uow25',     cat:'uni',   icon:'🎓',name:'UOW Wollongong 2025',   members:43},
-  {id:'deciding',  cat:'stage', icon:'💭',name:'Still Deciding',        members:203},
-  {id:'applied',   cat:'stage', icon:'📋',name:'Applied & Waiting',     members:167},
-  {id:'arriving',  cat:'stage', icon:'✈️',name:'Arriving Soon',        members:144},
-  {id:'first60',   cat:'stage', icon:'🛬',name:'First 60 Days',         members:89},
-  {id:'housing',   cat:'other', icon:'🏠',name:'Housing Board',         members:271},
-  {id:'jobs',      cat:'other', icon:'💼',name:'Part-Time Jobs',        members:189},
-];
+// Communities load live from the Supabase `communities` table (see loadCommunities).
+let COMMS=[], commSearchTimer=null;
 
 const CHANNELS={
   default:[{id:'general',icon:'💬',name:'general',desc:'General chat'},{id:'housing',icon:'🏠',name:'housing',desc:'Accommodation'},{id:'visa',icon:'📋',name:'visa-help',desc:'Visa questions'},{id:'jobs',icon:'💼',name:'jobs',desc:'Work & 60hr'}],
@@ -291,19 +273,40 @@ function avColor(name){let h=0;for(let i=0;i<name.length;i++)h=(h*31+name.charCo
 function fmtTime(ts){const d=new Date(ts),n=new Date();const diff=Math.floor((n-d)/86400000);const t=d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});if(diff===0)return t;if(diff===1)return 'Yesterday '+t;return d.toLocaleDateString([],{month:'short',day:'numeric'})+' '+t;}
 function escHtml(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
 
-function buildCommList(filter=''){
+async function loadCommunities(){
+  const { data, error } = await sb.from('communities').select('*').order('sort');
+  if(error){ console.error('Koott: could not load communities —', error.message); return; }
+  COMMS = data || [];
+  buildCommList();
+  if(COMMS.length) selectComm(activeCom || COMMS[0].id);
+}
+
+function buildCommList(filter='', items=COMMS){
   const cats=[{label:'Cities',val:'city'},{label:'Universities',val:'uni'},{label:'By Stage',val:'stage'},{label:'Other',val:'other'}];
   let html='';
   cats.forEach(cat=>{
-    const items=COMMS.filter(c=>c.cat===cat.val&&(!filter||c.name.toLowerCase().includes(filter.toLowerCase())));
-    if(!items.length)return;
+    const list=items.filter(c=>c.cat===cat.val&&(!filter||c.name.toLowerCase().includes(filter.toLowerCase())));
+    if(!list.length)return;
     html+=`<div class="cl-section">${cat.label}</div>`;
-    html+=items.map(c=>`<div class="comm-item${activeCom===c.id?' on':''}" onclick="selectComm('${c.id}')"><span class="ci-icon">${c.icon}</span><span class="ci-name">${c.name}</span>${joined.has(c.id)?'':'<span class="ci-badge">+</span>'}</div>`).join('');
+    html+=list.map(c=>`<div class="comm-item${activeCom===c.id?' on':''}" onclick="selectComm('${c.id}')"><span class="ci-icon">${c.icon}</span><span class="ci-name">${c.name}</span>${joined.has(c.id)?'':'<span class="ci-badge">+</span>'}</div>`).join('');
   });
-  document.getElementById('commScroll').innerHTML=html;
+  document.getElementById('commScroll').innerHTML = html || '<div style="padding:1.5rem 1rem;text-align:center;color:var(--lt);font-size:.8125rem">No communities found</div>';
 }
 
-function filterComms(v){buildCommList(v);}
+// Search queries the live Supabase table (debounced).
+function filterComms(v){
+  clearTimeout(commSearchTimer);
+  commSearchTimer=setTimeout(async ()=>{
+    const term=v.trim();
+    if(!term){ buildCommList(); return; }
+    const { data, error } = await sb.from('communities')
+      .select('*')
+      .or(`name.ilike.%${term}%,id.ilike.%${term}%`)
+      .order('sort');
+    if(error){ buildCommList(term); return; } // fall back to client filter on cached list
+    buildCommList('', data || []);
+  },180);
+}
 
 function selectComm(id){
   activeCom=id;
@@ -429,9 +432,8 @@ async function sendMsg(){
 function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}document.getElementById('sendBtn').disabled=!document.getElementById('compInp').value.trim();}
 function autoR(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,120)+'px';document.getElementById('sendBtn').disabled=!el.value.trim();}
 
-// Init — build the browsable left/middle columns; chat stays locked until sign-in.
-buildCommList();
-selectComm('sydney');
+// Init — load communities from the live Supabase table; chat stays locked until sign-in.
+loadCommunities();
 </script>
 
 </body>

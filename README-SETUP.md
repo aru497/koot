@@ -20,6 +20,11 @@ Supabase Dashboard → **SQL Editor** → **New query** → paste the entire con
 This creates `profiles`, `memberships`, `messages`, the row-level-security policies, the
 realtime publication, and a few welcome messages. It's safe to re-run.
 
+Then run [`supabase-data.sql`](./supabase-data.sql) the same way — it creates the live
+`occupations`, `salaries`, `courses`, and `communities` tables that power the **Course Advisor**
+and **Communities search**, seeded with the real gov-sourced data. Full details (and the optional
+server-side gov-data sync function) are in **[`LIVE-DATA-SETUP.md`](./LIVE-DATA-SETUP.md)**.
+
 ---
 
 ## 2. Turn on Google sign-in
