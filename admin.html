@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1d4ed8">
+  <meta name="robots" content="noindex">
+  <title>Admin — Koott</title>
+  <link rel="stylesheet" href="koott.css">
+  <style>
+    .admin-wrap { max-width:1100px; margin:0 auto; padding:2rem 1.5rem 4rem; }
+    .tabs { display:flex; gap:.4rem; border-bottom:1px solid var(--bd); margin-bottom:1.25rem; }
+    .tab { padding:.6rem 1rem; font-size:.875rem; font-weight:600; color:var(--mut); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; }
+    .tab.on { color:var(--blue); border-bottom-color:var(--blue); }
+    .stat-row { display:flex; gap:1rem; margin-bottom:1.5rem; flex-wrap:wrap; }
+    .stat { flex:1; min-width:140px; border:1px solid var(--bd); border-radius:var(--rl); padding:1rem 1.25rem; }
+    .stat-n { font-size:1.75rem; font-weight:800; color:var(--blue); letter-spacing:-.03em; }
+    .stat-l { font-size:.75rem; color:var(--mut); text-transform:uppercase; letter-spacing:.05em; }
+    table { width:100%; border-collapse:collapse; font-size:.85rem; }
+    th { text-align:left; font-size:.7rem; text-transform:uppercase; letter-spacing:.05em; color:var(--lt); padding:.6rem .75rem; border-bottom:1px solid var(--bd); }
+    td { padding:.7rem .75rem; border-bottom:1px solid var(--bd); vertical-align:top; }
+    tr:hover td { background:var(--bg-sub); }
+    .muted { color:var(--mut); }
+    .pill { display:inline-block; font-size:.7rem; font-weight:700; padding:.1rem .5rem; border-radius:100px; }
+    .pill-p { background:var(--amb-bg); color:var(--amb); border:1px solid #fde68a; }
+    .pill-a { background:var(--grn-bg); color:var(--grn); border:1px solid var(--grn-bd); }
+    .pill-r { background:#fef2f2; color:var(--red); border:1px solid #fecaca; }
+    .center-box { max-width:380px; margin:5rem auto; text-align:center; }
+    .btn-sm { padding:.3rem .7rem; font-size:.78rem; }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="logo" href="index.html">
+    <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+      <defs><clipPath id="k"><circle cx="21" cy="16" r="10"/></clipPath></defs>
+      <circle cx="11" cy="16" r="10" fill="#e8622c"/>
+      <circle cx="21" cy="16" r="10" fill="#111827"/>
+      <circle cx="11" cy="16" r="10" fill="#c14e20" clip-path="url(#k)"/>
+    </svg>
+    koott <span style="font-size:.7rem;font-weight:700;color:var(--lt);border:1px solid var(--bd);border-radius:100px;padding:.1rem .5rem;margin-left:.3rem">ADMIN</span>
+  </a>
+  <ul class="nav-links" style="flex:1"></ul>
+  <div class="nav-right" id="koottNav"></div>
+</nav>
+
+<div class="admin-wrap">
+
+  <!-- Signed out / not admin -->
+  <div id="gateState" class="center-box" style="display:none">
+    <div style="font-size:2.5rem;margin-bottom:.75rem">🔒</div>
+    <div style="font-size:1.05rem;font-weight:700;margin-bottom:.4rem" id="gateTitle">Admin access only</div>
+    <p class="lead" style="font-size:.9rem;margin-bottom:1.5rem" id="gateText">Sign in with the admin account to view leads and approve WhatsApp groups.</p>
+    <button class="btn btn-p" id="gateBtn" onclick="koottAuth.signIn()">Sign in with Google →</button>
+  </div>
+
+  <!-- Admin dashboard -->
+  <div id="dash" style="display:none">
+    <div class="eyebrow">Admin Dashboard</div>
+    <h1 class="h2" style="margin-bottom:1.25rem">Koott leads &amp; submissions</h1>
+
+    <div class="stat-row">
+      <div class="stat"><div class="stat-n" id="s_leads">—</div><div class="stat-l">Total leads</div></div>
+      <div class="stat"><div class="stat-n" id="s_today">—</div><div class="stat-l">Leads today</div></div>
+      <div class="stat"><div class="stat-n" id="s_pending">—</div><div class="stat-l">Groups pending</div></div>
+      <div class="stat"><div class="stat-n" id="s_approved">—</div><div class="stat-l">Groups approved</div></div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab on" id="tab-leads" onclick="showTab('leads')">Leads</div>
+      <div class="tab" id="tab-wa" onclick="showTab('wa')">WhatsApp groups</div>
+    </div>
+
+    <!-- Leads -->
+    <div id="pane-leads">
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Email</th><th>Wants to study</th><th>From</th><th>Matched to</th><th>When</th></tr></thead>
+          <tbody id="leadsBody"><tr><td colspan="5" class="muted">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- WhatsApp groups -->
+    <div id="pane-wa" style="display:none">
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Group</th><th>Community</th><th>Link</th><th>Submitted by</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="waBody"><tr><td colspan="6" class="muted">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="koott-config.js"></script>
+<script src="koott-auth.js"></script>
+<script>
+const sb = window.sb;
+let isAdmin = false;
+
+function fmt(ts){ const d=new Date(ts); return d.toLocaleDateString([], {month:'short',day:'numeric'})+' '+d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}); }
+function esc(t){ return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function showTab(t){
+  document.getElementById('tab-leads').classList.toggle('on', t==='leads');
+  document.getElementById('tab-wa').classList.toggle('on', t==='wa');
+  document.getElementById('pane-leads').style.display = t==='leads'?'block':'none';
+  document.getElementById('pane-wa').style.display = t==='wa'?'block':'none';
+}
+
+koottAuth.onChange(async (user)=>{
+  const gate=document.getElementById('gateState'), dash=document.getElementById('dash');
+  if(!user){
+    gate.style.display='block'; dash.style.display='none';
+    document.getElementById('gateTitle').textContent='Admin access only';
+    document.getElementById('gateText').textContent='Sign in with the admin account to view leads and approve WhatsApp groups.';
+    document.getElementById('gateBtn').style.display='inline-flex';
+    return;
+  }
+  // Check admin via security-definer RPC
+  const { data, error } = await sb.rpc('is_admin');
+  isAdmin = data === true && !error;
+  if(!isAdmin){
+    gate.style.display='block'; dash.style.display='none';
+    document.getElementById('gateTitle').textContent='Not an admin account';
+    document.getElementById('gateText').textContent='The account '+(user.email||'')+' doesn’t have admin access. Sign in with the admin email, or ask the owner to add you.';
+    document.getElementById('gateBtn').style.display='none';
+    return;
+  }
+  gate.style.display='none'; dash.style.display='block';
+  loadLeads(); loadGroups();
+});
+
+async function loadLeads(){
+  const { data, error } = await sb.from('leads').select('*').order('created_at',{ascending:false}).limit(500);
+  const body=document.getElementById('leadsBody');
+  if(error){ body.innerHTML=`<tr><td colspan="5" class="muted">Error: ${esc(error.message)}</td></tr>`; return; }
+  const rows=data||[];
+  document.getElementById('s_leads').textContent=rows.length;
+  const today=new Date(); today.setHours(0,0,0,0);
+  document.getElementById('s_today').textContent=rows.filter(r=>new Date(r.created_at)>=today).length;
+  if(!rows.length){ body.innerHTML='<tr><td colspan="5" class="muted">No leads yet.</td></tr>'; return; }
+  body.innerHTML=rows.map(r=>`<tr>
+    <td><a href="mailto:${esc(r.email)}" style="color:var(--blue)">${esc(r.email)}</a></td>
+    <td style="max-width:320px">${esc(r.study_interest)||'<span class="muted">—</span>'}${r.no_clear_interest?' <span class="pill pill-p">exploring</span>':''}</td>
+    <td>${esc(r.region)||'<span class="muted">—</span>'}</td>
+    <td>${esc(r.matched_title)||'<span class="muted">—</span>'}</td>
+    <td class="muted" style="white-space:nowrap">${fmt(r.created_at)}</td>
+  </tr>`).join('');
+}
+
+async function loadGroups(){
+  const { data, error } = await sb.from('whatsapp_groups').select('*').order('created_at',{ascending:false});
+  const body=document.getElementById('waBody');
+  if(error){ body.innerHTML=`<tr><td colspan="6" class="muted">Error: ${esc(error.message)}</td></tr>`; return; }
+  const rows=data||[];
+  document.getElementById('s_pending').textContent=rows.filter(r=>r.status==='pending').length;
+  document.getElementById('s_approved').textContent=rows.filter(r=>r.status==='approved').length;
+  if(!rows.length){ body.innerHTML='<tr><td colspan="6" class="muted">No submissions yet.</td></tr>'; return; }
+  body.innerHTML=rows.map(r=>{
+    const pill=r.status==='approved'?'pill-a':r.status==='rejected'?'pill-r':'pill-p';
+    const actions=r.status==='pending'
+      ? `<button class="btn btn-p btn-sm" onclick="reviewGroup(${r.id},'approved')">Approve</button> <button class="btn btn-s btn-sm" onclick="reviewGroup(${r.id},'rejected')">Reject</button>`
+      : `<button class="btn btn-g btn-sm" onclick="reviewGroup(${r.id},'pending')">Reset</button>`;
+    return `<tr>
+      <td><strong>${esc(r.title)}</strong>${r.description?`<div class="muted" style="font-size:.78rem">${esc(r.description)}</div>`:''}</td>
+      <td>${esc(r.community_id)||'<span class="muted">—</span>'}</td>
+      <td><a href="${esc(r.invite_url)}" target="_blank" rel="noopener" style="color:var(--blue)">open ↗</a></td>
+      <td class="muted">${esc(r.submitted_by_email)||'—'}</td>
+      <td><span class="pill ${pill}">${esc(r.status)}</span></td>
+      <td style="white-space:nowrap">${actions}</td>
+    </tr>`;
+  }).join('');
+}
+
+async function reviewGroup(id, status){
+  const { error } = await sb.from('whatsapp_groups').update({ status, reviewed_at:new Date().toISOString() }).eq('id', id);
+  if(error){ alert('Could not update: '+error.message); return; }
+  loadGroups();
+}
+</script>
+
+</body>
+</html>

@@ -190,7 +190,3 @@ they've joined. Never add a `sb_secret_…` key to these files.
   clickable would need a `reactions` table + toggle logic — easy to add later.
 - **Member counts** shown per community are still the original static numbers; wire them to
   `count(*)` on `memberships` if you want them live.
-- **Sabha:** Sabha (the Discord alternative this site credits) is a self-hosted Rails server and
-  can't run on Vercel. If you ever want the full Sabha app for chat instead of Supabase, host it
-  separately (a VPS, or Sabha Cloud) and point Communities at it. The Supabase version here needs
-  no extra server.

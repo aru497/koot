@@ -135,8 +135,32 @@
 
 <div class="advisor-shell">
 
-  <!-- ══ STEPS 1 & 2 ══ -->
-  <div id="wizard">
+  <!-- ══ AI AGENT (primary entry) ══ -->
+  <div id="agent">
+    <div class="step-card" style="padding:2rem">
+      <div class="eyebrow">✨ AI Course Advisor</div>
+      <div class="step-title" style="margin-bottom:.4rem">What do you want to study in Australia?</div>
+      <div class="step-sub">Tell us in your own words — a field, a dream job, or just what you're curious about. Our AI matches you to in-demand courses using live Australian government data. Not sure yet? That's completely fine — just say so.</div>
+
+      <div class="field">
+        <label>In your own words</label>
+        <textarea id="ag_answer" rows="4" placeholder="e.g. I love working with people and want a stable career in healthcare — maybe something hands-on.  ·  I'm really into coding and AI.  ·  Honestly not sure yet, just exploring my options." style="width:100%;padding:.7rem .85rem;border:1.5px solid var(--bd);border-radius:var(--r);font-family:var(--font);font-size:.95rem;line-height:1.5;resize:vertical;color:var(--txt);background:var(--bg)"></textarea>
+      </div>
+
+      <div class="field">
+        <label>Where are you from? <span>(optional)</span></label>
+        <input type="text" id="ag_region" placeholder="e.g. Kerala, India">
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-g" style="padding:.35rem .5rem;font-size:.8125rem" onclick="showWizard()">Prefer a detailed form?</button>
+        <button class="btn btn-p btn-lg" onclick="agentStart()">Get my match →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ STEPS 1 & 2 (detailed form, optional) ══ -->
+  <div id="wizard" style="display:none">
     <div class="step-indicator"><span class="step-dot"></span><span id="stepLabel">Step 1 of 2</span></div>
     <div class="progress-bar"><div class="progress-fill" id="progFill" style="width:50%"></div></div>
 
@@ -319,6 +343,9 @@
       <span style="font-size:.8125rem;color:var(--lt)">Based on your profile · <a href="#" style="color:var(--blue)">Share results</a></span>
     </div>
 
+    <!-- AI match card (agent flow) -->
+    <div id="r_agentCard" style="display:none"></div>
+
     <!-- Match summary -->
     <div class="result-header">
       <div class="eyebrow">Your Career Match</div>
@@ -368,6 +395,18 @@
   </div>
 
 </div><!-- /advisor-shell -->
+
+<!-- Email gate -->
+<dialog id="emailGate">
+  <div style="padding:1.75rem">
+    <div class="eyebrow" style="text-align:center">Almost there</div>
+    <div style="font-size:1.05rem;font-weight:700;text-align:center;margin:.2rem 0 .3rem">See your personalised match</div>
+    <p style="font-size:.85rem;color:var(--mut);text-align:center;margin-bottom:1.1rem;line-height:1.55">Enter your email and our AI will match you to the best courses, salary outlook, and visa pathway.</p>
+    <input type="email" id="ag_email" placeholder="you@email.com" style="width:100%;padding:.7rem .85rem;border:1.5px solid var(--bd);border-radius:var(--r);font-family:var(--font);font-size:.95rem;margin-bottom:.6rem;color:var(--txt);background:var(--bg)" onkeydown="if(event.key==='Enter')submitEmailGate()">
+    <button class="btn btn-p btn-lg" style="width:100%;justify-content:center" onclick="submitEmailGate()">Show my match →</button>
+    <p style="font-size:.7rem;color:var(--lt);text-align:center;margin-top:.7rem;line-height:1.5">Free · We'll only use this to send your results and occasional study tips. No spam, unsubscribe anytime.</p>
+  </div>
+</dialog>
 
 <script>
 // ══════════════════════════════════════════════════════════════════
@@ -481,6 +520,91 @@ function pickSuggest(title, cat) {
 function goStep1(){ document.getElementById('step1').style.display=''; document.getElementById('step2').style.display='none'; document.getElementById('progFill').style.width='50%'; document.getElementById('stepLabel').textContent='Step 1 of 2'; }
 function goStep2(){ document.getElementById('step1').style.display='none'; document.getElementById('step2').style.display=''; document.getElementById('progFill').style.width='100%'; document.getElementById('stepLabel').textContent='Step 2 of 2'; }
 
+// ══ AI AGENT ══
+const AGENT_URL = window.KOOTT_CONFIG.SUPABASE_URL + '/functions/v1/advisor-agent';
+let forcedOccId = null, agentMeta = null;
+function escAgent(t){ return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function showWizard(){ document.getElementById('agent').style.display='none'; document.getElementById('wizard').style.display='block'; goStep1(); }
+
+function agentStart(){
+  const a=document.getElementById('ag_answer').value.trim();
+  if(a.length<3){ alert('Tell us a little about what you want to study — even a few words helps.'); return; }
+  document.getElementById('emailGate').showModal();
+}
+function submitEmailGate(){
+  const email=document.getElementById('ag_email').value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ alert('Please enter a valid email address.'); return; }
+  try{ document.getElementById('emailGate').close(); }catch(e){}
+  runAgent(email);
+}
+async function runAgent(email){
+  const answer=document.getElementById('ag_answer').value.trim();
+  const region=document.getElementById('ag_region').value.trim();
+  document.getElementById('agent').style.display='none';
+  document.getElementById('wizard').style.display='none';
+  document.getElementById('results').style.display='none';
+  document.getElementById('analysing').style.display='block';
+  const steps=['as1','as2','as3','as4','as5'];
+  steps.forEach(id=>document.getElementById(id).classList.remove('done','active'));
+  let i=0;
+  const anim=setInterval(()=>{ if(i>0)document.getElementById(steps[i-1]).classList.add('done'); if(i<steps.length){document.getElementById(steps[i]).classList.add('active');i++;} else clearInterval(anim); }, 480);
+  await ensureData();
+
+  // Try the LLM Edge Function first; if it's not deployed/reachable, fall back
+  // to on-device matching so the advisor always works.
+  let data = null;
+  try{
+    const res = await fetch(AGENT_URL, { method:'POST',
+      headers:{ 'content-type':'application/json', 'apikey':window.KOOTT_CONFIG.SUPABASE_KEY, 'authorization':'Bearer '+window.KOOTT_CONFIG.SUPABASE_KEY },
+      body:JSON.stringify({ answer, email, region }) });
+    const j = await res.json();
+    if(res.ok && j.ok) data = j;
+  }catch(e){ /* fall through */ }
+
+  if(!data){
+    data = clientMatch(answer);
+    try{ await window.sb.from('leads').insert({ email, study_interest:answer, region:region||null, matched_title:data.matched_title, matched_occupation_id:data.occupation_id, no_clear_interest:data.no_clear_interest, source:'advisor-client' }); }catch(e){}
+  }
+
+  if(!data.occupation_id){
+    clearInterval(anim);
+    document.getElementById('analysing').style.display='none';
+    document.getElementById('agent').style.display='block';
+    alert('Our course data is still loading — please try again in a moment.');
+    return;
+  }
+
+  forcedOccId = data.occupation_id;
+  agentMeta = { reason:data.reason, courses:data.suggested_courses||[], noClear:data.no_clear_interest, answer, region, email };
+  document.getElementById('f_field').value = answer;
+  document.getElementById('f_name').value = '';
+  setTimeout(()=>{ clearInterval(anim); showResults(); }, 1300);
+}
+
+// On-device match used when the LLM function isn't reachable yet.
+function clientMatch(answer){
+  const a = (answer||'').toLowerCase();
+  let best = OCCUPATIONS[0], bestScore = -1;
+  OCCUPATIONS.forEach(o=>{
+    let s = 0;
+    (o.keywords||[]).forEach(k=>{ if(a.includes(String(k).toLowerCase())) s += 2; });
+    if(a.includes((o.title||'').toLowerCase().split(' ')[0])) s += 1;
+    if(o.shortage==='national') s += 1;
+    if(s > bestScore){ bestScore = s; best = o; }
+  });
+  const noClear = bestScore <= 0;
+  return {
+    occupation_id: best ? best.id : null,
+    matched_title: best ? best.title : null,
+    reason: noClear
+      ? `We didn't catch a specific field in your answer, so here's a popular high-demand option to explore: ${best?best.title:''}. Add a bit more detail to refine it.`
+      : `Based on what you described, ${best?best.title:''} looks like a strong fit — and it's in demand in Australia, which helps with both your job prospects and visa outcomes.`,
+    suggested_courses: best ? (best.courses||[]).slice(0,5) : [],
+    no_clear_interest: noClear,
+  };
+}
+
 // ══ Analysis ══
 function startAnalysis() {
   document.getElementById('wizard').style.display='none';
@@ -508,6 +632,17 @@ async function showResults() {
   document.getElementById('analysing').style.display='none';
   document.getElementById('results').style.display='block';
 
+  // AI agent reasoning card
+  const ac=document.getElementById('r_agentCard');
+  if(agentMeta){
+    ac.style.display='block';
+    ac.innerHTML=`<div style="border:1.5px solid var(--blue-bd);background:var(--blue-bg);border-radius:var(--rx);padding:1.1rem 1.25rem;margin-bottom:1.25rem">
+      <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem"><span style="font-size:1.1rem">✨</span><strong style="font-size:.95rem">Your AI match${agentMeta.noClear?' — a place to start':''}</strong></div>
+      <p style="font-size:.9rem;line-height:1.6;color:var(--txt);margin:0 0 ${agentMeta.courses.length?'.8rem':'0'}">${escAgent(agentMeta.reason)}</p>
+      ${agentMeta.courses.length?`<div style="font-size:.75rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--lt);margin-bottom:.4rem">Courses to explore</div><div style="display:flex;flex-wrap:wrap;gap:.4rem">${agentMeta.courses.map(c=>`<span class="badge badge-blue">${escAgent(c)}</span>`).join('')}</div>`:''}
+    </div>`;
+  } else { ac.style.display='none'; ac.innerHTML=''; }
+
   const fieldVal  = document.getElementById('f_field').value;
   const qualVal   = document.getElementById('f_qual').value;
   const scoreVal  = parseFloat(document.getElementById('f_score').value)||0;
@@ -528,8 +663,9 @@ async function showResults() {
     return{...o,score:s};
   }).sort((a,b)=>b.score-a.score);
 
-  const top=scored[0];
-  const alts=scored.slice(1,3);
+  let top=scored[0];
+  if(forcedOccId){ const f=OCCUPATIONS.find(o=>o.id===forcedOccId); if(f) top=f; }
+  const alts=scored.filter(o=>o.id!==top.id).slice(0,2);
 
   // Shortage pct for bar
   const shortPct = top.shortage==='national'?92:top.shortage==='regional'?70:top.shortage==='difficulty'?55:30;
@@ -661,10 +797,13 @@ async function showResults() {
 }
 
 function resetAdvisor(){
-  document.getElementById('wizard').style.display=''; document.getElementById('results').style.display='none';
+  forcedOccId=null; agentMeta=null;
+  document.getElementById('agent').style.display='block';
+  document.getElementById('wizard').style.display='none';
+  document.getElementById('results').style.display='none';
+  document.getElementById('analysing').style.display='none';
   document.getElementById('step1').style.display=''; document.getElementById('step2').style.display='none';
   document.getElementById('progFill').style.width='50%'; document.getElementById('stepLabel').textContent='Step 1 of 2';
-  // Reset analyse steps
   ['as1','as2','as3','as4','as5'].forEach(id=>{ document.getElementById(id).classList.remove('done','active'); });
 }
 </script>
