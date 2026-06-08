@@ -558,7 +558,7 @@ function goStep1(){ document.getElementById('step1').style.display=''; document.
 function goStep2(){ document.getElementById('step1').style.display='none'; document.getElementById('step2').style.display=''; document.getElementById('progFill').style.width='100%'; document.getElementById('stepLabel').textContent='Step 2 of 2'; }
 
 // ══ AI AGENT ══
-const AGENT_URL = window.KOOTT_CONFIG.SUPABASE_URL + '/functions/v1/advisor-agent';
+function agentUrl(){ return window.KOOTT_CONFIG.SUPABASE_URL + '/functions/v1/advisor-agent'; }
 let forcedOccId = null, agentMeta = null;
 function escAgent(t){ return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
@@ -618,7 +618,7 @@ async function runAgent(email){
   // to on-device matching so the advisor always works.
   let data = null;
   try{
-    const res = await fetch(AGENT_URL, { method:'POST',
+    const res = await fetch(agentUrl(), { method:'POST',
       headers:{ 'content-type':'application/json', 'apikey':window.KOOTT_CONFIG.SUPABASE_KEY, 'authorization':'Bearer '+window.KOOTT_CONFIG.SUPABASE_KEY },
       body:JSON.stringify({ answer, email, region }) });
     const j = await res.json();
