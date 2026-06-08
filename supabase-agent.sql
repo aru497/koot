@@ -10,8 +10,8 @@ create table if not exists public.admins (
   created_at timestamptz not null default now()
 );
 
--- ⬇️ CHANGE THIS to the Google email you sign in to Koott with.
-insert into public.admins (email) values ('designcore777@gmail.com')
+-- The Google email you sign in to Koott with (admin access).
+insert into public.admins (email) values ('aru497@gmail.com')
 on conflict (email) do nothing;
 
 -- Helper: is the currently signed-in user an admin?
