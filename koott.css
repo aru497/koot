@@ -243,6 +243,7 @@ dialog {
   border: 1px solid var(--bd); border-radius: var(--rx); padding: 0;
   box-shadow: var(--sh-lg); max-width: 400px; width: calc(100% - 2rem);
   color: var(--txt); background: var(--bg);
+  margin: auto;  /* re-center: global reset zeros the UA margin:auto */
 }
 dialog::backdrop { background: rgba(13,13,15,.42); backdrop-filter: blur(5px); }
 

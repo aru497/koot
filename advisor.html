@@ -4,7 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#1d4ed8">
-  <title>Course &amp; Career Advisor — Koott</title>
+  <title>AI Course Advisor for Kerala Students in Australia | Koott</title>
+  <meta name="description" content="Tell Koott what you want to study — our AI matches Kerala students to in-demand Australian courses, salary ranges, and 485 visa pathways using real government data. Free, no account needed.">
+  <link rel="canonical" href="https://koot.live/advisor.html">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Koott">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Koott">
+  <meta property="og:title" content="AI Course Advisor for Kerala Students in Australia — Koott">
+  <meta property="og:description" content="Tell Koott what you want to study — our AI matches Kerala students to in-demand Australian courses, salary ranges, and 485 visa pathways using real government data. Free, no account needed.">
+  <meta property="og:url" content="https://koot.live/advisor.html">
+  <meta property="og:image" content="https://koot.live/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_AU">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AI Course Advisor for Kerala Students in Australia — Koott">
+  <meta name="twitter:description" content="Tell Koott what you want to study — our AI matches Kerala students to in-demand Australian courses, salary ranges, and 485 visa pathways using real government data. Free, no account needed.">
+  <meta name="twitter:image" content="https://koot.live/og-image.png">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"AI Course Advisor — Koott","description":"AI course and career matching for Kerala students planning to study in Australia.","url":"https://koot.live/advisor.html","isPartOf":{"@id":"https://koot.live/#website"},"about":{"@type":"Thing","name":"Studying in Australia for Kerala students"}}</script>
   <link rel="stylesheet" href="koott.css">
   <style>
     body { background: var(--bg-sub); }
@@ -111,6 +132,12 @@
     .rs-label { font-size:.6875rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--lt); margin:.2rem 0 .875rem; }
 
     @media(max-width:640px) { .field-row { grid-template-columns:1fr; } .course-detail-row { grid-template-columns:1fr 1fr; } }
+  
+    /* mode toggle */
+    #modeBar { text-align:center; margin:0 auto 1.75rem; }
+    .seg { display:inline-flex; background:var(--bg-sub); border:1px solid var(--bd); border-radius:100px; padding:.25rem; gap:.25rem; }
+    .seg button { border:none; background:transparent; font-family:var(--font); font-size:.85rem; font-weight:600; color:var(--mut); padding:.45rem 1.05rem; border-radius:100px; cursor:pointer; transition:all .12s; }
+    .seg button.seg-on { background:var(--bg); color:var(--txt); box-shadow:var(--sh-sm); }
   </style>
 </head>
 <body>
@@ -135,6 +162,15 @@
 
 <div class="advisor-shell">
 
+  <!-- Mode toggle: user chooses AI chat or the detailed form -->
+  <div id="modeBar">
+    <div class="seg">
+      <button id="m-chat" class="seg-on" onclick="setMode('chat')">💬 Chat with AI</button>
+      <button id="m-form" onclick="setMode('form')">📋 Fill a form</button>
+    </div>
+    <div style="font-size:.78rem;color:var(--lt);margin-top:.5rem">Answer in your own words, or fill a step-by-step form — your choice.</div>
+  </div>
+
   <!-- ══ AI AGENT (primary entry) ══ -->
   <div id="agent">
     <div class="step-card" style="padding:2rem">
@@ -152,9 +188,8 @@
         <input type="text" id="ag_region" placeholder="e.g. Kerala, India">
       </div>
 
-      <div class="step-nav">
-        <button class="btn btn-g" style="padding:.35rem .5rem;font-size:.8125rem" onclick="showWizard()">Prefer a detailed form?</button>
-        <button class="btn btn-p btn-lg" onclick="agentStart()">Get my match →</button>
+      <div style="margin-top:1.5rem">
+        <button class="btn btn-p btn-lg" style="width:100%;justify-content:center" onclick="agentStart()">Get my match →</button>
       </div>
     </div>
   </div>
@@ -400,11 +435,16 @@
 <dialog id="emailGate">
   <div style="padding:1.75rem">
     <div class="eyebrow" style="text-align:center">Almost there</div>
-    <div style="font-size:1.05rem;font-weight:700;text-align:center;margin:.2rem 0 .3rem">See your personalised match</div>
-    <p style="font-size:.85rem;color:var(--mut);text-align:center;margin-bottom:1.1rem;line-height:1.55">Enter your email and our AI will match you to the best courses, salary outlook, and visa pathway.</p>
+    <div style="font-size:1.05rem;font-weight:700;text-align:center;margin:.2rem 0 .35rem">See your personalised match</div>
+    <p style="font-size:.85rem;color:var(--mut);text-align:center;margin-bottom:1.1rem;line-height:1.55">Sign in with Google to save your match and join your student community — or just use your email.</p>
+    <button onclick="agentGoogle()" style="display:flex;align-items:center;justify-content:center;gap:.6rem;width:100%;padding:.72rem 1rem;background:var(--bg);border:1.5px solid var(--bd-hi);border-radius:var(--r);font-size:.92rem;font-weight:650;color:var(--txt);cursor:pointer;font-family:var(--font)">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.36-8.16 2.36-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      Continue with Google
+    </button>
+    <div style="display:flex;align-items:center;gap:.6rem;margin:.9rem 0;color:var(--lt);font-size:.78rem"><span style="flex:1;height:1px;background:var(--bd)"></span>or<span style="flex:1;height:1px;background:var(--bd)"></span></div>
     <input type="email" id="ag_email" placeholder="you@email.com" style="width:100%;padding:.7rem .85rem;border:1.5px solid var(--bd);border-radius:var(--r);font-family:var(--font);font-size:.95rem;margin-bottom:.6rem;color:var(--txt);background:var(--bg)" onkeydown="if(event.key==='Enter')submitEmailGate()">
-    <button class="btn btn-p btn-lg" style="width:100%;justify-content:center" onclick="submitEmailGate()">Show my match →</button>
-    <p style="font-size:.7rem;color:var(--lt);text-align:center;margin-top:.7rem;line-height:1.5">Free · We'll only use this to send your results and occasional study tips. No spam, unsubscribe anytime.</p>
+    <button class="btn btn-s btn-lg" style="width:100%;justify-content:center" onclick="submitEmailGate()">Continue with email →</button>
+    <p style="font-size:.7rem;color:var(--lt);text-align:center;margin-top:.7rem;line-height:1.5">Free · No spam. We only use this to send your results and study tips.</p>
   </div>
 </dialog>
 
@@ -525,11 +565,36 @@ const AGENT_URL = window.KOOTT_CONFIG.SUPABASE_URL + '/functions/v1/advisor-agen
 let forcedOccId = null, agentMeta = null;
 function escAgent(t){ return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
-function showWizard(){ document.getElementById('agent').style.display='none'; document.getElementById('wizard').style.display='block'; goStep1(); }
+function setMode(m){
+  document.getElementById('m-chat').classList.toggle('seg-on', m==='chat');
+  document.getElementById('m-form').classList.toggle('seg-on', m==='form');
+  document.getElementById('agent').style.display  = m==='chat' ? 'block' : 'none';
+  document.getElementById('wizard').style.display = m==='form' ? 'block' : 'none';
+  if(m==='form') goStep1();
+}
+function showWizard(){ setMode('form'); }
+function agentGoogle(){
+  try{ localStorage.setItem('koott_pending_advisor', JSON.stringify({ answer:document.getElementById('ag_answer').value.trim(), region:document.getElementById('ag_region').value.trim() })); }catch(e){}
+  try{ document.getElementById('emailGate').close(); }catch(e){}
+  koottAuth.signIn();
+}
+// Resume the match automatically after returning from Google sign-in
+window.koottAuth && koottAuth.onChange(function(u){
+  if(!u) return;
+  var p=null; try{ p=JSON.parse(localStorage.getItem('koott_pending_advisor')||'null'); }catch(e){}
+  if(p && p.answer){
+    try{ localStorage.removeItem('koott_pending_advisor'); }catch(e){}
+    document.getElementById('ag_answer').value=p.answer;
+    if(p.region) document.getElementById('ag_region').value=p.region;
+    setMode('chat');
+    runAgent(u.email);
+  }
+});
 
 function agentStart(){
   const a=document.getElementById('ag_answer').value.trim();
   if(a.length<3){ alert('Tell us a little about what you want to study — even a few words helps.'); return; }
+  if(window.koottAuth && koottAuth.user){ runAgent(koottAuth.user.email); return; }  // already signed in → skip the gate
   document.getElementById('emailGate').showModal();
 }
 function submitEmailGate(){
@@ -544,6 +609,7 @@ async function runAgent(email){
   document.getElementById('agent').style.display='none';
   document.getElementById('wizard').style.display='none';
   document.getElementById('results').style.display='none';
+  var _mb=document.getElementById('modeBar'); if(_mb) _mb.style.display='none';
   document.getElementById('analysing').style.display='block';
   const steps=['as1','as2','as3','as4','as5'];
   steps.forEach(id=>document.getElementById(id).classList.remove('done','active'));
@@ -608,6 +674,7 @@ function clientMatch(answer){
 // ══ Analysis ══
 function startAnalysis() {
   document.getElementById('wizard').style.display='none';
+  var _mb=document.getElementById('modeBar'); if(_mb) _mb.style.display='none';
   document.getElementById('analysing').style.display='block';
   const steps=['as1','as2','as3','as4','as5'];
   let i=0;
@@ -798,6 +865,9 @@ async function showResults() {
 
 function resetAdvisor(){
   forcedOccId=null; agentMeta=null;
+  var _mb=document.getElementById('modeBar'); if(_mb) _mb.style.display='';
+  document.getElementById('m-chat').classList.add('seg-on');
+  document.getElementById('m-form').classList.remove('seg-on');
   document.getElementById('agent').style.display='block';
   document.getElementById('wizard').style.display='none';
   document.getElementById('results').style.display='none';
