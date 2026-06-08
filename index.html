@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1d4ed8">
+  <title>Koott — Your guide to studying in Australia</title>
+  <link rel="stylesheet" href="koott.css">
+  <style>
+    /* Landing-specific styles */
+    .hero { text-align:center; padding:5.5rem 1.5rem 5rem; max-width:760px; margin:0 auto; }
+    .hero-badge { display:inline-flex; align-items:center; gap:.4rem; background:var(--bg-sub); border:1px solid var(--bd); color:var(--mut); font-size:.75rem; font-weight:600; padding:.3rem .8rem; border-radius:100px; margin-bottom:1.5rem; }
+    .hero h1 em { font-style:italic; color:var(--orange); }
+    .hero p { max-width:500px; margin:.75rem auto 2rem; }
+    .hero-btns { display:flex; gap:.6rem; justify-content:center; flex-wrap:wrap; }
+    .feature-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; border:1px solid var(--bd); border-radius:var(--rx); overflow:hidden; }
+    .feature-card { padding:2rem 1.75rem; background:var(--bg); border-right:1px solid var(--bd); text-decoration:none; color:inherit; display:block; transition:background .1s; }
+    .feature-card:last-child { border-right:none; }
+    .feature-card:hover { background:var(--bg-sub); }
+    .feature-card:hover .fc-arrow { transform:translateX(3px); }
+    .fc-icon { font-size:1.75rem; margin-bottom:1rem; }
+    .fc-title { font-size:1.0625rem; font-weight:700; margin-bottom:.4rem; }
+    .fc-desc { font-size:.875rem; color:var(--mut); line-height:1.65; margin-bottom:1rem; }
+    .fc-arrow { font-size:.875rem; color:var(--blue); font-weight:600; transition:transform .15s; display:inline-block; }
+    .how-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; }
+    .how-step { text-align:center; }
+    .how-num { width:36px; height:36px; border-radius:50%; background:var(--blue); color:#fff; font-size:.8125rem; font-weight:800; display:flex; align-items:center; justify-content:center; margin:0 auto .875rem; }
+    .how-title { font-size:.9rem; font-weight:700; margin-bottom:.3rem; }
+    .how-desc { font-size:.8125rem; color:var(--mut); line-height:1.6; }
+    .stat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
+    .stat-card { text-align:center; padding:1.75rem; border:1px solid var(--bd); border-radius:var(--rl); }
+    .stat-num { font-size:2.5rem; font-weight:800; letter-spacing:-.04em; color:var(--blue); line-height:1; margin-bottom:.25rem; }
+    .stat-label { font-size:.8125rem; color:var(--mut); }
+    .ft { border-top:1px solid var(--bd); padding:2rem 1.5rem; }
+    .ft-inner { max-width:960px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; }
+    .ft-links { display:flex; gap:1.25rem; }
+    .ft-links a { font-size:.8125rem; color:var(--mut); text-decoration:none; }
+    .ft-links a:hover { color:var(--txt); }
+    @media(max-width:768px) {
+      .feature-grid { grid-template-columns:1fr; }
+      .feature-card { border-right:none; border-bottom:1px solid var(--bd); }
+      .feature-card:last-child { border-bottom:none; }
+      .how-grid { grid-template-columns:1fr 1fr; }
+      .stat-grid { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="logo" href="index.html">
+    <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+      <defs><clipPath id="k"><circle cx="21" cy="16" r="10"/></clipPath></defs>
+      <circle cx="11" cy="16" r="10" fill="#e8622c"/>
+      <circle cx="21" cy="16" r="10" fill="#111827"/>
+      <circle cx="11" cy="16" r="10" fill="#c14e20" clip-path="url(#k)"/>
+    </svg>
+    koott
+  </a>
+  <ul class="nav-links">
+    <li><a href="advisor.html">Course Advisor</a></li>
+    <li><a href="communities.html">Communities</a></li>
+    <li><a href="tools.html">Visa Tools</a></li>
+  </ul>
+  <div class="nav-right" id="koottNav"></div>
+  <div class="nav-right" style="margin-left:.5rem">
+    <a href="advisor.html" class="btn btn-p">Get started →</a>
+  </div>
+</nav>
+
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-badge">🇦🇺 Free tools for international students in Australia</div>
+  <h1 class="h1">Your <em>koott</em> for studying<br>in Australia.</h1>
+  <p class="lead">Find the right course, check if your skill is in shortage, see your salary potential — all from Australian government data. Then connect with your cohort.</p>
+  <div class="hero-btns">
+    <a href="advisor.html" class="btn btn-p btn-lg">Find my course →</a>
+    <a href="communities.html" class="btn btn-s btn-lg">Browse communities</a>
+  </div>
+</div>
+
+<hr class="rule">
+
+<!-- 3 Feature cards -->
+<div class="section">
+  <div class="eyebrow">What Koott Does</div>
+  <h2 class="h2" style="margin-bottom:2rem">Three tools in one place.</h2>
+  <div class="feature-grid">
+    <a class="feature-card" href="advisor.html">
+      <div class="fc-icon">🎯</div>
+      <div class="fc-title">Course &amp; Career Advisor</div>
+      <div class="fc-desc">Tell us your background and interests. We match you to Australia's skill shortage list, recommend courses, show salary ranges, and find regional options for better visa outcomes.</div>
+      <span class="fc-arrow">Start the advisor →</span>
+    </a>
+    <a class="feature-card" href="communities.html">
+      <div class="fc-icon">💬</div>
+      <div class="fc-title">City &amp; University Communities</div>
+      <div class="fc-desc">Focused chat rooms per city, university, and intake year. Find your cohort before you even land. Housing tips, visa Q&A, part-time jobs — from students who just went through it.</div>
+      <span class="fc-arrow">Browse communities →</span>
+    </a>
+    <a class="feature-card" href="tools.html">
+      <div class="fc-icon">⚖️</div>
+      <div class="fc-title">Visa Compliance Tools</div>
+      <div class="fc-desc">Track your 60-hour fortnightly work limit, compare monthly living costs across 8 cities, and follow your application timeline from CoE to departure.</div>
+      <span class="fc-arrow">Open tools →</span>
+    </a>
+  </div>
+</div>
+
+<hr class="rule">
+
+<!-- How it works -->
+<div class="section" style="background:var(--bg-sub);max-width:100%;padding:4rem 1.5rem">
+  <div class="wrap">
+    <div class="eyebrow">How It Works</div>
+    <h2 class="h2" style="margin-bottom:2.5rem">From interest to offer letter.</h2>
+    <div class="how-grid">
+      <div class="how-step"><div class="how-num">1</div><div class="how-title">Tell us about yourself</div><div class="how-desc">Qualification, score, work experience, and English test result.</div></div>
+      <div class="how-step"><div class="how-num">2</div><div class="how-title">We match your skills</div><div class="how-desc">Cross-referenced against Australia's Skills Priority List (2024).</div></div>
+      <div class="how-step"><div class="how-num">3</div><div class="how-title">Get your course plan</div><div class="how-desc">Courses, universities (with regional options), fees, and 485 visa outcome.</div></div>
+      <div class="how-step"><div class="how-num">4</div><div class="how-title">See your job market</div><div class="how-desc">Salary ranges, employment rates, and job titles from LMIP data.</div></div>
+    </div>
+  </div>
+</div>
+
+<hr class="rule">
+
+<!-- Stats -->
+<div class="section">
+  <div class="eyebrow">By The Numbers</div>
+  <h2 class="h2" style="margin-bottom:2rem">Why Australia. Why now.</h2>
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-num">286</div><div class="stat-label">Occupations on the 2024 Skills Priority List with national or regional shortage status</div></div>
+    <div class="stat-card"><div class="stat-num">4 yrs</div><div class="stat-label">Post-study work visa (485) for graduates from regional Australian universities</div></div>
+    <div class="stat-card"><div class="stat-num">$105K</div><div class="stat-label">Median starting salary for IT graduates in shortage roles in Australia (ABS 2024)</div></div>
+  </div>
+  <p style="font-size:.75rem;color:var(--lt);margin-top:1rem">Sources: Jobs and Skills Australia Skills Priority List 2024 · ABS Labour Statistics · Department of Home Affairs</p>
+</div>
+
+<hr class="rule">
+
+<div style="text-align:center;padding:4rem 1.5rem">
+  <div class="eyebrow">Get Started</div>
+  <h2 class="h2" style="margin-bottom:.75rem">Find your course in 3 minutes.</h2>
+  <p class="lead" style="max-width:420px;margin:.5rem auto 2rem">Free. No account needed. Data from Australian government sources.</p>
+  <a href="advisor.html" class="btn btn-p btn-lg">Start Course Advisor →</a>
+</div>
+
+<footer class="ft">
+  <div class="ft-inner">
+    <div style="display:flex;align-items:center;gap:.45rem">
+      <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><circle cx="11" cy="16" r="10" fill="#e8622c"/><circle cx="21" cy="16" r="10" fill="#111827"/><circle cx="11" cy="16" r="10" fill="#c14e20" clip-path="url(#k)"/></svg>
+      <span style="font-weight:800;font-size:.95rem;letter-spacing:-.03em">koott</span>
+      <span style="color:var(--lt);font-size:.8125rem;margin-left:.5rem">Built on Sabha-OS (MIT)</span>
+    </div>
+    <div class="ft-links">
+      <a href="advisor.html">Advisor</a>
+      <a href="communities.html">Communities</a>
+      <a href="tools.html">Tools</a>
+      <a href="https://github.com/sabha-co/sabha" target="_blank">GitHub</a>
+    </div>
+    <span style="font-size:.8125rem;color:var(--lt);font-style:italic">കൂട്ട് — friends, in Malayalam</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="koott-config.js"></script>
+<script src="koott-auth.js"></script>
+</body>
+</html>

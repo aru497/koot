@@ -1,0 +1,93 @@
+/* ═══════════════════════════════════════════════
+   Koott shared design tokens — Sabha.co palette
+   White · #1d4ed8 blue · system fonts · clean
+═══════════════════════════════════════════════ */
+:root {
+  --bg:       #ffffff;
+  --bg-sub:   #f9fafb;
+  --bg-side:  #f3f4f6;
+  --bd:       #e5e7eb;
+  --bd-hi:    #d1d5db;
+  --txt:      #111827;
+  --mut:      #6b7280;
+  --lt:       #9ca3af;
+  --xlt:      #d1d5db;
+  --blue:     #1d4ed8;
+  --blue-dk:  #1e40af;
+  --blue-bg:  #eff6ff;
+  --blue-bd:  #bfdbfe;
+  --orange:   #e8622c;
+  --grn:      #16a34a;
+  --grn-bg:   #f0fdf4;
+  --grn-bd:   #bbf7d0;
+  --amb:      #d97706;
+  --amb-bg:   #fffbeb;
+  --red:      #dc2626;
+  --purple:   #7c3aed;
+  --purple-bg:#f5f3ff;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --r: 6px; --rl: 10px; --rx: 14px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); background: var(--bg); color: var(--txt); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+
+/* ── Nav ── */
+.nav { display:flex; align-items:center; height:56px; padding:0 1.5rem; border-bottom:1px solid var(--bd); position:sticky; top:0; background:rgba(255,255,255,.96); backdrop-filter:blur(8px); z-index:400; gap:.25rem; }
+.logo { display:flex; align-items:center; gap:.5rem; text-decoration:none; color:var(--txt); font-weight:800; font-size:1.1rem; letter-spacing:-.03em; margin-right:1.25rem; }
+.nav-links { display:flex; align-items:center; gap:.1rem; flex:1; list-style:none; }
+.nav-links a { color:var(--mut); text-decoration:none; font-size:.875rem; font-weight:500; padding:.35rem .65rem; border-radius:var(--r); transition:color .1s,background .1s; }
+.nav-links a:hover { color:var(--txt); background:var(--bg-sub); }
+.nav-links a.active { color:var(--blue); font-weight:600; }
+.nav-right { display:flex; align-items:center; gap:.5rem; }
+
+/* ── Buttons ── */
+.btn { display:inline-flex; align-items:center; gap:.4rem; padding:.55rem 1.1rem; border-radius:var(--r); font-size:.875rem; font-weight:600; cursor:pointer; border:1.5px solid transparent; text-decoration:none; transition:background .1s,border-color .1s; white-space:nowrap; font-family:var(--font); }
+.btn-p { background:var(--blue); color:#fff; border-color:var(--blue); }
+.btn-p:hover { background:var(--blue-dk); }
+.btn-s { background:var(--bg); color:var(--txt); border-color:var(--bd); }
+.btn-s:hover { border-color:var(--bd-hi); background:var(--bg-sub); }
+.btn-g { background:transparent; color:var(--mut); border-color:transparent; }
+.btn-g:hover { color:var(--txt); background:var(--bg-sub); }
+.btn-lg { padding:.7rem 1.5rem; font-size:.9375rem; border-radius:var(--rl); }
+
+/* ── Typography ── */
+.eyebrow { font-size:.6875rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--lt); margin-bottom:.4rem; }
+.h1 { font-size:clamp(2.2rem,5vw,3.5rem); font-weight:800; letter-spacing:-.035em; line-height:1.07; }
+.h2 { font-size:clamp(1.5rem,3.5vw,2.25rem); font-weight:700; letter-spacing:-.025em; line-height:1.15; }
+.h3 { font-size:1.125rem; font-weight:700; letter-spacing:-.015em; }
+.lead { font-size:1.0625rem; color:var(--mut); line-height:1.75; }
+
+/* ── Layout ── */
+.wrap { max-width:960px; margin:0 auto; padding:0 1.5rem; }
+.section { max-width:960px; margin:0 auto; padding:4rem 1.5rem; }
+.rule { border:none; border-top:1px solid var(--bd); }
+
+/* ── Badges ── */
+.badge { display:inline-flex; align-items:center; gap:.3rem; font-size:.6875rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:.2rem .55rem; border-radius:100px; }
+.badge-grn  { background:var(--grn-bg); color:var(--grn); border:1px solid var(--grn-bd); }
+.badge-blue { background:var(--blue-bg); color:var(--blue); border:1px solid var(--blue-bd); }
+.badge-amb  { background:var(--amb-bg); color:var(--amb); border:1px solid #fde68a; }
+.badge-gray { background:var(--bg-sub); color:var(--mut); border:1px solid var(--bd); }
+.badge-pur  { background:var(--purple-bg); color:var(--purple); border:1px solid #ddd6fe; }
+
+/* ── Avatar ── */
+.av { width:28px; height:28px; border-radius:50%; background:var(--blue); color:#fff; display:flex; align-items:center; justify-content:center; font-size:.6875rem; font-weight:700; flex-shrink:0; overflow:hidden; }
+.av img { width:100%; height:100%; object-fit:cover; }
+
+/* ── Card ── */
+.card { border:1px solid var(--bd); border-radius:var(--rx); background:var(--bg); }
+.card-pad { padding:1.5rem; }
+
+/* ── Logo SVG mark ── */
+.koott-mark { display:inline-block; }
+
+/* ── Dialogs ── */
+dialog { border:1px solid var(--bd); border-radius:var(--rx); padding:0; box-shadow:0 8px 32px rgba(0,0,0,.12); max-width:380px; width:calc(100% - 2rem); }
+dialog::backdrop { background:rgba(0,0,0,.45); backdrop-filter:blur(4px); }
+
+/* ── Responsive ── */
+@media(max-width:768px) {
+  .nav-links { display:none; }
+  .section { padding:2.5rem 1.25rem; }
+}

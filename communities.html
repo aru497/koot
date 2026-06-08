@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1d4ed8">
+  <title>Communities — Koott</title>
+  <link rel="stylesheet" href="koott.css">
+  <style>
+    body { overflow: hidden; }
+    /* App shell — full height below nav */
+    .app { display:grid; grid-template-columns:260px 240px 1fr; height:calc(100vh - 56px); overflow:hidden; }
+
+    /* ── Column 1: Community list ── */
+    .comm-list { background:var(--bg-side); border-right:1px solid var(--bd); display:flex; flex-direction:column; overflow:hidden; }
+    .cl-header { padding:.875rem 1rem; border-bottom:1px solid var(--bd); }
+    .cl-title { font-size:.8125rem; font-weight:800; color:var(--txt); margin-bottom:.4rem; }
+    .cl-search { width:100%; padding:.4rem .75rem; border:1.5px solid var(--bd); border-radius:var(--r); font-size:.8125rem; background:var(--bg); font-family:var(--font); color:var(--txt); }
+    .cl-search:focus { outline:none; border-color:var(--blue); }
+    .cl-scroll { flex:1; overflow-y:auto; padding:.5rem; }
+    .cl-scroll::-webkit-scrollbar { width:3px; }
+    .cl-scroll::-webkit-scrollbar-thumb { background:var(--bd); border-radius:2px; }
+    .cl-section { font-size:.625rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--lt); padding:.75rem .5rem .3rem; }
+    .comm-item { display:flex; align-items:center; gap:.6rem; padding:.5rem .6rem; border-radius:var(--r); cursor:pointer; transition:background .1s; margin-bottom:.1rem; }
+    .comm-item:hover { background:rgba(0,0,0,.05); }
+    .comm-item.on { background:var(--bg); box-shadow:0 1px 3px rgba(0,0,0,.06); }
+    .comm-item.on .ci-name { color:var(--blue); font-weight:700; }
+    .ci-icon { font-size:1.125rem; flex-shrink:0; }
+    .ci-name { font-size:.8125rem; font-weight:600; color:var(--txt); flex:1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .ci-badge { font-size:.625rem; font-weight:700; background:var(--blue); color:#fff; border-radius:100px; padding:.1rem .4rem; flex-shrink:0; }
+
+    /* ── Column 2: Channel list ── */
+    .chan-list { background:var(--bg-sub); border-right:1px solid var(--bd); display:flex; flex-direction:column; overflow:hidden; }
+    .chan-header { padding:1rem; border-bottom:1px solid var(--bd); }
+    .chan-comm-name { font-size:.9375rem; font-weight:800; color:var(--txt); margin-bottom:.2rem; display:flex; align-items:center; gap:.4rem; }
+    .chan-comm-sub { font-size:.75rem; color:var(--mut); }
+    .chan-scroll { flex:1; overflow-y:auto; padding:.5rem; }
+    .chan-section { font-size:.6rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--lt); padding:.75rem .5rem .25rem; }
+    .chan-item { display:flex; align-items:center; gap:.35rem; padding:.35rem .6rem; border-radius:var(--r); cursor:pointer; font-size:.8125rem; color:var(--mut); font-weight:500; transition:background .1s; }
+    .chan-item:hover { background:rgba(0,0,0,.05); color:var(--txt); }
+    .chan-item.on { background:var(--blue); color:#fff; font-weight:600; }
+    .chan-hash { font-size:.8125rem; opacity:.6; flex-shrink:0; }
+    .chan-join-btn { margin:.75rem .5rem .25rem; }
+
+    /* ── Column 3: Chat ── */
+    .chat-area { display:flex; flex-direction:column; overflow:hidden; background:var(--bg); }
+    .chat-header { padding:.875rem 1.25rem; border-bottom:1px solid var(--bd); display:flex; align-items:center; gap:.75rem; flex-shrink:0; }
+    .ch-icon { font-size:1rem; }
+    .ch-name { font-size:.9375rem; font-weight:700; }
+    .ch-desc { font-size:.8125rem; color:var(--mut); flex:1; }
+    .ch-members { font-size:.75rem; color:var(--lt); display:flex; align-items:center; gap:.3rem; }
+
+    /* Messages */
+    .msg-feed { flex:1; overflow-y:auto; padding:1rem 1.25rem; display:flex; flex-direction:column; }
+    .msg-feed::-webkit-scrollbar { width:5px; }
+    .msg-feed::-webkit-scrollbar-thumb { background:var(--bd); border-radius:3px; }
+    .day-sep { display:flex; align-items:center; gap:.75rem; margin:1rem 0 .5rem; font-size:.6875rem; font-weight:700; color:var(--lt); }
+    .day-sep::before, .day-sep::after { content:''; flex:1; height:1px; background:var(--bd); }
+    .msg-grp { display:flex; gap:.75rem; padding:.2rem 0; }
+    .msg-grp.new-auth { margin-top:.75rem; }
+    .msg-av { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.6875rem; font-weight:700; color:#fff; flex-shrink:0; }
+    .msg-av-sp { width:34px; flex-shrink:0; }
+    .msg-body { flex:1; min-width:0; }
+    .msg-meta { display:flex; align-items:baseline; gap:.5rem; margin-bottom:.15rem; }
+    .msg-auth { font-size:.8125rem; font-weight:700; }
+    .msg-time { font-size:.6875rem; color:var(--lt); }
+    .msg-text { font-size:.9rem; line-height:1.55; word-break:break-word; }
+    .msg-rxns { display:flex; gap:.3rem; margin-top:.3rem; flex-wrap:wrap; }
+    .rxn { display:inline-flex; align-items:center; gap:.2rem; background:var(--bg-sub); border:1px solid var(--bd); border-radius:100px; padding:.15rem .5rem; font-size:.75rem; cursor:pointer; transition:background .1s,border-color .1s; }
+    .rxn:hover { background:var(--blue-bg); border-color:var(--blue-bd); }
+    .rxn-n { font-weight:700; font-size:.6875rem; }
+
+    /* Locked overlay */
+    .locked-overlay { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:2rem; text-align:center; gap:.75rem; }
+    .lo-icon { font-size:2.5rem; }
+    .lo-title { font-size:1rem; font-weight:700; }
+    .lo-desc { font-size:.875rem; color:var(--mut); max-width:300px; line-height:1.6; }
+
+    /* Composer */
+    .composer { padding:.875rem 1.25rem 1rem; border-top:1px solid var(--bd); flex-shrink:0; }
+    .composer-box { display:flex; align-items:flex-end; gap:.5rem; background:var(--bg-sub); border:1.5px solid var(--bd); border-radius:var(--rl); padding:.55rem .75rem; transition:border-color .1s; }
+    .composer-box:focus-within { border-color:var(--blue); background:var(--bg); }
+    .composer-inp { flex:1; border:none; background:transparent; font-size:.9rem; color:var(--txt); font-family:var(--font); resize:none; max-height:120px; min-height:22px; outline:none; line-height:1.5; }
+    .composer-inp::placeholder { color:var(--lt); }
+    .send-btn { width:30px; height:30px; border-radius:var(--r); border:none; background:var(--blue); color:#fff; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background .1s; }
+    .send-btn:hover { background:var(--blue-dk); }
+    .send-btn:disabled { background:var(--bd); cursor:default; }
+    .composer-hint { font-size:.6875rem; color:var(--lt); margin-top:.35rem; }
+
+    /* Sign-in dialog */
+    .si-inner { padding:1.75rem; }
+    .si-logo { display:flex; justify-content:center; margin-bottom:1.25rem; }
+    .si-title { font-size:1rem; font-weight:700; text-align:center; margin-bottom:.2rem; }
+    .si-sub { font-size:.875rem; color:var(--mut); text-align:center; margin-bottom:1.25rem; }
+    .btn-google { display:flex; align-items:center; gap:.75rem; width:100%; padding:.65rem 1rem; background:var(--bg); border:1.5px solid var(--bd); border-radius:var(--r); font-size:.875rem; font-weight:600; color:var(--txt); cursor:pointer; justify-content:center; transition:background .1s,box-shadow .1s; font-family:var(--font); }
+    .btn-google:hover { background:var(--bg-sub); box-shadow:0 1px 4px rgba(0,0,0,.08); }
+
+    /* Mobile: show only chat column */
+    @media(max-width:768px) {
+      body { overflow:auto; }
+      .app { grid-template-columns:1fr; height:auto; overflow:visible; }
+      .comm-list,.chan-list { display:none; }
+      .chat-area { height:calc(100vh - 56px); }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="logo" href="index.html">
+    <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+      <defs><clipPath id="k"><circle cx="21" cy="16" r="10"/></clipPath></defs>
+      <circle cx="11" cy="16" r="10" fill="#e8622c"/>
+      <circle cx="21" cy="16" r="10" fill="#111827"/>
+      <circle cx="11" cy="16" r="10" fill="#c14e20" clip-path="url(#k)"/>
+    </svg>
+    koott
+  </a>
+  <ul class="nav-links">
+    <li><a href="advisor.html">Course Advisor</a></li>
+    <li><a href="communities.html" class="active">Communities</a></li>
+    <li><a href="tools.html">Visa Tools</a></li>
+  </ul>
+  <div class="nav-right" id="navOut">
+    <button class="btn btn-s" onclick="document.getElementById('signinDlg').showModal()">Sign in</button>
+    <button class="btn btn-p" onclick="document.getElementById('signinDlg').showModal()">Join</button>
+  </div>
+  <div class="nav-right" id="navIn" style="display:none">
+    <div style="display:flex;align-items:center;gap:.45rem;padding:.3rem .65rem .3rem .3rem;border:1.5px solid var(--bd);border-radius:100px;">
+      <div class="av" id="navAv">?</div>
+      <span style="font-size:.8125rem;font-weight:600" id="navName">…</span>
+    </div>
+    <button class="btn btn-g" onclick="signOut()">Sign out</button>
+  </div>
+</nav>
+
+<div class="app">
+
+  <!-- Column 1: Communities -->
+  <div class="comm-list">
+    <div class="cl-header">
+      <div class="cl-title">Communities</div>
+      <input class="cl-search" placeholder="Search…" oninput="filterComms(this.value)">
+    </div>
+    <div class="cl-scroll" id="commScroll"></div>
+  </div>
+
+  <!-- Column 2: Channels -->
+  <div class="chan-list">
+    <div class="chan-header">
+      <div class="chan-comm-name" id="chanCommName"><span>Select a community</span></div>
+      <div class="chan-comm-sub" id="chanCommSub">Choose from the left panel</div>
+    </div>
+    <div class="chan-scroll" id="chanScroll">
+      <div style="padding:1.5rem 1rem;text-align:center;color:var(--lt);font-size:.8125rem">Select a community to see channels</div>
+    </div>
+  </div>
+
+  <!-- Column 3: Chat -->
+  <div class="chat-area">
+    <div class="chat-header" id="chatHeader">
+      <span class="ch-icon">💬</span>
+      <div>
+        <div class="ch-name" id="chName">Welcome to Koott Communities</div>
+        <div class="ch-desc" id="chDesc">Select a community and channel to start chatting</div>
+      </div>
+      <div class="ch-members" id="chMembers"></div>
+    </div>
+
+    <!-- Locked / signed-out state -->
+    <div class="locked-overlay" id="lockedState">
+      <div class="lo-icon">💬</div>
+      <div class="lo-title">Sign in to join communities</div>
+      <div class="lo-desc">Create a free account to join city, university, and stage communities. Connect with students who are on the same journey.</div>
+      <button class="btn btn-p" onclick="document.getElementById('signinDlg').showModal()">Sign in with Google →</button>
+    </div>
+
+    <div class="msg-feed" id="msgFeed" style="display:none"></div>
+
+    <div class="composer" id="composer" style="display:none">
+      <div class="composer-box">
+        <textarea class="composer-inp" id="compInp" placeholder="Message #general…" rows="1"
+          onkeydown="handleKey(event)" oninput="autoR(this)"></textarea>
+        <button class="send-btn" id="sendBtn" onclick="sendMsg()" disabled>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+      <div class="composer-hint">Enter to send · Shift+Enter for new line</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Sign-in dialog -->
+<dialog id="signinDlg">
+  <div class="si-inner">
+    <div class="si-logo">
+      <svg width="44" height="44" viewBox="0 0 32 32" fill="none">
+        <circle cx="11" cy="16" r="10" fill="#e8622c"/>
+        <circle cx="21" cy="16" r="10" fill="#111827"/>
+        <circle cx="11" cy="16" r="10" fill="#c14e20" clip-path="url(#k)"/>
+      </svg>
+    </div>
+    <div class="si-title">Sign in to Koott</div>
+    <div class="si-sub">Join communities, send messages, connect with your cohort.</div>
+    <button class="btn-google" onclick="koottAuth.signIn()">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.36-8.16 2.36-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      Sign in with Google
+    </button>
+    <p style="font-size:.75rem;color:var(--lt);text-align:center;margin-top:1rem">Free · No subscription · Built on Sabha-OS</p>
+  </div>
+</dialog>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="koott-config.js"></script>
+<script src="koott-auth.js"></script>
+<script>
+const sb = window.sb;
+let user=null, joined=new Set(), activeCom=null, activeCh=null, rtChannel=null, msgsCache=[];
+
+// ── Auth UI ──────────────────────────────────────────────────
+function applySignedIn(u){
+  const av=document.getElementById('navAv');
+  av.innerHTML = u.avatar ? `<img src="${u.avatar}" referrerpolicy="no-referrer" alt="">` : koottAuth.initials(u.name);
+  document.getElementById('navName').textContent=u.name;
+  document.getElementById('navOut').style.display='none';
+  document.getElementById('navIn').style.display='flex';
+}
+function applySignedOut(){
+  document.getElementById('navOut').style.display='flex';
+  document.getElementById('navIn').style.display='none';
+  document.getElementById('lockedState').style.display='flex';
+  document.getElementById('msgFeed').style.display='none';
+  document.getElementById('composer').style.display='none';
+  if(rtChannel){ sb.removeChannel(rtChannel); rtChannel=null; }
+}
+function signOut(){ koottAuth.signOut(); }   // used by inline onclick in the nav
+
+koottAuth.onChange(async (u)=>{
+  user=u;
+  if(u){
+    try{ document.getElementById('signinDlg').close(); }catch(e){}
+    applySignedIn(u);
+    await loadMemberships();
+    document.getElementById('lockedState').style.display='none';
+    document.getElementById('msgFeed').style.display='flex';
+    document.getElementById('composer').style.display='block';
+    if(activeCom && activeCh) loadChan(activeCom, activeCh); else selectComm(activeCom||'sydney');
+  } else {
+    joined=new Set();
+    applySignedOut();
+    buildCommList();
+  }
+});
+
+async function loadMemberships(){
+  const { data } = await sb.from('memberships').select('community_id');
+  joined = new Set((data||[]).map(r=>r.community_id));
+  buildCommList();
+}
+
+const COMMS=[
+  {id:'sydney',    cat:'city',  icon:'🏙️',name:'Sydney Students',      members:342},
+  {id:'melb',      cat:'city',  icon:'🌆',name:'Melbourne Students',    members:281},
+  {id:'brisbane',  cat:'city',  icon:'🌇',name:'Brisbane Students',     members:156},
+  {id:'perth',     cat:'city',  icon:'🌅',name:'Perth Students',        members:127},
+  {id:'adelaide',  cat:'city',  icon:'🏘️',name:'Adelaide Students',    members:89},
+  {id:'newcastle', cat:'city',  icon:'⛪',name:'Newcastle Students',    members:74},
+  {id:'wollongong',cat:'city',  icon:'🏄',name:'Wollongong Students',   members:61},
+  {id:'unsw25',    cat:'uni',   icon:'🎓',name:'UNSW 2025',             members:118},
+  {id:'unimelb25', cat:'uni',   icon:'🎓',name:'UniMelb 2025',          members:97},
+  {id:'monash25',  cat:'uni',   icon:'🎓',name:'Monash 2025',           members:84},
+  {id:'uon25',     cat:'uni',   icon:'🎓',name:'UON Newcastle 2025',    members:52},
+  {id:'uow25',     cat:'uni',   icon:'🎓',name:'UOW Wollongong 2025',   members:43},
+  {id:'deciding',  cat:'stage', icon:'💭',name:'Still Deciding',        members:203},
+  {id:'applied',   cat:'stage', icon:'📋',name:'Applied & Waiting',     members:167},
+  {id:'arriving',  cat:'stage', icon:'✈️',name:'Arriving Soon',        members:144},
+  {id:'first60',   cat:'stage', icon:'🛬',name:'First 60 Days',         members:89},
+  {id:'housing',   cat:'other', icon:'🏠',name:'Housing Board',         members:271},
+  {id:'jobs',      cat:'other', icon:'💼',name:'Part-Time Jobs',        members:189},
+];
+
+const CHANNELS={
+  default:[{id:'general',icon:'💬',name:'general',desc:'General chat'},{id:'housing',icon:'🏠',name:'housing',desc:'Accommodation'},{id:'visa',icon:'📋',name:'visa-help',desc:'Visa questions'},{id:'jobs',icon:'💼',name:'jobs',desc:'Work & 60hr'}],
+  housing:[{id:'general',icon:'💬',name:'general',desc:'General'},{id:'listings',icon:'🏠',name:'listings',desc:'Available rooms'},{id:'wanted',icon:'🔍',name:'wanted',desc:'Looking for room'}],
+  jobs:[{id:'general',icon:'💬',name:'general',desc:'General'},{id:'listings',icon:'💼',name:'job-listings',desc:'Available jobs'},{id:'compliance',icon:'⚖️',name:'60hr-compliance',desc:'Work limit help'}],
+};
+
+const AV_COLORS=['#1d4ed8','#7c3aed','#059669','#d97706','#dc2626','#0891b2','#4f46e5','#db2777','#d97706'];
+function avColor(name){let h=0;for(let i=0;i<name.length;i++)h=(h*31+name.charCodeAt(i))&0xffffff;return AV_COLORS[h%AV_COLORS.length];}
+function fmtTime(ts){const d=new Date(ts),n=new Date();const diff=Math.floor((n-d)/86400000);const t=d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});if(diff===0)return t;if(diff===1)return 'Yesterday '+t;return d.toLocaleDateString([],{month:'short',day:'numeric'})+' '+t;}
+function escHtml(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');}
+
+function buildCommList(filter=''){
+  const cats=[{label:'Cities',val:'city'},{label:'Universities',val:'uni'},{label:'By Stage',val:'stage'},{label:'Other',val:'other'}];
+  let html='';
+  cats.forEach(cat=>{
+    const items=COMMS.filter(c=>c.cat===cat.val&&(!filter||c.name.toLowerCase().includes(filter.toLowerCase())));
+    if(!items.length)return;
+    html+=`<div class="cl-section">${cat.label}</div>`;
+    html+=items.map(c=>`<div class="comm-item${activeCom===c.id?' on':''}" onclick="selectComm('${c.id}')"><span class="ci-icon">${c.icon}</span><span class="ci-name">${c.name}</span>${joined.has(c.id)?'':'<span class="ci-badge">+</span>'}</div>`).join('');
+  });
+  document.getElementById('commScroll').innerHTML=html;
+}
+
+function filterComms(v){buildCommList(v);}
+
+function selectComm(id){
+  activeCom=id;
+  const c=COMMS.find(x=>x.id===id);
+  buildCommList();
+  const chs=CHANNELS[id]||CHANNELS.default;
+  document.getElementById('chanCommName').innerHTML=`<span>${c.icon}</span> ${c.name}`;
+  document.getElementById('chanCommSub').textContent=`${c.members} members`;
+  // Build channel list
+  let html=`<div class="chan-section">Channels</div>`;
+  html+=chs.map(ch=>`<div class="chan-item${activeCh===ch.id?' on':''}" onclick="selectChan('${ch.id}')"><span class="chan-hash">#</span>${ch.name}</div>`).join('');
+  if(!joined.has(id)){
+    html+=`<div class="chan-join-btn"><button class="btn btn-p" style="width:100%;font-size:.8125rem" onclick="joinComm('${id}')">Request to join</button></div>`;
+  }
+  document.getElementById('chanScroll').innerHTML=html;
+  // Load first channel
+  if(!activeCh||!chs.find(x=>x.id===activeCh)){activeCh=chs[0].id;}
+  loadChan(id,activeCh);
+}
+
+function selectChan(chId){
+  activeCh=chId;
+  buildChans();
+  loadChan(activeCom,activeCh);
+}
+
+function buildChans(){
+  if(!activeCom)return;
+  const c=COMMS.find(x=>x.id===activeCom), chs=CHANNELS[activeCom]||CHANNELS.default;
+  let html=`<div class="chan-section">Channels</div>`;
+  html+=chs.map(ch=>`<div class="chan-item${activeCh===ch.id?' on':''}" onclick="selectChan('${ch.id}')"><span class="chan-hash">#</span>${ch.name}</div>`).join('');
+  if(!joined.has(activeCom)) html+=`<div class="chan-join-btn"><button class="btn btn-p" style="width:100%;font-size:.8125rem" onclick="joinComm('${activeCom}')">Request to join</button></div>`;
+  document.getElementById('chanScroll').innerHTML=html;
+}
+
+async function joinComm(id){
+  if(!user){document.getElementById('signinDlg').showModal();return;}
+  const { error } = await sb.from('memberships').insert({ user_id:user.id, community_id:id });
+  if(error && !/duplicate/i.test(error.message)){ alert('Could not join: '+error.message); return; }
+  joined.add(id); buildChans(); buildCommList(); updateComposerState();
+}
+
+function updateComposerState(){
+  if(!activeCom) return;
+  const member=joined.has(activeCom);
+  const inp=document.getElementById('compInp'), btn=document.getElementById('sendBtn');
+  inp.disabled=!member;
+  inp.placeholder = member ? `Message #${activeCh}…` : 'Join this community to post';
+  if(!member) btn.disabled=true;
+}
+
+async function loadChan(commId,chId){
+  if(!user){return;}
+  const c=COMMS.find(x=>x.id===commId), chs=CHANNELS[commId]||CHANNELS.default;
+  const ch=chs.find(x=>x.id===chId)||chs[0];
+  document.getElementById('chName').textContent='# '+ch.name;
+  document.getElementById('chDesc').textContent=ch.desc+' · '+c.name;
+  document.getElementById('chMembers').innerHTML=`<span>👤 ${c.members.toLocaleString()} members</span>`;
+  const feed=document.getElementById('msgFeed');
+  feed.innerHTML='<div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--lt);font-size:.875rem">Loading…</div>';
+  const key=`${commId}__${chId}`;
+  const { data, error } = await sb.from('messages').select('*').eq('channel_key',key).order('created_at',{ascending:true}).limit(200);
+  if(activeCom!==commId||activeCh!==chId) return; // user switched while loading
+  if(error){ feed.innerHTML=`<div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--red);font-size:.8125rem;padding:2rem;text-align:center">Could not load messages: ${escHtml(error.message)}</div>`; return; }
+  msgsCache = data||[];
+  renderMsgs(msgsCache);
+  subscribe(commId, chId, key);
+  updateComposerState();
+}
+
+function subscribe(commId,chId,key){
+  if(rtChannel){ sb.removeChannel(rtChannel); rtChannel=null; }
+  rtChannel = sb.channel('rt:'+key)
+    .on('postgres_changes',
+      { event:'INSERT', schema:'public', table:'messages', filter:'channel_key=eq.'+key },
+      payload=>{
+        if(`${activeCom}__${activeCh}`!==key) return;
+        if(msgsCache.some(m=>m.id===payload.new.id)) return;
+        msgsCache.push(payload.new);
+        renderMsgs(msgsCache);
+      })
+    .subscribe();
+}
+
+function renderMsgs(msgs){
+  const feed=document.getElementById('msgFeed');
+  if(!msgs.length){feed.innerHTML='<div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--lt);font-size:.875rem">No messages yet. Say something!</div>';return;}
+  let html='',prevAuth='',prevDay='';
+  msgs.forEach(m=>{
+    const ts=new Date(m.created_at).getTime();
+    const author=m.author_name, body=m.body, rxns=Array.isArray(m.reactions)?m.reactions:[];
+    const timeStr=fmtTime(ts);
+    const first=timeStr.split(' ')[0];
+    const day=first==='Today'?'Today':first==='Yesterday'?'Yesterday':new Date(ts).toLocaleDateString([],{weekday:'long',month:'short',day:'numeric'});
+    if(day!==prevDay){html+=`<div class="day-sep">${day}</div>`;prevDay=day;prevAuth='';}
+    const newA=author!==prevAuth;
+    const color=author.includes('Admin')?'#6b7280':avColor(author);
+    const init=author.replace('📣','').trim().split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    html+=`<div class="msg-grp${newA?' new-auth':''}">
+      <div>${newA?`<div class="msg-av" style="background:${color}">${init}</div>`:`<div class="msg-av-sp"></div>`}</div>
+      <div class="msg-body">
+        ${newA?`<div class="msg-meta"><span class="msg-auth">${escHtml(author)}</span><span class="msg-time">${timeStr}</span></div>`:''}
+        <div class="msg-text">${escHtml(body)}</div>
+        ${rxns.length?`<div class="msg-rxns">${rxns.map(r=>`<span class="rxn">${r.e}<span class="rxn-n">${r.n}</span></span>`).join('')}</div>`:''}
+      </div>
+    </div>`;
+    prevAuth=author;
+  });
+  feed.innerHTML=html; feed.scrollTop=feed.scrollHeight;
+}
+
+async function sendMsg(){
+  const inp=document.getElementById('compInp'), text=inp.value.trim();
+  if(!text||!user||!activeCom||!activeCh)return;
+  if(!joined.has(activeCom)){ alert('Join this community to post.'); return; }
+  const btn=document.getElementById('sendBtn'); btn.disabled=true;
+  inp.value=''; inp.style.height='';
+  const { error } = await sb.from('messages').insert({
+    community_id:activeCom, channel_id:activeCh, user_id:user.id, author_name:user.name, body:text
+  });
+  if(error){ alert('Could not send: '+error.message); inp.value=text; btn.disabled=false; }
+}
+function handleKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}document.getElementById('sendBtn').disabled=!document.getElementById('compInp').value.trim();}
+function autoR(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,120)+'px';document.getElementById('sendBtn').disabled=!el.value.trim();}
+
+// Init — build the browsable left/middle columns; chat stays locked until sign-in.
+buildCommList();
+selectComm('sydney');
+</script>
+
+</body>
+</html>

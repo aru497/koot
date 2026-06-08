@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1d4ed8">
+  <title>Visa &amp; Compliance Tools — Koott</title>
+  <link rel="stylesheet" href="koott.css">
+  <style>
+    .tools-wrap { max-width: 840px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+    .tool-section { background:var(--bg); border:1px solid var(--bd); border-radius:var(--rx); margin-bottom:1.5rem; overflow:hidden; }
+    .tool-header { padding:1.25rem 1.5rem; border-bottom:1px solid var(--bd); display:flex; align-items:center; gap:.75rem; cursor:pointer; user-select:none; }
+    .tool-header:hover { background:var(--bg-sub); }
+    .tool-icon { font-size:1.25rem; }
+    .tool-title { font-size:1rem; font-weight:700; flex:1; }
+    .tool-sub { font-size:.8125rem; color:var(--mut); }
+    .tool-toggle { color:var(--lt); font-size:1rem; transition:transform .2s; }
+    .tool-toggle.open { transform:rotate(180deg); }
+    .tool-body { padding:1.5rem; display:none; }
+    .tool-body.open { display:block; }
+
+    /* City cost */
+    .city-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:.5rem; margin-bottom:1.25rem; }
+    .cbtn { padding:.5rem .6rem; border:1.5px solid var(--bd); border-radius:var(--r); background:var(--bg); cursor:pointer; font-size:.8125rem; font-weight:600; color:var(--txt); text-align:center; line-height:1.3; transition:all .1s; font-family:var(--font); }
+    .cbtn:hover { border-color:var(--bd-hi); background:var(--bg-sub); }
+    .cbtn.on { border-color:var(--blue); background:var(--blue-bg); color:var(--blue); }
+    .ctag { display:block; font-size:.5875rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; margin-top:.1rem; }
+    .ctag.r { color:var(--grn); } .ctag.m { color:var(--blue); }
+    .cost-tbl { border:1px solid var(--bd); border-radius:var(--rl); overflow:hidden; margin-bottom:.75rem; }
+    .cr { display:flex; align-items:center; gap:.75rem; padding:.6rem 1rem; border-bottom:1px solid var(--bd); }
+    .cr:last-child { border-bottom:none; }
+    .cl { font-size:.875rem; color:var(--mut); flex:1; }
+    .cbarw { width:80px; height:4px; background:var(--bd); border-radius:2px; overflow:hidden; flex-shrink:0; }
+    .cbar { height:100%; border-radius:2px; transition:width .3s; }
+    .cv { font-size:.8125rem; font-weight:700; min-width:64px; text-align:right; font-variant-numeric:tabular-nums; }
+    .ctotal { display:flex; justify-content:space-between; align-items:center; padding:.875rem 1rem; background:var(--txt); color:#fff; border-radius:var(--rl); font-weight:700; }
+
+    /* Timeline */
+    .steps { display:flex; flex-direction:column; gap:.4rem; }
+    .step { display:flex; align-items:flex-start; gap:.75rem; padding:.7rem .875rem; border:1.5px solid var(--bd); border-radius:var(--rl); cursor:pointer; transition:all .1s; user-select:none; }
+    .step:hover { border-color:var(--bd-hi); background:var(--bg-sub); }
+    .step.dn { border-color:var(--grn-bd); background:var(--grn-bg); }
+    .schk { width:20px; height:20px; border-radius:50%; border:2px solid var(--bd-hi); display:flex; align-items:center; justify-content:center; font-size:.6rem; font-weight:700; flex-shrink:0; margin-top:.1rem; color:transparent; transition:all .1s; }
+    .step.dn .schk { background:var(--grn); border-color:var(--grn); color:#fff; }
+    .stit { font-size:.875rem; font-weight:600; }
+    .step.dn .stit { color:var(--mut); }
+    .sdesc { font-size:.8125rem; color:var(--mut); line-height:1.5; }
+    .stag { font-size:.6rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:.15rem .4rem; border-radius:100px; margin-left:.35rem; }
+    .tn { background:var(--bg-sub); color:var(--lt); } .tc { background:#fee2e2; color:#b91c1c; } .td { background:var(--grn-bg); color:var(--grn); }
+    .prow { display:flex; align-items:center; gap:.75rem; margin-bottom:1rem; }
+    .ptr { flex:1; height:5px; background:var(--bd); border-radius:100px; overflow:hidden; }
+    .ptf { height:100%; background:var(--grn); border-radius:100px; transition:width .3s; }
+    .plbl { font-size:.8125rem; color:var(--mut); font-weight:600; white-space:nowrap; }
+
+    /* 60-hr */
+    .fn { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.25rem; }
+    .wcard { border:1px solid var(--bd); border-radius:var(--rl); overflow:hidden; }
+    .whead { padding:.45rem .875rem; background:var(--bg-sub); border-bottom:1px solid var(--bd); font-size:.6875rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--mut); }
+    .drows { padding:.4rem; display:flex; flex-direction:column; gap:.2rem; }
+    .drow { display:flex; align-items:center; gap:.4rem; padding:.25rem .4rem; border-radius:5px; }
+    .drow:hover { background:var(--bg-sub); }
+    .dname { font-size:.75rem; font-weight:600; color:var(--mut); width:28px; }
+    .dinp { flex:1; padding:.3rem .4rem; border:1.5px solid var(--bd); border-radius:5px; background:#fff; font-size:.875rem; font-weight:600; text-align:center; -moz-appearance:textfield; color:var(--txt); font-family:var(--font); }
+    .dinp::-webkit-outer-spin-button,.dinp::-webkit-inner-spin-button { -webkit-appearance:none; }
+    .dinp:focus { outline:none; border-color:var(--blue); }
+    .cres { border:1px solid var(--bd); border-radius:var(--rl); padding:1.25rem; text-align:center; background:var(--bg-sub); }
+    .hbig { font-size:3.5rem; font-weight:800; letter-spacing:-.04em; line-height:1; margin-bottom:.15rem; transition:color .3s; color:var(--mut); }
+    .hof { font-size:.8125rem; color:var(--mut); margin-bottom:.75rem; }
+    .htrk { background:var(--bd); border-radius:100px; height:7px; overflow:hidden; margin-bottom:.75rem; }
+    .hfil { height:100%; border-radius:100px; transition:width .4s,background .3s; background:var(--bd-hi); }
+    .cst { font-size:.875rem; font-weight:700; margin-bottom:.15rem; }
+    .cno { font-size:.8125rem; color:var(--mut); }
+    .source-note { font-size:.7rem; color:var(--lt); margin-top:.875rem; }
+    .source-note a { color:var(--blue); text-decoration:none; }
+
+    /* Checklist */
+    .chkl { display:flex; flex-direction:column; gap:.3rem; margin-top:1.25rem; }
+    .ci { display:flex; align-items:center; gap:.65rem; padding:.55rem .75rem; border:1.5px solid var(--bd); border-radius:var(--r); cursor:pointer; font-size:.8125rem; transition:all .1s; user-select:none; }
+    .ci:hover { border-color:var(--bd-hi); background:var(--bg-sub); }
+    .ci.ck { border-color:var(--grn-bd); background:var(--grn-bg); color:var(--mut); }
+    .cbox { width:16px; height:16px; border-radius:4px; border:2px solid var(--bd-hi); display:flex; align-items:center; justify-content:center; font-size:.6rem; font-weight:700; flex-shrink:0; color:transparent; transition:all .1s; }
+    .ci.ck .cbox { background:var(--grn); border-color:var(--grn); color:#fff; }
+
+    @media(max-width:600px) { .fn { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="logo" href="index.html">
+    <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+      <defs><clipPath id="k"><circle cx="21" cy="16" r="10"/></clipPath></defs>
+      <circle cx="11" cy="16" r="10" fill="#e8622c"/>
+      <circle cx="21" cy="16" r="10" fill="#111827"/>
+      <circle cx="11" cy="16" r="10" fill="#c14e20" clip-path="url(#k)"/>
+    </svg>
+    koott
+  </a>
+  <ul class="nav-links">
+    <li><a href="advisor.html">Course Advisor</a></li>
+    <li><a href="communities.html">Communities</a></li>
+    <li><a href="tools.html" class="active">Visa Tools</a></li>
+  </ul>
+  <div class="nav-right" id="koottNav"></div>
+</nav>
+
+<div class="tools-wrap">
+  <div class="eyebrow">Compliance &amp; Planning</div>
+  <h1 class="h2" style="margin-bottom:.4rem">Visa tools for international students</h1>
+  <p class="lead" style="margin-bottom:2rem;max-width:560px">City cost calculator, application timeline tracker, and the 60-hour fortnightly work limit calculator. All data sourced from Australian government sources.</p>
+
+  <!-- ── TOOL 1: City Cost ── -->
+  <div class="tool-section">
+    <div class="tool-header" onclick="toggleTool('t1')">
+      <span class="tool-icon">🏙️</span>
+      <div><div class="tool-title">City Cost Calculator</div><div class="tool-sub">Compare real monthly living costs across 8 Australian cities</div></div>
+      <span class="tool-toggle open" id="t1-tog">▾</span>
+    </div>
+    <div class="tool-body open" id="t1-body">
+      <p style="font-size:.8125rem;color:var(--mut);margin-bottom:1rem">Select a city to see a real monthly cost breakdown. Based on <a href="https://www.abs.gov.au/statistics/economy/price-indexes-and-inflation/consumer-price-index-australia" target="_blank" style="color:var(--blue)">ABS Consumer Price Index data</a> and student accommodation averages.</p>
+      <div class="city-grid" id="cityGrid"></div>
+      <div id="rNote" style="display:none;padding:.75rem 1rem;background:var(--grn-bg);border:1px solid var(--grn-bd);border-radius:8px;font-size:.8125rem;color:#166534;margin-bottom:1rem">
+        🌿 <strong>Regional advantage:</strong> Adelaide, Newcastle &amp; Wollongong cost A$400–700/month less than Sydney — and studying here qualifies you for an extra year on the 485 Graduate Visa.
+      </div>
+      <div class="cost-tbl" id="costTbl"></div>
+      <div id="costTotal" style="display:none"></div>
+      <p class="source-note">Sources: <a href="https://www.abs.gov.au" target="_blank">ABS CPI data</a> · Student accommodation averages from university published guides · <a href="https://www.studyaustralia.gov.au/english/live/living-costs" target="_blank">Study Australia living costs</a></p>
+    </div>
+  </div>
+
+  <!-- ── TOOL 2: Application Timeline ── -->
+  <div class="tool-section">
+    <div class="tool-header" onclick="toggleTool('t2')">
+      <span class="tool-icon">📋</span>
+      <div><div class="tool-title">Application Timeline Tracker</div><div class="tool-sub">From application to Australia — track every step</div></div>
+      <span class="tool-toggle" id="t2-tog">▾</span>
+    </div>
+    <div class="tool-body" id="t2-body">
+      <p style="font-size:.8125rem;color:var(--mut);margin-bottom:1rem">Click each step to mark it done. Your progress is saved locally.</p>
+      <div class="prow"><span class="plbl" id="pLbl">0 of 8</span><div class="ptr"><div class="ptf" id="pFil" style="width:0%"></div></div><span class="plbl" id="pPct">0%</span></div>
+      <div class="steps" id="stepsEl"></div>
+      <p class="source-note" style="margin-top:.875rem">Process: <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/student-500" target="_blank">Dept. of Home Affairs — Student visa (Subclass 500)</a> · <a href="https://www.studyaustralia.gov.au" target="_blank">Study Australia</a></p>
+    </div>
+  </div>
+
+  <!-- ── TOOL 3: 60-hr Calc ── -->
+  <div class="tool-section">
+    <div class="tool-header" onclick="toggleTool('t3')">
+      <span class="tool-icon">⏱️</span>
+      <div><div class="tool-title">Fortnightly Work Calculator</div><div class="tool-sub">Track your hours against the 48-hr/fortnight student visa limit</div></div>
+      <span class="tool-toggle" id="t3-tog">▾</span>
+    </div>
+    <div class="tool-body" id="t3-body">
+      <p style="font-size:.8125rem;color:var(--mut);margin-bottom:1rem">Student visa (Subclass 500) holders may work up to <strong>48 hours per fortnight</strong> while their course is in session. This limit was permanently set at 48hrs/fortnight in July 2023 (previously 40hrs, temporarily uncapped during COVID).</p>
+      <div class="fn" id="fnEl"></div>
+      <div class="cres">
+        <div class="hbig" id="hBig">0 h</div>
+        <div class="hof">of 48 hours this fortnight</div>
+        <div class="htrk"><div class="hfil" id="hFil" style="width:0%"></div></div>
+        <div class="cst" id="cSt">No hours logged yet</div>
+        <div class="cno" id="cNo">Enter your daily hours above to check compliance.</div>
+      </div>
+      <p class="source-note">Authority: <a href="https://immi.homeaffairs.gov.au/visas/already-have-a-visa/check-visa-details-and-conditions/see-your-visa-conditions?product=500" target="_blank">Dept. of Home Affairs — Subclass 500 Condition 8105</a> · <a href="https://www.fairwork.gov.au/find-help-for/visa-holders-and-migrants/student-visa-holders" target="_blank">Fair Work Australia — Student visa holders</a></p>
+    </div>
+  </div>
+
+  <!-- ── TOOL 4: Landing Checklist ── -->
+  <div class="tool-section">
+    <div class="tool-header" onclick="toggleTool('t4')">
+      <span class="tool-icon">🛬</span>
+      <div><div class="tool-title">60-Day Landing Checklist</div><div class="tool-sub">Everything you need to do in your first two months</div></div>
+      <span class="tool-toggle" id="t4-tog">▾</span>
+    </div>
+    <div class="tool-body" id="t4-body">
+      <p style="font-size:.8125rem;color:var(--mut);margin-bottom:1rem">Click each item to mark it done. Progress saved locally.</p>
+      <div class="chkl" id="chkEl"></div>
+      <p class="source-note" style="margin-top:1rem">Sources: <a href="https://www.ato.gov.au/Individuals/Tax-file-number/Apply-for-a-TFN/" target="_blank">ATO — Tax File Number</a> · <a href="https://www.servicesaustralia.gov.au/medicare" target="_blank">Services Australia — Medicare</a> · <a href="https://www.fairwork.gov.au" target="_blank">Fair Work Australia</a></p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const S={get:(k,f)=>{try{return JSON.parse(localStorage.getItem(k))??f}catch{return f}},set:(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
+
+function toggleTool(id){
+  const body=document.getElementById(id+'-body'), tog=document.getElementById(id+'-tog');
+  const open=body.classList.contains('open');
+  body.classList.toggle('open',!open); tog.classList.toggle('open',!open);
+}
+
+// ── City Cost ──
+const CITIES=[
+  {name:'Sydney',    t:'m',rent:2250,food:530,transport:205,utilities:135,misc:255},
+  {name:'Melbourne', t:'m',rent:1950,food:495,transport:190,utilities:125,misc:225},
+  {name:'Brisbane',  t:'m',rent:1800,food:465,transport:160,utilities:112,misc:205},
+  {name:'Perth',     t:'m',rent:1700,food:450,transport:148,utilities:122,misc:195},
+  {name:'Adelaide',  t:'r',rent:1400,food:420,transport:128,utilities:102,misc:172},
+  {name:'Newcastle', t:'r',rent:1280,food:398,transport:108,utilities:96, misc:158},
+  {name:'Wollongong',t:'r',rent:1340,food:408,transport:103,utilities:96, misc:153},
+  {name:'Gold Coast',t:'m',rent:1620,food:438,transport:143,utilities:107,misc:183},
+];
+const CK=['rent','food','transport','utilities','misc'];
+const CL=['Rent (shared room)','Food & groceries','Transport card','Utilities & phone','Misc & social'];
+const CC=['#1d4ed8','#059669','#d97706','#7c3aed','#e8622c'];
+let selC='';
+document.getElementById('cityGrid').innerHTML=CITIES.map(c=>`<button class="cbtn" id="cb-${c.name}" onclick="pickCity('${c.name}')">${c.name}<span class="ctag ${c.t==='r'?'r':'m'}">${c.t==='r'?'Regional':'Metro'}</span></button>`).join('');
+function pickCity(n){
+  if(selC)document.getElementById('cb-'+selC)?.classList.remove('on');
+  selC=n;document.getElementById('cb-'+n).classList.add('on');
+  const c=CITIES.find(x=>x.name===n);
+  document.getElementById('rNote').style.display=c.t==='r'?'block':'none';
+  const tot=CK.reduce((s,k)=>s+c[k],0);
+  document.getElementById('costTbl').innerHTML=CK.map((k,i)=>`<div class="cr"><span class="cl">${CL[i]}</span><div class="cbarw"><div class="cbar" style="width:${Math.round(c[k]/2600*100)}%;background:${CC[i]}"></div></div><span class="cv">A$${c[k].toLocaleString()}</span></div>`).join('');
+  const ct=document.getElementById('costTotal'); ct.style.display='flex'; ct.className='ctotal';
+  ct.innerHTML=`<div>Monthly total<div style="font-size:.75rem;color:#9ca3af;font-weight:400">Shared room · student budget</div></div><div style="font-size:1.25rem">A$${tot.toLocaleString()}</div>`;
+}
+
+// ── Timeline ──
+const SD=[
+  {id:0,t:'Submit university application',       d:'EOI or direct application. Verify IELTS/PTE minimums and scholarship conditions.',       c:false},
+  {id:1,t:'Receive Conditional Offer Letter',    d:'Respond by deadline. Check deposit, deferral policy, and scholarship conditions.',        c:false},
+  {id:2,t:'Pass Genuine Student Test (GST)',     d:'Demonstrate clear study intent and ties to home country. A critical assessment.',         c:true},
+  {id:3,t:'Receive CoE (Confirmation of Enrolment)', d:'Electronic confirmation via PRISMS system. Required before visa application.',       c:false},
+  {id:4,t:'Purchase OSHC health cover',          d:'Overseas Student Health Cover — mandatory for full visa duration. Compare providers.',    c:false},
+  {id:5,t:'Lodge Student Visa (Subclass 500)',   d:'Apply via ImmiAccount. Attach CoE, OSHC, GST evidence, and financial capacity proof.',   c:false},
+  {id:6,t:'Receive visa grant notice',           d:'Check conditions carefully: work rights (48hrs/fn), course reporting, entry date.',       c:false},
+  {id:7,t:'Pre-departure preparations',          d:'Arrange housing, SIM card, bank account (can open remotely), and airport transfer.',     c:false},
+];
+let dS=new Set(S.get('koott_s',[]));
+function buildSteps(){
+  const n=dS.size,tot=SD.length,pct=Math.round(n/tot*100);
+  document.getElementById('pLbl').textContent=`${n} of ${tot}`; document.getElementById('pFil').style.width=pct+'%'; document.getElementById('pPct').textContent=pct+'%';
+  document.getElementById('stepsEl').innerHTML=SD.map(s=>{const d=dS.has(s.id);return`<div class="step${d?' dn':''}" onclick="togS(${s.id})"><div class="schk">${d?'✓':''}</div><div><div class="stit">${s.t}<span class="stag ${d?'td':s.c?'tc':'tn'}">${d?'Done':s.c?'Critical':'Step '+(s.id+1)}</span></div><div class="sdesc">${s.d}</div></div></div>`;}).join('');
+}
+function togS(id){dS.has(id)?dS.delete(id):dS.add(id);S.set('koott_s',[...dS]);buildSteps();}
+buildSteps();
+
+// ── 60-hr calc ── (actual limit is 48hrs/fortnight since July 2023)
+const WD=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'], HLIMIT=48;
+let dH=S.get('koott_h',Array(14).fill(0));
+document.getElementById('fnEl').innerHTML=[0,1].map(w=>`<div class="wcard"><div class="whead">Week ${w+1}</div><div class="drows">${WD.map((d,di)=>{const i=w*7+di;return`<div class="drow"><span class="dname">${d}</span><input type="number" class="dinp" min="0" max="24" value="${dH[i]||''}" placeholder="0" oninput="updH(${i},this.value)"></div>`;}).join('')}</div></div>`).join('');
+function updH(i,v){dH[i]=Math.min(24,Math.max(0,parseFloat(v)||0));S.set('koott_h',dH);recH();}
+function recH(){
+  const tot=dH.reduce((a,b)=>a+b,0),pct=Math.min(tot/HLIMIT*100,100),rem=HLIMIT-tot;
+  const hb=document.getElementById('hBig'),hf=document.getElementById('hFil');
+  hb.textContent=tot.toFixed(1)+' h'; hf.style.width=pct+'%';
+  if(tot===0){hb.style.color='var(--mut)';hf.style.background='var(--bd-hi)';document.getElementById('cSt').textContent='No hours logged yet';document.getElementById('cNo').textContent='Enter daily hours to check compliance.';}
+  else if(tot<=36){hb.style.color='var(--grn)';hf.style.background='var(--grn)';document.getElementById('cSt').textContent='✅ Well within limit';document.getElementById('cNo').textContent=`${rem.toFixed(1)} hours remaining this fortnight.`;}
+  else if(tot<=44){hb.style.color='var(--amb)';hf.style.background='var(--amb)';document.getElementById('cSt').textContent='⚠️ Approaching the limit';document.getElementById('cNo').textContent=`Only ${rem.toFixed(1)}h left — be careful before accepting more shifts.`;}
+  else if(tot<=48){hb.style.color='#b45309';hf.style.background='#f59e0b';document.getElementById('cSt').textContent='🔶 At the limit';document.getElementById('cNo').textContent=`${rem.toFixed(1)}h remaining. Do not work any more this fortnight.`;}
+  else{hb.style.color='var(--red)';hf.style.background='var(--red)';document.getElementById('cSt').textContent='🚨 Visa condition breach';document.getElementById('cNo').textContent=`You are ${(tot-HLIMIT).toFixed(1)}h over the 48-hour limit. Contact your university's international student office immediately.`;}
+}
+recH();
+
+// ── Checklist ──
+const CHL=[
+  {t:'Book airport transfer or organise cohort pickup via Koott',s:'Dept. Home Affairs arrival info'},
+  {t:'Activate Australian SIM card (Boost, Aldi Mobile, or Woolworths Mobile)',s:'Available at airport'},
+  {t:'Open Australian bank account — CommBank, NAB, or ANZ (can do remotely pre-arrival)',s:'fair work.gov.au'},
+  {t:'Apply for Tax File Number (TFN) via ATO website',s:'ato.gov.au/tfn'},
+  {t:'Confirm OSHC health cover is active from your exact arrival date',s:'immi.homeaffairs.gov.au'},
+  {t:'Register for Medicare (if eligible under your bilateral agreement)',s:'servicesaustralia.gov.au/medicare'},
+  {t:'Enroll in your university's international student orientation programme',s:'Your university portal'},
+  {t:'Get transport card at airport (Opal/Myki/Go Card depending on city)',s:'opal.com.au / ptv.vic.gov.au'},
+  {t:'Find a local GP (general practitioner) near your accommodation',s:'healthdirect.gov.au'},
+  {t:'Apply for student concession card for public transport discounts',s:'Your state transport authority'},
+  {t:'Set up superannuation account once you start paid employment',s:'ato.gov.au/super'},
+  {t:'Verify your 48-hr work limit using Koott's calculator above',s:'immi.homeaffairs.gov.au condition 8105'},
+  {t:'Join your Koott city and university community rooms',s:'koott — communities.html'},
+  {t:'Arrange automatic rent and utilities payments',s:'Your bank app'},
+];
+let cked=new Set(S.get('koott_c',[]));
+function buildChk(){document.getElementById('chkEl').innerHTML=CHL.map((item,i)=>`<div class="ci${cked.has(i)?' ck':''}" onclick="togC(${i})"><div class="cbox">${cked.has(i)?'✓':''}</div><span>${item.t}</span></div>`).join('');}
+function togC(i){cked.has(i)?cked.delete(i):cked.add(i);S.set('koott_c',[...cked]);buildChk();}
+buildChk();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="koott-config.js"></script>
+<script src="koott-auth.js"></script>
+</body>
+</html>

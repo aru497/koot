@@ -1,0 +1,38 @@
+<svg viewBox="0 0 220 64" xmlns="http://www.w3.org/2000/svg" fill="none" role="img" aria-label="Koott — Find your people">
+  <defs>
+    <clipPath id="overlap"><circle cx="40" cy="32" r="18"/></clipPath>
+    <filter id="shadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#111827" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Icon: two overlapping circles — orange (warmth/Kerala) + near-black (Australia/earth) -->
+  <circle cx="24" cy="32" r="18" fill="#e8622c" filter="url(#shadow)"/>
+  <circle cx="40" cy="32" r="18" fill="#111827" filter="url(#shadow)"/>
+  <!-- Intersection blend -->
+  <circle cx="24" cy="32" r="18" fill="#c14e20" clip-path="url(#overlap)"/>
+  <!-- Meeting point highlight -->
+  <circle cx="32" cy="32" r="3.5" fill="white" opacity="0.18"/>
+
+  <!-- Wordmark: stroke-drawn letterforms matching Sabha's clean style -->
+  <!-- k -->
+  <line x1="72" y1="16" x2="72" y2="50" stroke="#111827" stroke-width="4.5" stroke-linecap="round"/>
+  <polyline points="72,32 82,22" stroke="#111827" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline points="72,32 83,50" stroke="#111827" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- o -->
+  <circle cx="98" cy="38" r="8.5" stroke="#111827" stroke-width="4.5"/>
+  <!-- o -->
+  <circle cx="119" cy="38" r="8.5" stroke="#111827" stroke-width="4.5"/>
+  <!-- t -->
+  <line x1="133" y1="22" x2="133" y2="50" stroke="#111827" stroke-width="4.5" stroke-linecap="round"/>
+  <line x1="129" y1="31" x2="137" y2="31" stroke="#111827" stroke-width="4.5" stroke-linecap="round"/>
+  <!-- t -->
+  <line x1="148" y1="22" x2="148" y2="50" stroke="#111827" stroke-width="4.5" stroke-linecap="round"/>
+  <line x1="144" y1="31" x2="152" y2="31" stroke="#111827" stroke-width="4.5" stroke-linecap="round"/>
+
+  <!-- Tagline — matches Sabha's muted label style -->
+  <text x="72" y="60"
+    font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif"
+    font-size="8" font-weight="600" letter-spacing="0.12em"
+    fill="#9ca3af" text-anchor="start">FIND YOUR PEOPLE IN AUSTRALIA</text>
+</svg>

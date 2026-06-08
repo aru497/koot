@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1d4ed8">
+  <title>Course &amp; Career Advisor — Koott</title>
+  <link rel="stylesheet" href="koott.css">
+  <style>
+    body { background: var(--bg-sub); }
+    .advisor-shell { max-width: 680px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+    /* Progress */
+    .progress-bar { height: 3px; background: var(--bd); border-radius:100px; margin-bottom:2.5rem; overflow:hidden; }
+    .progress-fill { height:100%; background:var(--blue); border-radius:100px; transition:width .4s ease; }
+    .step-indicator { display:flex; align-items:center; gap:.5rem; margin-bottom:.5rem; font-size:.8125rem; color:var(--mut); font-weight:500; }
+    .step-dot { width:7px; height:7px; border-radius:50%; background:var(--blue); }
+
+    /* Step card */
+    .step-card { background:var(--bg); border:1px solid var(--bd); border-radius:var(--rx); padding:2rem 2rem 1.75rem; }
+    .step-title { font-size:1.375rem; font-weight:800; letter-spacing:-.025em; margin-bottom:.3rem; }
+    .step-sub { font-size:.9rem; color:var(--mut); margin-bottom:1.75rem; }
+
+    /* Form elements */
+    .field { margin-bottom:1.25rem; }
+    .field label { display:block; font-size:.875rem; font-weight:600; margin-bottom:.4rem; color:var(--txt); }
+    .field label span { color:var(--lt); font-weight:400; font-size:.8125rem; }
+    .field input, .field select, .field textarea {
+      width:100%; padding:.6rem .875rem; border:1.5px solid var(--bd);
+      border-radius:var(--r); background:var(--bg); font-size:.9rem;
+      color:var(--txt); font-family:var(--font); transition:border-color .1s;
+    }
+    .field input:focus, .field select:focus { outline:none; border-color:var(--blue); }
+    .field-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    .field-hint { font-size:.75rem; color:var(--lt); margin-top:.3rem; }
+
+    /* Option chips */
+    .chip-group { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.4rem; }
+    .chip { padding:.4rem .875rem; border:1.5px solid var(--bd); border-radius:100px; font-size:.8125rem; font-weight:600; cursor:pointer; transition:all .1s; background:var(--bg); color:var(--mut); font-family:var(--font); }
+    .chip:hover { border-color:var(--bd-hi); color:var(--txt); }
+    .chip.on { border-color:var(--blue); background:var(--blue-bg); color:var(--blue); }
+
+    /* Score input */
+    .score-wrap { display:flex; align-items:center; gap:.75rem; }
+    .score-type-btn { padding:.4rem .75rem; border:1.5px solid var(--bd); border-radius:var(--r); font-size:.8125rem; font-weight:600; cursor:pointer; background:var(--bg); color:var(--mut); font-family:var(--font); transition:all .1s; }
+    .score-type-btn.on { border-color:var(--blue); background:var(--blue-bg); color:var(--blue); }
+
+    /* Step navigation */
+    .step-nav { display:flex; align-items:center; justify-content:space-between; margin-top:1.75rem; padding-top:1.5rem; border-top:1px solid var(--bd); }
+
+    /* ── Analysing screen ── */
+    #analysing { display:none; text-align:center; padding:3rem 1.5rem; }
+    .analyse-icon { font-size:2.5rem; margin-bottom:1rem; animation:pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.1);opacity:.8} }
+    .analyse-steps { text-align:left; max-width:320px; margin:1.5rem auto 0; }
+    .analyse-step { display:flex; align-items:center; gap:.75rem; padding:.5rem 0; font-size:.875rem; color:var(--mut); }
+    .analyse-step.done { color:var(--grn); }
+    .analyse-step .ast { width:18px; height:18px; border-radius:50%; border:2px solid var(--bd); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:.6rem; }
+    .analyse-step.done .ast { background:var(--grn); border-color:var(--grn); color:#fff; }
+    .analyse-step.active .ast { border-color:var(--blue); }
+
+    /* ── Results ── */
+    #results { display:none; }
+    .result-header { background:var(--bg); border:1px solid var(--bd); border-radius:var(--rx); padding:1.75rem; margin-bottom:1.25rem; }
+    .match-bar { display:flex; align-items:center; gap:.75rem; margin:1rem 0 .5rem; }
+    .match-track { flex:1; height:8px; background:var(--bd); border-radius:100px; overflow:hidden; }
+    .match-fill { height:100%; background:var(--grn); border-radius:100px; transition:width 1s ease; }
+    .match-label { font-size:.8125rem; font-weight:700; color:var(--grn); width:36px; text-align:right; }
+
+    /* Course card */
+    .course-card { background:var(--bg); border:1px solid var(--bd); border-radius:var(--rx); padding:1.5rem; margin-bottom:.875rem; transition:border-color .1s,box-shadow .1s; }
+    .course-card:hover { border-color:var(--bd-hi); box-shadow:0 2px 8px rgba(0,0,0,.05); }
+    .course-top { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:.75rem; }
+    .course-name { font-size:1rem; font-weight:700; margin-bottom:.2rem; }
+    .course-uni { font-size:.8125rem; color:var(--mut); }
+    .course-badges { display:flex; gap:.35rem; flex-wrap:wrap; margin:.6rem 0; }
+    .course-detail-row { display:grid; grid-template-columns:repeat(3,1fr); gap:.75rem; margin-top:.875rem; padding-top:.875rem; border-top:1px solid var(--bd); }
+    .cdr-item { text-align:center; }
+    .cdr-val { font-size:.9375rem; font-weight:700; }
+    .cdr-key { font-size:.6875rem; color:var(--lt); margin-top:.1rem; }
+    .course-action { margin-top:1rem; display:flex; gap:.5rem; align-items:center; }
+
+    /* Job market */
+    .jm-card { background:var(--bg); border:1px solid var(--bd); border-radius:var(--rx); padding:1.5rem; margin-bottom:.875rem; }
+    .salary-bar-wrap { margin:.875rem 0; }
+    .salary-bar { height:10px; background:var(--bd); border-radius:100px; overflow:hidden; position:relative; }
+    .salary-fill { height:100%; background:linear-gradient(90deg,var(--blue-bg) 0%,var(--blue) 100%); border-radius:100px; }
+    .salary-labels { display:flex; justify-content:space-between; font-size:.75rem; color:var(--mut); margin-top:.3rem; }
+    .demand-bar { display:flex; align-items:center; gap:.75rem; margin:.5rem 0; }
+    .demand-label { font-size:.8125rem; color:var(--mut); width:100px; flex-shrink:0; }
+    .demand-track { flex:1; height:6px; background:var(--bd); border-radius:100px; overflow:hidden; }
+    .demand-fill { height:100%; border-radius:100px; }
+
+    /* Job roles chips */
+    .job-chips { display:flex; gap:.4rem; flex-wrap:wrap; margin-top:.75rem; }
+    .job-chip { padding:.35rem .75rem; background:var(--bg-sub); border:1px solid var(--bd); border-radius:100px; font-size:.8125rem; font-weight:500; }
+
+    /* Visa outcome */
+    .visa-card { background:var(--blue-bg); border:1px solid var(--blue-bd); border-radius:var(--rx); padding:1.5rem; margin-bottom:.875rem; }
+
+    /* Source note */
+    .source-note { font-size:.6875rem; color:var(--lt); margin-top:.5rem; }
+    .source-note a { color:var(--blue); text-decoration:none; }
+
+    /* CTA to community */
+    .community-cta { background:var(--grn-bg); border:1px solid var(--grn-bd); border-radius:var(--rx); padding:1.5rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+    .wa-btn { display:inline-flex; align-items:center; gap:.35rem; background:var(--grn); color:#fff; padding:.6rem 1.1rem; border-radius:var(--r); font-weight:700; font-size:.875rem; text-decoration:none; flex-shrink:0; transition:background .1s; }
+    .wa-btn:hover { background:#15803d; }
+
+    /* Result section labels */
+    .rs-label { font-size:.6875rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--lt); margin:.2rem 0 .875rem; }
+
+    @media(max-width:640px) { .field-row { grid-template-columns:1fr; } .course-detail-row { grid-template-columns:1fr 1fr; } }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="logo" href="index.html">
+    <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+      <defs><clipPath id="k"><circle cx="21" cy="16" r="10"/></clipPath></defs>
+      <circle cx="11" cy="16" r="10" fill="#e8622c"/>
+      <circle cx="21" cy="16" r="10" fill="#111827"/>
+      <circle cx="11" cy="16" r="10" fill="#c14e20" clip-path="url(#k)"/>
+    </svg>
+    koott
+  </a>
+  <ul class="nav-links">
+    <li><a href="advisor.html" class="active">Course Advisor</a></li>
+    <li><a href="communities.html">Communities</a></li>
+    <li><a href="tools.html">Visa Tools</a></li>
+  </ul>
+  <div class="nav-right" id="koottNav"></div>
+</nav>
+
+<div class="advisor-shell">
+
+  <!-- ══ STEPS 1 & 2 ══ -->
+  <div id="wizard">
+    <div class="step-indicator"><span class="step-dot"></span><span id="stepLabel">Step 1 of 2</span></div>
+    <div class="progress-bar"><div class="progress-fill" id="progFill" style="width:50%"></div></div>
+
+    <!-- STEP 1: Profile -->
+    <div id="step1" class="step-card">
+      <div class="step-title">Tell us about yourself</div>
+      <div class="step-sub">We use this to match your profile to Australia's course and visa requirements.</div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Your name <span>(optional)</span></label>
+          <input type="text" id="f_name" placeholder="e.g. Arun">
+        </div>
+        <div class="field">
+          <label>Highest qualification</label>
+          <select id="f_qual">
+            <option value="highschool">High School / 12th Grade</option>
+            <option value="diploma">Diploma / Associate Degree</option>
+            <option value="bachelor" selected>Bachelor's Degree</option>
+            <option value="postgrad">Postgraduate (PG Diploma / Master's)</option>
+            <option value="phd">PhD / Doctorate</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Field of study / background</label>
+        <input type="text" id="f_field" placeholder="e.g. Computer Science, Nursing, Civil Engineering, Commerce…" autocomplete="off" oninput="fieldSuggest(this.value)">
+        <div id="fieldSuggs" style="display:none;border:1px solid var(--bd);border-top:none;border-radius:0 0 var(--r) var(--r);background:var(--bg);position:relative;z-index:10;"></div>
+        <div class="field-hint">Be specific — this is used to match against the Skills Priority List</div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Academic score</label>
+          <div class="score-wrap">
+            <button class="score-type-btn on" id="pctBtn" onclick="setScoreType('pct',this)">%</button>
+            <button class="score-type-btn" id="cgpaBtn" onclick="setScoreType('cgpa',this)">CGPA</button>
+            <input type="number" id="f_score" min="0" max="100" placeholder="e.g. 75" style="flex:1">
+          </div>
+          <div class="field-hint" id="scoreHint">Enter your percentage (0–100)</div>
+        </div>
+        <div class="field">
+          <label>English test score</label>
+          <select id="f_english">
+            <option value="no">Not taken yet</option>
+            <option value="ielts5">IELTS 5.0–5.5</option>
+            <option value="ielts6" selected>IELTS 6.0–6.5</option>
+            <option value="ielts7">IELTS 7.0+</option>
+            <option value="pte58">PTE 50–58</option>
+            <option value="pte65">PTE 65+</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Work experience</label>
+          <select id="f_exp">
+            <option value="0">No experience</option>
+            <option value="1">Less than 1 year</option>
+            <option value="2" selected>1–3 years</option>
+            <option value="5">3–5 years</option>
+            <option value="6">5+ years</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Study level you're targeting</label>
+          <select id="f_targetQual">
+            <option value="bachelor">Bachelor's degree (3 yrs)</option>
+            <option value="bachelor-hons">Bachelor with Honours (4 yrs)</option>
+            <option value="gradcert">Graduate Certificate (6 mo)</option>
+            <option value="graddip">Graduate Diploma (1 yr)</option>
+            <option value="master" selected>Master's degree (2 yrs)</option>
+            <option value="mphil">MPhil / Research Master's</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <span></span>
+        <button class="btn btn-p" onclick="goStep2()">Continue →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Interests & Preferences -->
+    <div id="step2" class="step-card" style="display:none">
+      <div class="step-title">What are you looking for?</div>
+      <div class="step-sub">Your preferences help us find the best course, university, and visa outcome for you.</div>
+
+      <div class="field">
+        <label>Area of interest <span>(select up to 2)</span></label>
+        <div class="chip-group" id="interestChips">
+          <button class="chip" data-val="IT" onclick="toggleChip(this)">💻 IT &amp; Technology</button>
+          <button class="chip" data-val="Healthcare" onclick="toggleChip(this)">🏥 Healthcare</button>
+          <button class="chip" data-val="Engineering" onclick="toggleChip(this)">⚙️ Engineering</button>
+          <button class="chip" data-val="Business" onclick="toggleChip(this)">📊 Business &amp; Commerce</button>
+          <button class="chip" data-val="Education" onclick="toggleChip(this)">📚 Education &amp; Teaching</button>
+          <button class="chip" data-val="SocialWork" onclick="toggleChip(this)">🤝 Social Work &amp; Community</button>
+          <button class="chip" data-val="Creative" onclick="toggleChip(this)">🎨 Creative &amp; Design</button>
+          <button class="chip" data-val="Science" onclick="toggleChip(this)">🔬 Science &amp; Research</button>
+          <button class="chip" data-val="Agriculture" onclick="toggleChip(this)">🌿 Agriculture &amp; Environment</button>
+          <button class="chip" data-val="Hospitality" onclick="toggleChip(this)">🍽️ Hospitality &amp; Tourism</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Location preference</label>
+        <div class="chip-group" id="locationChips">
+          <button class="chip on" data-val="flexible" onclick="toggleSingle(this,'locationChips')">🗺️ Flexible (best option)</button>
+          <button class="chip" data-val="regional" onclick="toggleSingle(this,'locationChips')">🌿 Regional (visa benefit)</button>
+          <button class="chip" data-val="sydney" onclick="toggleSingle(this,'locationChips')">🏙️ Sydney</button>
+          <button class="chip" data-val="melbourne" onclick="toggleSingle(this,'locationChips')">🌆 Melbourne</button>
+          <button class="chip" data-val="brisbane" onclick="toggleSingle(this,'locationChips')">🌇 Brisbane</button>
+          <button class="chip" data-val="adelaide" onclick="toggleSingle(this,'locationChips')">🏘️ Adelaide</button>
+          <button class="chip" data-val="perth" onclick="toggleSingle(this,'locationChips')">🌅 Perth</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>What matters most to you? <span>(pick one)</span></label>
+        <div class="chip-group" id="priorityChips">
+          <button class="chip on" data-val="career" onclick="toggleSingle(this,'priorityChips')">💼 Career &amp; salary</button>
+          <button class="chip" data-val="visa" onclick="toggleSingle(this,'priorityChips')">🛂 Visa &amp; PR pathway</button>
+          <button class="chip" data-val="affordable" onclick="toggleSingle(this,'priorityChips')">💰 Affordability</button>
+          <button class="chip" data-val="prestige" onclick="toggleSingle(this,'priorityChips')">🏆 University ranking</button>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Annual tuition budget</label>
+          <select id="f_budget">
+            <option value="25">Under A$25,000/yr</option>
+            <option value="35" selected>A$25,000–35,000/yr</option>
+            <option value="45">A$35,000–45,000/yr</option>
+            <option value="99">Over A$45,000/yr</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>How soon are you planning to apply?</label>
+          <select id="f_timing">
+            <option value="now">As soon as possible</option>
+            <option value="6mo">Within 6 months</option>
+            <option value="1yr" selected>Within 1 year</option>
+            <option value="2yr">1–2 years</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="step-nav">
+        <button class="btn btn-s" onclick="goStep1()">← Back</button>
+        <button class="btn btn-p" onclick="startAnalysis()">Analyse my profile →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ANALYSING ══ -->
+  <div id="analysing">
+    <div class="step-card" style="text-align:center;padding:2.5rem 2rem">
+      <div class="analyse-icon">🔍</div>
+      <h2 class="h3">Analysing your profile…</h2>
+      <p style="font-size:.875rem;color:var(--mut);margin:.5rem 0 0">Using live data from Australian government sources</p>
+      <div class="analyse-steps">
+        <div class="analyse-step" id="as1"><div class="ast">1</div>Checking Skills Priority List 2024</div>
+        <div class="analyse-step" id="as2"><div class="ast">2</div>Matching to CRICOS registered courses</div>
+        <div class="analyse-step" id="as3"><div class="ast">3</div>Scanning regional campus availability</div>
+        <div class="analyse-step" id="as4"><div class="ast">4</div>Pulling job market data (LMIP 2024)</div>
+        <div class="analyse-step" id="as5"><div class="ast">5</div>Calculating visa outcomes</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ RESULTS ══ -->
+  <div id="results">
+
+    <!-- Back + header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
+      <button class="btn btn-g" onclick="resetAdvisor()" style="padding:.35rem .75rem;font-size:.8125rem">← Start over</button>
+      <span style="font-size:.8125rem;color:var(--lt)">Based on your profile · <a href="#" style="color:var(--blue)">Share results</a></span>
+    </div>
+
+    <!-- Match summary -->
+    <div class="result-header">
+      <div class="eyebrow">Your Career Match</div>
+      <h2 class="h3" id="r_matchTitle">Match analysis</h2>
+      <div id="r_shortageAlert" style="margin:.875rem 0;padding:.75rem 1rem;border-radius:var(--r);font-size:.875rem;"></div>
+      <div class="match-bar">
+        <span style="font-size:.8125rem;color:var(--mut);width:110px">Shortage Match</span>
+        <div class="match-track"><div class="match-fill" id="r_matchFill" style="width:0%"></div></div>
+        <span class="match-label" id="r_matchPct">0%</span>
+      </div>
+      <div class="match-bar">
+        <span style="font-size:.8125rem;color:var(--mut);width:110px">Job Demand</span>
+        <div class="match-track"><div class="match-fill" id="r_demandFill" style="width:0%;background:var(--blue)"></div></div>
+        <span class="match-label" id="r_demandPct" style="color:var(--blue)">0%</span>
+      </div>
+      <p class="source-note">Source: <a href="https://www.jobsandskills.gov.au/data/skills-priority-list" target="_blank">Jobs and Skills Australia — Skills Priority List 2024</a></p>
+    </div>
+
+    <!-- Courses -->
+    <div class="rs-label">Recommended Courses</div>
+    <div id="r_courses"></div>
+
+    <!-- Job market -->
+    <div class="rs-label" style="margin-top:1.5rem">Job Market in Australia</div>
+    <div id="r_jobMarket"></div>
+
+    <!-- Visa outcome -->
+    <div class="rs-label" style="margin-top:1.5rem">Visa &amp; Stay Outcome</div>
+    <div id="r_visa"></div>
+
+    <!-- Community CTA -->
+    <div class="community-cta" style="margin-top:1.5rem" id="r_commCTA">
+      <div>
+        <strong style="display:block;font-size:.9rem;color:#15803d;margin-bottom:.15rem" id="r_ctaTitle">💬 Join your community</strong>
+        <span style="font-size:.8125rem;color:#166534" id="r_ctaText">Connect with students already in this city and course.</span>
+      </div>
+      <a href="communities.html" class="wa-btn">Find my community →</a>
+    </div>
+
+    <p class="source-note" style="margin-top:1.25rem;text-align:center">
+      Data sources: <a href="https://www.jobsandskills.gov.au/data/skills-priority-list" target="_blank">Skills Priority List 2024</a> ·
+      <a href="https://lmip.gov.au" target="_blank">LMIP Labour Market</a> ·
+      <a href="https://cricos.education.gov.au" target="_blank">CRICOS</a> ·
+      <a href="https://www.abs.gov.au" target="_blank">ABS Statistics</a> ·
+      <a href="https://immi.homeaffairs.gov.au" target="_blank">Department of Home Affairs</a>
+    </p>
+  </div>
+
+</div><!-- /advisor-shell -->
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+// GOVERNMENT DATA — sourced from Australian government publications
+// ══════════════════════════════════════════════════════════════════
+
+/*
+ * SKILLS PRIORITY LIST 2023-24
+ * Source: Jobs and Skills Australia
+ * https://www.jobsandskills.gov.au/data/skills-priority-list
+ * Shortage status: 'national' | 'regional' | 'difficulty' | 'none'
+ *
+ * SALARY DATA: ABS Employee Earnings 2024 + Job Outlook / LMIP
+ * EMPLOYMENT RATES: Graduate Outcomes Survey (QILT) 2024
+ * COURSE DATA: CRICOS / university published data
+ * VISA INFO: Department of Home Affairs subclass 485 / 189 / 190
+ */
+const OCCUPATIONS = [
+  // ─── IT & Technology ───
+  { id:'sw-eng', cat:'IT',
+    title:'Software Engineer / Developer',
+    anzsco:'261313',
+    shortage:'national',
+    keywords:['software','programming','coding','computer science','IT','information technology','development','web','mobile','app','computing','systems'],
+    aqfReq:[7,8,9],
+    salary:{min:85000,max:135000,med:107000},
+    employment:89, growth:18, outlook:'Very Strong',
+    source:'SPL 2024 — Shortage nationally. 18% projected growth (LMIP 2024)',
+    jobs:['Software Engineer','Backend Developer','Full Stack Developer','Frontend Developer','Mobile App Developer','DevOps Engineer','Cloud Engineer','Platform Engineer'],
+    courses:['Bachelor of Computer Science','Bachelor of Software Engineering','Master of Information Technology','Master of Applied Computing','Master of Data Science'],
+    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','190 State Nominated'],
+  },
+  { id:'data-sci', cat:'IT',
+    title:'Data Scientist / Analyst',
+    anzsco:'262113',
+    shortage:'national',
+    keywords:['data','analytics','machine learning','AI','artificial intelligence','statistics','data science','business intelligence','BI','ML','deep learning'],
+    aqfReq:[7,8,9],
+    salary:{min:88000,max:145000,med:115000},
+    employment:91, growth:22, outlook:'Very Strong',
+    source:'SPL 2024 — Data Scientists in national shortage. AI/ML roles growing 22% (LMIP 2024)',
+    jobs:['Data Scientist','Data Analyst','ML Engineer','AI Engineer','Business Intelligence Analyst','Data Engineer','Research Scientist'],
+    courses:['Bachelor of Data Science','Master of Data Science','Master of Artificial Intelligence','Master of Business Analytics','Master of Information Systems'],
+    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','186 Employer Sponsored'],
+  },
+  { id:'cyber', cat:'IT',
+    title:'Cybersecurity Specialist',
+    anzsco:'262112',
+    shortage:'national',
+    keywords:['cybersecurity','security','cyber','information security','network security','ethical hacking','penetration testing','CISSP','infosec'],
+    aqfReq:[7,8,9],
+    salary:{min:90000,max:148000,med:118000},
+    employment:92, growth:25, outlook:'Exceptional',
+    source:'SPL 2024 — Critical national shortage. Australia short 30,000 cybersecurity workers (AustCyber 2024)',
+    jobs:['Cybersecurity Analyst','Security Engineer','Penetration Tester','SOC Analyst','Cloud Security Engineer','Information Security Manager','Incident Responder'],
+    courses:['Master of Cybersecurity','Graduate Certificate in Cybersecurity','Master of Information Technology (Security)','Bachelor of Cybersecurity'],
+    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','186 Employer Sponsored'],
+  },
+  { id:'ict-ba', cat:'IT',
+    title:'ICT Business Analyst',
+    anzsco:'261111',
+    shortage:'national',
+    keywords:['business analyst','ICT','systems analyst','requirements','agile','scrum','project management','BA'],
+    aqfReq:[7,8,9],
+    salary:{min:85000,max:125000,med:103000},
+    employment:86, growth:12, outlook:'Strong',
+    source:'SPL 2024 — ICT Business Analysts in national shortage',
+    jobs:['ICT Business Analyst','Systems Analyst','Product Manager','Scrum Master','Business Systems Analyst','Requirements Analyst'],
+    courses:['Master of Information Technology','Master of Business Information Systems','MBA (IT)','Graduate Diploma in IT Management'],
+    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent'],
+  },
+  // ─── Healthcare ───
+  { id:'nursing', cat:'Healthcare',
+    title:'Registered Nurse',
+    anzsco:'254499',
+    shortage:'national',
+    keywords:['nursing','nurse','healthcare','hospital','clinical','medical','RN','midwife','aged care','mental health'],
+    aqfReq:[7,8,9],
+    salary:{min:62000,max:98000,med:76000},
+    employment:94, growth:16, outlook:'Very Strong',
+    source:'SPL 2024 — Registered Nurses in critical national shortage. 40,000 vacancy gap projected by 2025 (Health Workforce Australia)',
+    jobs:['Registered Nurse','Clinical Nurse Specialist','Nurse Practitioner','ICU Nurse','Emergency Nurse','Mental Health Nurse','Aged Care Nurse'],
+    courses:['Bachelor of Nursing','Master of Nursing (Graduate Entry)','Graduate Certificate in Nursing','Master of Midwifery'],
+    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','190 State Nominated','Employer Sponsored 482'],
+  },
+  { id:'physio', cat:'Healthcare',
+    title:'Physiotherapist',
+    anzsco:'252511',
+    shortage:'national',
+    keywords:['physiotherapy','physio','rehabilitation','sports medicine','occupational therapy','physical therapy','musculoskeletal'],
+    aqfReq:[7,8,9],
+    salary:{min:65000,max:98000,med:80000},
+    employment:93, growth:14, outlook:'Strong',
+    source:'SPL 2024 — Physiotherapists in national shortage, particularly in regional and rural areas',
+    jobs:['Physiotherapist','Sports Physiotherapist','Neurological Physiotherapist','Paediatric Physiotherapist','Musculoskeletal Physio'],
+    courses:['Bachelor of Physiotherapy','Master of Physiotherapy','Doctor of Physiotherapy'],
+    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','190 State Nominated'],
+  },
+  { id:'social-work', cat:'SocialWork',
+    title:'Social Worker',
+    anzsco:'272511',
+    shortage:'national',
+    keywords:['social work','community services','welfare','counselling','youth work','family services','disability support','NDIS','mental health support'],
+    aqfReq:[7,8,9],
+    salary:{min:60000,max:88000,med:73000},
+    employment:91, growth:13, outlook:'Strong',
+    source:'SPL 2024 — Social Workers in national shortage, high demand in regional areas and NDIS services',
+    jobs:['Social Worker','Case Manager','Community Development Officer','Child Protection Officer','NDIS Coordinator','Family Support Worker'],
+    courses:['Bachelor of Social Work','Master of Social Work (Qualifying)','Master of Social Work'],
+    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','190 State Nominated'],
+  },
+  { id:'occ-therapy', cat:'Healthcare',
+    title:'Occupational Therapist',
+    anzsco:'252411',
+    shortage:'national',
+    keywords:['occupational therapy','OT','rehabilitation','disability','NDIS','aged care','mental health OT'],
+    aqfReq:[7,8,9],
+    salary:{min:64000,max:96000,med:78000},
+    employment:92, growth:14, outlook:'Strong',
+    source:'SPL 2024 — Occupational Therapists in national shortage, NDIS expansion driving demand',
+    jobs:['Occupational Therapist','NDIS Occupational Therapist','Paediatric OT','Aged Care OT','Mental Health OT'],
+    courses:['Bachelor of Occupational Therapy','Master of Occupational Therapy'],
+    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','190 State Nominated'],
+  },
+  // ─── Engineering ───
+  { id:'civil-eng', cat:'Engineering',
+    title:'Civil Engineer',
+    anzsco:'233211',
+    shortage:'national',
+    keywords:['civil engineering','structural','infrastructure','construction','transport','roads','bridges','water','geotechnical','environmental'],
+    aqfReq:[7,8,9],
+    salary:{min:76000,max:125000,med:97000},
+    employment:88, growth:14, outlook:'Strong',
+    source:'SPL 2024 — Civil Engineers in national shortage. Infrastructure pipeline projects (NAIF, BBRF) driving demand',
+    jobs:['Civil Engineer','Structural Engineer','Transport Engineer','Geotechnical Engineer','Water Engineer','Project Engineer','Site Engineer'],
+    courses:['Bachelor of Civil Engineering','Master of Engineering (Civil)','Master of Structural Engineering','Master of Infrastructure Engineering'],
+    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','190 State Nominated','186 Employer Sponsored'],
+  },
+  { id:'elec-eng', cat:'Engineering',
+    title:'Electrical Engineer',
+    anzsco:'233311',
+    shortage:'national',
+    keywords:['electrical engineering','electronics','power systems','renewable energy','solar','grid','EV','control systems','automation'],
+    aqfReq:[7,8,9],
+    salary:{min:80000,max:130000,med:102000},
+    employment:87, growth:17, outlook:'Very Strong',
+    source:'SPL 2024 — Electrical Engineers in national shortage. Renewable energy transition driving record demand',
+    jobs:['Electrical Engineer','Power Systems Engineer','Renewable Energy Engineer','Control Systems Engineer','Automation Engineer','Electrical Project Manager'],
+    courses:['Bachelor of Electrical Engineering','Master of Electrical Engineering','Master of Renewable Energy'],
+    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','190 State Nominated'],
+  },
+  // ─── Education ───
+  { id:'teacher-sec', cat:'Education',
+    title:'Secondary School Teacher',
+    anzsco:'241411',
+    shortage:'national',
+    keywords:['teaching','education','secondary','high school','STEM teacher','maths teacher','science teacher','English teacher'],
+    aqfReq:[7,8,9],
+    salary:{min:68000,max:98000,med:82000},
+    employment:96, growth:10, outlook:'Stable-Strong',
+    source:'SPL 2024 — Secondary Teachers (especially STEM) in national shortage. Teacher shortage acute in regional areas',
+    jobs:['Secondary Teacher','STEM Teacher','Maths Teacher','Science Teacher','ESL Teacher','Special Needs Teacher','Head of Department'],
+    courses:['Master of Teaching (Secondary)','Bachelor of Education (Secondary)','Graduate Diploma of Education','Master of Education'],
+    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','190 State Nominated'],
+  },
+  { id:'teacher-early', cat:'Education',
+    title:'Early Childhood Teacher / Educator',
+    anzsco:'241111',
+    shortage:'national',
+    keywords:['early childhood','kindergarten','childcare','preschool','ECE','ECEC','early education','child development'],
+    aqfReq:[7,8,9],
+    salary:{min:55000,max:82000,med:67000},
+    employment:95, growth:15, outlook:'Strong',
+    source:'SPL 2024 — Early Childhood Teachers in national shortage. Childcare Subsidy expansion creating 30,000+ new positions',
+    jobs:['Early Childhood Teacher','Centre Director','Room Leader','Educational Leader','Family Day Care Educator'],
+    courses:['Bachelor of Early Childhood Education','Master of Teaching (Early Childhood)','Diploma of Early Childhood Education and Care'],
+    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent','190 State Nominated'],
+  },
+  // ─── Business & Commerce ───
+  { id:'accounting', cat:'Business',
+    title:'Accountant / Management Accountant',
+    anzsco:'221112',
+    shortage:'difficulty',
+    keywords:['accounting','finance','CPA','CA','ACCA','audit','tax','management accounting','financial analysis','bookkeeping','commerce','financial reporting'],
+    aqfReq:[7,8,9],
+    salary:{min:65000,max:115000,med:87000},
+    employment:84, growth:6, outlook:'Moderate',
+    source:'SPL 2024 — Recruitment Difficulty nationally. Strong demand for CPAs. Note: oversupply of junior roles.',
+    jobs:['Management Accountant','Financial Analyst','Tax Accountant','Audit Manager','CFO','Finance Business Partner','Forensic Accountant'],
+    courses:['Master of Professional Accounting','Master of Commerce (Accounting)','Bachelor of Accounting','Graduate Diploma of Accounting'],
+    visaPathways:['485 Graduate (2–4 yrs)','189 Skilled Independent (CPA/CA required)','190 State Nominated'],
+  },
+  // ─── Creative & Design ───
+  { id:'ux-design', cat:'Creative',
+    title:'UX / Product Designer',
+    anzsco:'232411',
+    shortage:'difficulty',
+    keywords:['design','UX','UI','user experience','graphic design','product design','visual design','interaction design','HCI','Figma'],
+    aqfReq:[7,8,9],
+    salary:{min:72000,max:120000,med:93000},
+    employment:82, growth:11, outlook:'Moderate-Strong',
+    source:'SPL 2024 — Recruitment Difficulty. Strong demand in tech sector. Senior UX roles highly sought.',
+    jobs:['UX Designer','UI Designer','Product Designer','Visual Designer','Service Designer','Design Lead','Research Designer'],
+    courses:['Bachelor of Design (Digital)','Master of Interaction Design','Master of Design','Graduate Certificate in UX Design'],
+    visaPathways:['485 Graduate (2–4 yrs)','190 State Nominated'],
+  },
+  // ─── Agriculture ───
+  { id:'agri-sci', cat:'Agriculture',
+    title:'Agricultural Scientist / Agronomist',
+    anzsco:'234111',
+    shortage:'regional',
+    keywords:['agriculture','agronomy','farming','crops','livestock','food science','soil science','environmental management','horticulture','viticulture'],
+    aqfReq:[7,8,9],
+    salary:{min:60000,max:95000,med:74000},
+    employment:86, growth:9, outlook:'Stable in regional areas',
+    source:'SPL 2024 — Regional Shortage. Strong demand in rural NSW, VIC, QLD. Ideal for regional study + visa.',
+    jobs:['Agronomist','Agricultural Scientist','Farm Manager','Extension Officer','Agricultural Adviser','Soil Scientist','Horticulturalist'],
+    courses:['Bachelor of Agricultural Science','Master of Agribusiness','Bachelor of Science (Agriculture)'],
+    visaPathways:['485 Graduate (2–4 yrs — extended for regional)','190 Regional State Nominated','191 Permanent Residence'],
+  },
+  // ─── Hospitality ───
+  { id:'hospitality', cat:'Hospitality',
+    title:'Hospitality Manager / Chef',
+    anzsco:'141311',
+    shortage:'national',
+    keywords:['hospitality','hotel management','tourism','chefs','cooking','culinary','food','beverage','events','restaurant','accommodation'],
+    aqfReq:[5,6,7,8],
+    salary:{min:52000,max:85000,med:65000},
+    employment:80, growth:9, outlook:'Stable',
+    source:'SPL 2024 — Chefs in national shortage. Post-COVID hospitality recovery driving demand across Australia.',
+    jobs:['Hotel Manager','Restaurant Manager','Executive Chef','Sous Chef','Events Manager','Food & Beverage Manager','Tourism Manager'],
+    courses:['Bachelor of Hospitality Management','Diploma of Hospitality Management','Bachelor of Tourism Management'],
+    visaPathways:['485 Graduate (2 yrs)','190 State Nominated (limited)','482 Employer Sponsored'],
+  },
+];
+
+// Regional universities (CRICOS registered)
+// Source: CRICOS https://cricos.education.gov.au
+// Regional classification for 485 visa purposes (outside: Sydney, Melbourne, Brisbane, Perth)
+const UNIVERSITIES = [
+  {name:'University of Newcastle (UON)',        city:'Newcastle',   state:'NSW', regional:true,  ielts:6.0, qsRange:'301-350', fees:{u:38500,p:41000}, cricos:'00109J', url:'newcastle.edu.au'},
+  {name:'University of Wollongong (UOW)',        city:'Wollongong',  state:'NSW', regional:true,  ielts:6.0, qsRange:'201-250', fees:{u:37000,p:40000}, cricos:'00102E', url:'uow.edu.au'},
+  {name:'University of South Australia (UniSA)', city:'Adelaide',    state:'SA',  regional:true,  ielts:6.0, qsRange:'401-450', fees:{u:36000,p:38500}, cricos:'00121B', url:'unisa.edu.au'},
+  {name:'Flinders University',                   city:'Adelaide',    state:'SA',  regional:true,  ielts:6.0, qsRange:'401-500', fees:{u:35000,p:37500}, cricos:'00114A', url:'flinders.edu.au'},
+  {name:'University of Tasmania (UTAS)',         city:'Hobart',      state:'TAS', regional:true,  ielts:6.0, qsRange:'401-500', fees:{u:34000,p:36000}, cricos:'00586B', url:'utas.edu.au'},
+  {name:'James Cook University (JCU)',           city:'Townsville',  state:'QLD', regional:true,  ielts:6.0, qsRange:'501-550', fees:{u:34500,p:37000}, cricos:'00117J', url:'jcu.edu.au'},
+  {name:'Charles Darwin University (CDU)',       city:'Darwin',      state:'NT',  regional:true,  ielts:6.0, qsRange:'601+',   fees:{u:32000,p:34500}, cricos:'00300K', url:'cdu.edu.au'},
+  {name:'CQ University Australia',               city:'Rockhampton', state:'QLD', regional:true,  ielts:6.0, qsRange:'601+',   fees:{u:31000,p:33000}, cricos:'00219C', url:'cqu.edu.au'},
+  {name:'University of New England (UNE)',       city:'Armidale',    state:'NSW', regional:true,  ielts:6.0, qsRange:'601+',   fees:{u:32500,p:34000}, cricos:'00003G', url:'une.edu.au'},
+  {name:'UNSW Sydney',                           city:'Sydney',      state:'NSW', regional:false, ielts:6.5, qsRange:'19',     fees:{u:53000,p:54500}, cricos:'00098G', url:'unsw.edu.au'},
+  {name:'University of Sydney',                  city:'Sydney',      state:'NSW', regional:false, ielts:6.5, qsRange:'18',     fees:{u:52000,p:54000}, cricos:'00026A', url:'sydney.edu.au'},
+  {name:'University of Melbourne',               city:'Melbourne',   state:'VIC', regional:false, ielts:6.5, qsRange:'14',     fees:{u:52000,p:53500}, cricos:'00116K', url:'unimelb.edu.au'},
+  {name:'Monash University',                     city:'Melbourne',   state:'VIC', regional:false, ielts:6.0, qsRange:'37',     fees:{u:49000,p:51000}, cricos:'00008C', url:'monash.edu'},
+  {name:'RMIT University',                       city:'Melbourne',   state:'VIC', regional:false, ielts:6.0, qsRange:'201-250',fees:{u:41000,p:43000}, cricos:'00122A', url:'rmit.edu.au'},
+  {name:'UTS Sydney',                            city:'Sydney',      state:'NSW', regional:false, ielts:6.0, qsRange:'133',    fees:{u:46000,p:48000}, cricos:'00099F', url:'uts.edu.au'},
+  {name:'University of Queensland (UQ)',         city:'Brisbane',    state:'QLD', regional:false, ielts:6.5, qsRange:'40',     fees:{u:50000,p:52000}, cricos:'00025B', url:'uq.edu.au'},
+  {name:'Griffith University',                   city:'Brisbane',    state:'QLD', regional:false, ielts:6.0, qsRange:'401-450',fees:{u:35500,p:38000}, cricos:'00233E', url:'griffith.edu.au'},
+  {name:'University of Adelaide',               city:'Adelaide',    state:'SA',  regional:true,  ielts:6.5, qsRange:'89',     fees:{u:49000,p:51000}, cricos:'00123M', url:'adelaide.edu.au'},
+  {name:'University of Western Australia (UWA)', city:'Perth',       state:'WA',  regional:false, ielts:6.5, qsRange:'90',     fees:{u:49000,p:51000}, cricos:'00126G', url:'uwa.edu.au'},
+  {name:'Curtin University',                     city:'Perth',       state:'WA',  regional:false, ielts:6.0, qsRange:'201-250',fees:{u:40000,p:43000}, cricos:'00301J', url:'curtin.edu.au'},
+  {name:'Deakin University',                     city:'Melbourne',   state:'VIC', regional:false, ielts:6.0, qsRange:'301-350',fees:{u:38000,p:41000}, cricos:'00113B', url:'deakin.edu.au'},
+  {name:'La Trobe University',                   city:'Melbourne',   state:'VIC', regional:false, ielts:6.0, qsRange:'501-550',fees:{u:36000,p:38500}, cricos:'00115M', url:'latrobe.edu.au'},
+];
+
+// ══ UI state ══
+let scoreType = 'pct';
+let selectedInterests = [];
+let selectedLocation = 'flexible';
+let selectedPriority = 'career';
+
+function setScoreType(t, btn) {
+  scoreType = t;
+  document.querySelectorAll('.score-type-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('f_score').placeholder = t==='pct'?'e.g. 75':'e.g. 7.5';
+  document.getElementById('scoreHint').textContent = t==='pct'?'Enter your percentage (0–100)':'Enter your CGPA (0–10)';
+}
+
+function toggleChip(btn) {
+  const v = btn.dataset.val;
+  if (btn.classList.contains('on')) { btn.classList.remove('on'); selectedInterests = selectedInterests.filter(x=>x!==v); }
+  else {
+    if (selectedInterests.length >= 2) { document.querySelectorAll('#interestChips .chip.on')[0]?.classList.remove('on'); selectedInterests.shift(); }
+    btn.classList.add('on'); selectedInterests.push(v);
+  }
+}
+
+function toggleSingle(btn, groupId) {
+  document.querySelectorAll('#'+groupId+' .chip').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  if (groupId==='locationChips') selectedLocation=btn.dataset.val;
+  if (groupId==='priorityChips') selectedPriority=btn.dataset.val;
+}
+
+const ALL_KEYWORDS = OCCUPATIONS.flatMap(o=>o.keywords.map(k=>({k,occ:o})));
+function fieldSuggest(val) {
+  const d=document.getElementById('fieldSuggs'); if(!val||val.length<2){d.style.display='none';return;}
+  const v=val.toLowerCase();
+  const hits=[...new Set(OCCUPATIONS.filter(o=>o.keywords.some(k=>k.includes(v))).map(o=>o.title))].slice(0,5);
+  if(!hits.length){d.style.display='none';return;}
+  d.style.display='block';
+  d.innerHTML=hits.map(h=>`<div style="padding:.55rem .875rem;cursor:pointer;font-size:.875rem;border-bottom:1px solid var(--bd)" onclick="pickSuggest('${h.replace(/'/g,"\\'")}','${getOccCat(h)}')" onmouseover="this.style.background='var(--bg-sub)'" onmouseout="this.style.background=''">${h}</div>`).join('');
+}
+function getOccCat(title){ return OCCUPATIONS.find(o=>o.title===title)?.cat||''; }
+function pickSuggest(title, cat) {
+  document.getElementById('f_field').value=title;
+  document.getElementById('fieldSuggs').style.display='none';
+  // Auto-select interest chip
+  const catMap={IT:'IT',Healthcare:'Healthcare',Engineering:'Engineering',Education:'Education',Business:'Business',SocialWork:'SocialWork',Creative:'Creative',Science:'Science',Agriculture:'Agriculture',Hospitality:'Hospitality'};
+  const chipVal=catMap[cat];
+  if(chipVal){
+    const chip=document.querySelector(`#interestChips [data-val="${chipVal}"]`);
+    if(chip&&!chip.classList.contains('on')) toggleChip(chip);
+  }
+}
+
+function goStep1(){ document.getElementById('step1').style.display=''; document.getElementById('step2').style.display='none'; document.getElementById('progFill').style.width='50%'; document.getElementById('stepLabel').textContent='Step 1 of 2'; }
+function goStep2(){ document.getElementById('step1').style.display='none'; document.getElementById('step2').style.display=''; document.getElementById('progFill').style.width='100%'; document.getElementById('stepLabel').textContent='Step 2 of 2'; }
+
+// ══ Analysis ══
+function startAnalysis() {
+  document.getElementById('wizard').style.display='none';
+  document.getElementById('analysing').style.display='block';
+  const steps=['as1','as2','as3','as4','as5'];
+  let i=0;
+  function tick(){
+    if(i>0) document.getElementById(steps[i-1]).classList.add('done');
+    if(i<steps.length){ document.getElementById(steps[i]).classList.add('active'); i++; setTimeout(tick,650); }
+    else { setTimeout(showResults,400); }
+  }
+  tick();
+}
+
+// ══ Results generation ══
+function showResults() {
+  document.getElementById('analysing').style.display='none';
+  document.getElementById('results').style.display='block';
+
+  const fieldVal  = document.getElementById('f_field').value;
+  const qualVal   = document.getElementById('f_qual').value;
+  const scoreVal  = parseFloat(document.getElementById('f_score').value)||0;
+  const engVal    = document.getElementById('f_english').value;
+  const expVal    = parseInt(document.getElementById('f_exp').value)||0;
+  const budgetVal = parseInt(document.getElementById('f_budget').value)||35;
+  const targetQ   = document.getElementById('f_targetQual').value;
+  const nameVal   = document.getElementById('f_name').value||'you';
+
+  // Match occupations
+  const fieldLow=fieldVal.toLowerCase();
+  const scored = OCCUPATIONS.map(o=>{
+    let s=0;
+    o.keywords.forEach(k=>{ if(fieldLow.includes(k)||k.includes(fieldLow.split(' ')[0]))s+=10; });
+    selectedInterests.forEach(i=>{ if(o.cat===i)s+=20; });
+    if(o.shortage==='national')s+=15;
+    if(o.shortage==='regional')s+=8;
+    return{...o,score:s};
+  }).sort((a,b)=>b.score-a.score);
+
+  const top=scored[0];
+  const alts=scored.slice(1,3);
+
+  // Shortage pct for bar
+  const shortPct = top.shortage==='national'?92:top.shortage==='regional'?70:top.shortage==='difficulty'?55:30;
+  const demandPct = Math.min(top.growth*3+50,98);
+
+  document.getElementById('r_matchTitle').textContent=`${top.title} — ${top.shortage==='national'?'National Shortage':top.shortage==='regional'?'Regional Shortage':top.shortage==='difficulty'?'Recruitment Difficulty':'Adequate Supply'}`;
+  const alertEl=document.getElementById('r_shortageAlert');
+  if(top.shortage==='national'){
+    alertEl.style.background='var(--grn-bg)'; alertEl.style.border='1px solid var(--grn-bd)'; alertEl.style.color='#15803d';
+    alertEl.innerHTML=`✅ <strong>${top.title}</strong> is on Australia's <strong>Skills Priority List 2024</strong> with <strong>national shortage</strong> status. High-demand roles command strong salaries and PR pathways. ${top.source}`;
+  } else if(top.shortage==='regional'){
+    alertEl.style.background='#fffbeb'; alertEl.style.border='1px solid #fde68a'; alertEl.style.color='#92400e';
+    alertEl.innerHTML=`⚠️ <strong>${top.title}</strong> has <strong>regional shortage</strong> status — demand is stronger outside major cities. Studying regionally maximises your visa and career outcomes. ${top.source}`;
+  } else if(top.shortage==='difficulty'){
+    alertEl.style.background='var(--blue-bg)'; alertEl.style.border='1px solid var(--blue-bd)'; alertEl.style.color='var(--blue)';
+    alertEl.innerHTML=`ℹ️ <strong>${top.title}</strong> has <strong>Recruitment Difficulty</strong> status — roles exist but competition is moderate. Specialisation and professional certification (e.g. CPA, CA) strengthen your pathway. ${top.source}`;
+  } else {
+    alertEl.style.background='var(--bg-sub)'; alertEl.style.border='1px solid var(--bd)';
+    alertEl.innerHTML=`ℹ️ ${top.source} — consider combining with an in-shortage specialisation.`;
+  }
+  setTimeout(()=>{ document.getElementById('r_matchFill').style.width=shortPct+'%'; document.getElementById('r_matchPct').textContent=shortPct+'%'; document.getElementById('r_demandFill').style.width=demandPct+'%'; document.getElementById('r_demandPct').textContent=demandPct+'%'; },200);
+
+  // ── Course recommendations ──
+  const wantRegional = selectedLocation==='regional' || selectedLocation==='flexible';
+  const budgetN = budgetVal*1000;
+  const isGrad = ['master','graddip','gradcert','mphil'].includes(targetQ);
+
+  // Build university-course pairs
+  let uniCandidates = [];
+  top.courses.forEach(courseName => {
+    UNIVERSITIES.forEach(u => {
+      const fee = isGrad?u.fees.p:u.fees.u;
+      if(fee<=budgetN+15000) {
+        uniCandidates.push({courseName, uni:u, fee, isGrad});
+      }
+    });
+  });
+
+  // Sort by: regional preference, then priority
+  uniCandidates.sort((a,b)=>{
+    if(selectedLocation==='regional' || selectedPriority==='visa') { if(a.uni.regional&&!b.uni.regional)return-1; if(!a.uni.regional&&b.uni.regional)return 1; }
+    if(selectedPriority==='prestige') { const qa=parseInt(a.uni.qsRange)||500, qb=parseInt(b.uni.qsRange)||500; return qa-qb; }
+    if(selectedPriority==='affordable') return a.fee-b.fee;
+    return 0;
+  });
+
+  // De-dup universities, take top 3
+  const seen=new Set(); const topCourses=[];
+  for(const c of uniCandidates){ if(!seen.has(c.uni.name)&&topCourses.length<3){seen.add(c.uni.name);topCourses.push(c);} }
+
+  const durMap={bachelor:'3 years',master:'2 years',graddip:'1 year',gradcert:'6 months',mphil:'2 years','bachelor-hons':'4 years'};
+  document.getElementById('r_courses').innerHTML = topCourses.map((c,i)=>{
+    const regional485 = c.uni.regional?'<span class="badge badge-grn">🌿 Regional · 485+1 yr</span>':'';
+    const shortBadge = top.shortage==='national'?'<span class="badge badge-grn">⚡ National Shortage</span>':top.shortage==='regional'?'<span class="badge badge-amb">Regional Shortage</span>':'<span class="badge badge-blue">Recruitment Difficulty</span>';
+    const rank = c.uni.qsRange==='601+'?'QS 601+':c.uni.qsRange==='19'?'QS #19':c.uni.qsRange==='18'?'QS #18':`QS ${c.uni.qsRange}`;
+    return `<div class="course-card">
+      <div class="course-top">
+        <div>
+          <div class="course-name">${c.courseName}</div>
+          <div class="course-uni">${c.uni.name} · ${c.uni.city}, ${c.uni.state}</div>
+        </div>
+        ${i===0?'<span class="badge badge-pur">⭐ Best Match</span>':''}
+      </div>
+      <div class="course-badges">
+        ${shortBadge}
+        ${regional485}
+        <span class="badge badge-gray">${rank}</span>
+        <span class="badge badge-gray">CRICOS ${c.uni.cricos}</span>
+      </div>
+      <div class="course-detail-row">
+        <div class="cdr-item"><div class="cdr-val">A$${(c.fee/1000).toFixed(0)}K<span style="font-size:.75rem;font-weight:400">/yr</span></div><div class="cdr-key">Est. annual fees</div></div>
+        <div class="cdr-item"><div class="cdr-val">${durMap[targetQ]||'2 years'}</div><div class="cdr-key">Duration</div></div>
+        <div class="cdr-item"><div class="cdr-val">IELTS ${c.uni.ielts}</div><div class="cdr-key">Min. English</div></div>
+      </div>
+      ${c.uni.regional?`<div style="margin-top:.875rem;padding:.6rem .875rem;background:var(--grn-bg);border-radius:var(--r);font-size:.8125rem;color:#166534">🌿 <strong>Regional campus benefit:</strong> Studying here qualifies you for an additional 1 year on your 485 Graduate Visa (total 3 yrs for most nationalities). Costs ~A$${Math.round((topCourses[0].fee-c.fee)/1000)}K/yr less than metro.</div>`:''}
+      <div class="course-action">
+        <a href="https://www.${c.uni.url}" target="_blank" class="btn btn-p btn-sm">View at ${c.uni.name.split(' ')[0]} ${c.uni.name.split(' ')[1]||''} →</a>
+        <a href="https://cricos.education.gov.au/Course/CourseSearch.aspx" target="_blank" class="btn btn-s btn-sm">CRICOS →</a>
+      </div>
+    </div>`;
+  }).join('');
+
+  // ── Job market ──
+  const jobMarketHtml = `<div class="jm-card">
+    <h3 class="h3" style="margin-bottom:.3rem">${top.title}</h3>
+    <p style="font-size:.8125rem;color:var(--mut);margin-bottom:1rem">Labour market data — Australia 2024</p>
+    <div class="salary-bar-wrap">
+      <div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--mut);margin-bottom:.3rem"><span>Salary range (AUD)</span><span style="font-weight:700;color:var(--txt)">Median A$${(top.salary.med/1000).toFixed(0)}K/yr</span></div>
+      <div class="salary-bar"><div class="salary-fill" style="width:${Math.round((top.salary.med-top.salary.min)/(top.salary.max-top.salary.min)*100)}%"></div></div>
+      <div class="salary-labels"><span>A$${(top.salary.min/1000).toFixed(0)}K min</span><span>A$${(top.salary.max/1000).toFixed(0)}K max</span></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin:1rem 0;padding:1rem;background:var(--bg-sub);border-radius:var(--r)">
+      <div style="text-align:center"><div style="font-size:1.25rem;font-weight:800;color:var(--grn)">${top.employment}%</div><div style="font-size:.75rem;color:var(--mut)">employed at 4 months<br><span style="font-size:.625rem">(QILT Graduate Outcomes 2024)</span></div></div>
+      <div style="text-align:center"><div style="font-size:1.25rem;font-weight:800;color:var(--blue)">+${top.growth}%</div><div style="font-size:.75rem;color:var(--mut)">projected growth<br><span style="font-size:.625rem">(LMIP 5-yr outlook)</span></div></div>
+      <div style="text-align:center"><div style="font-size:1.25rem;font-weight:800;color:var(--purple)">${top.outlook}</div><div style="font-size:.75rem;color:var(--mut)">demand outlook<br><span style="font-size:.625rem">(Jobs and Skills AU)</span></div></div>
+    </div>
+    <div style="margin-bottom:.5rem;font-size:.875rem;font-weight:600">Job titles you can apply for:</div>
+    <div class="job-chips">${top.jobs.map(j=>`<span class="job-chip">${j}</span>`).join('')}</div>
+    <p class="source-note" style="margin-top:.75rem">Source: <a href="https://lmip.gov.au" target="_blank">LMIP Labour Market Information Portal</a> · <a href="https://www.abs.gov.au/statistics/labour/earnings-and-work-hours" target="_blank">ABS Employee Earnings 2024</a> · <a href="https://qilt.edu.au" target="_blank">QILT Graduate Outcomes Survey 2024</a></p>
+  </div>`;
+  document.getElementById('r_jobMarket').innerHTML = jobMarketHtml;
+
+  // ── Visa outcome ──
+  const hasRegional = topCourses.some(c=>c.uni.regional);
+  const visa485yrs = hasRegional?3:2;
+  const visaHtml = `<div class="visa-card">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+      <div>
+        <div class="eyebrow">Subclass 485 — Graduate</div>
+        <div style="font-size:1.5rem;font-weight:800;letter-spacing:-.03em;color:var(--blue);margin:.2rem 0">${visa485yrs} years${hasRegional?' +1 regional':''}</div>
+        <div style="font-size:.8125rem;color:var(--mut)">Post-study work rights in Australia<br>Full work rights — any employer</div>
+        ${hasRegional?`<div style="margin-top:.6rem;font-size:.8125rem;background:rgba(255,255,255,.5);border-radius:var(--r);padding:.5rem .75rem;color:var(--blue-dk)">🌿 Regional study bonus: +1 extra year of work rights</div>`:''}
+      </div>
+      <div>
+        <div class="eyebrow">PR Pathways</div>
+        <div style="display:flex;flex-direction:column;gap:.35rem;margin-top:.3rem">
+          ${top.visaPathways.map(p=>`<div style="font-size:.8125rem;display:flex;align-items:center;gap:.4rem"><span style="color:var(--grn)">✓</span>${p}</div>`).join('')}
+        </div>
+      </div>
+    </div>
+    <p class="source-note" style="margin-top:.875rem">Source: <a href="https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-graduate-485" target="_blank">Dept. of Home Affairs — Subclass 485 Temporary Graduate Visa</a></p>
+  </div>`;
+  document.getElementById('r_visa').innerHTML = visaHtml;
+
+  // ── Community CTA ──
+  const city = topCourses[0]?.uni.city||'Australia';
+  document.getElementById('r_ctaTitle').textContent=`💬 Join the ${city} student community`;
+  document.getElementById('r_ctaText').textContent=`Connect with other ${top.title.split('/')[0].trim()} students in ${city}. Housing, work rights, orientation tips.`;
+}
+
+function resetAdvisor(){
+  document.getElementById('wizard').style.display=''; document.getElementById('results').style.display='none';
+  document.getElementById('step1').style.display=''; document.getElementById('step2').style.display='none';
+  document.getElementById('progFill').style.width='50%'; document.getElementById('stepLabel').textContent='Step 1 of 2';
+  // Reset analyse steps
+  ['as1','as2','as3','as4','as5'].forEach(id=>{ document.getElementById(id).classList.remove('done','active'); });
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="koott-config.js"></script>
+<script src="koott-auth.js"></script>
+</body>
+</html>
