@@ -106,6 +106,14 @@
   </style>
 </head>
 <body>
+<div id="toolsGate" style="position:fixed;inset:64px 0 0 0;display:none;align-items:center;justify-content:center;z-index:300;background:rgba(255,255,255,.55);backdrop-filter:blur(2px)">
+  <div style="background:var(--bg);border:1px solid var(--bd);border-radius:var(--rx);box-shadow:var(--sh-lg);padding:2rem;max-width:380px;text-align:center;margin:1rem">
+    <div style="font-size:2rem;margin-bottom:.5rem">🔒</div>
+    <div style="font-size:1.1rem;font-weight:700;margin-bottom:.35rem">Sign in to use the Visa Tools</div>
+    <p style="font-size:.9rem;color:var(--mut);line-height:1.55;margin-bottom:1.25rem">Track your work-hour limit, compare living costs across 8 cities, and follow your application timeline — free, after a quick sign-in.</p>
+    <button class="btn btn-p btn-lg" onclick="koottAuth.signIn()">Sign in with Google →</button>
+  </div>
+</div>
 
 <nav class="nav">
   <a class="logo" href="index.html">
@@ -270,7 +278,7 @@ function recH(){
   else if(tot<=36){hb.style.color='var(--grn)';hf.style.background='var(--grn)';document.getElementById('cSt').textContent='✅ Well within limit';document.getElementById('cNo').textContent=`${rem.toFixed(1)} hours remaining this fortnight.`;}
   else if(tot<=44){hb.style.color='var(--amb)';hf.style.background='var(--amb)';document.getElementById('cSt').textContent='⚠️ Approaching the limit';document.getElementById('cNo').textContent=`Only ${rem.toFixed(1)}h left — be careful before accepting more shifts.`;}
   else if(tot<=48){hb.style.color='#b45309';hf.style.background='#f59e0b';document.getElementById('cSt').textContent='🔶 At the limit';document.getElementById('cNo').textContent=`${rem.toFixed(1)}h remaining. Do not work any more this fortnight.`;}
-  else{hb.style.color='var(--red)';hf.style.background='var(--red)';document.getElementById('cSt').textContent='🚨 Visa condition breach';document.getElementById('cNo').textContent=`You are ${(tot-HLIMIT).toFixed(1)}h over the 48-hour limit. Contact your university's international student office immediately.`;}
+  else{hb.style.color='var(--red)';hf.style.background='var(--red)';document.getElementById('cSt').textContent='🚨 Visa condition breach';document.getElementById('cNo').textContent=`You are ${(tot-HLIMIT).toFixed(1)}h over the 48-hour limit. Contact your university’s international student office immediately.`;}
 }
 recH();
 
@@ -282,12 +290,12 @@ const CHL=[
   {t:'Apply for Tax File Number (TFN) via ATO website',s:'ato.gov.au/tfn'},
   {t:'Confirm OSHC health cover is active from your exact arrival date',s:'immi.homeaffairs.gov.au'},
   {t:'Register for Medicare (if eligible under your bilateral agreement)',s:'servicesaustralia.gov.au/medicare'},
-  {t:'Enroll in your university's international student orientation programme',s:'Your university portal'},
+  {t:'Enroll in your university’s international student orientation programme',s:'Your university portal'},
   {t:'Get transport card at airport (Opal/Myki/Go Card depending on city)',s:'opal.com.au / ptv.vic.gov.au'},
   {t:'Find a local GP (general practitioner) near your accommodation',s:'healthdirect.gov.au'},
   {t:'Apply for student concession card for public transport discounts',s:'Your state transport authority'},
   {t:'Set up superannuation account once you start paid employment',s:'ato.gov.au/super'},
-  {t:'Verify your 48-hr work limit using Koott's calculator above',s:'immi.homeaffairs.gov.au condition 8105'},
+  {t:'Verify your 48-hr work limit using Koott’s calculator above',s:'immi.homeaffairs.gov.au condition 8105'},
   {t:'Join your Koott city and university community rooms',s:'koott — communities.html'},
   {t:'Arrange automatic rent and utilities payments',s:'Your bank app'},
 ];
@@ -300,5 +308,16 @@ buildChk();
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="koott-config.js"></script>
 <script src="koott-auth.js"></script>
+<script>
+(function(){
+  function applyToolsGate(u){
+    var w=document.querySelector('.tools-wrap'), g=document.getElementById('toolsGate');
+    if(!w||!g) return;
+    if(u){ w.style.filter=''; w.style.pointerEvents=''; g.style.display='none'; }
+    else  { w.style.filter='blur(5px)'; w.style.pointerEvents='none'; g.style.display='flex'; }
+  }
+  if(window.koottAuth) koottAuth.onChange(applyToolsGate);
+})();
+</script>
 </body>
 </html>
