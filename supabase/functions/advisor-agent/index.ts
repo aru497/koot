@@ -11,8 +11,10 @@
 //  The LLM only PICKS from real data — it never invents salaries/courses,
 //  so the frontend renders the grounded result for that occupation.
 //
-//  Secrets needed:  ANTHROPIC_API_KEY   (set via `supabase secrets set`)
-//  Optional:        AGENT_MODEL  (default claude-haiku-4-5-20251001)
+//  LLM key (pick ONE — set as a function secret):
+//    GEMINI_API_KEY     Google AI Studio — has a FREE tier (recommended)
+//    ANTHROPIC_API_KEY  Claude — cheap (~$0.005/match), no free tier
+//  If neither is set, it falls back to on-device keyword matching.
 // ════════════════════════════════════════════════════════════════
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
@@ -20,6 +22,8 @@ const SUPABASE_URL  = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_KEY   = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const ANTHROPIC_KEY = Deno.env.get("ANTHROPIC_API_KEY") || "";
 const MODEL         = Deno.env.get("AGENT_MODEL") || "claude-haiku-4-5-20251001";
+const GEMINI_KEY    = Deno.env.get("GEMINI_API_KEY") || "";          // Google AI Studio (FREE tier)
+const GEMINI_MODEL  = Deno.env.get("GEMINI_MODEL") || "gemini-2.0-flash";
 
 const sb = createClient(SUPABASE_URL, SERVICE_KEY, { auth: { persistSession: false } });
 
@@ -33,6 +37,40 @@ const json = (body: unknown, status = 200) =>
 
 function validEmail(e: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e || "");
+}
+
+// Calls whichever LLM is configured: Gemini (free) preferred, then Anthropic. Returns raw text or "".
+async function callLLM(system: string, user: string): Promise<string> {
+  if (GEMINI_KEY) {
+    try {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_KEY}`;
+      const r = await fetch(url, {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          systemInstruction: { parts: [{ text: system }] },
+          contents: [{ role: "user", parts: [{ text: user }] }],
+          generationConfig: { responseMimeType: "application/json", maxOutputTokens: 700, temperature: 0.4 },
+        }),
+      });
+      if (!r.ok) throw new Error("Gemini HTTP " + r.status + " " + (await r.text()).slice(0, 200));
+      const data = await r.json();
+      return (data?.candidates?.[0]?.content?.parts?.[0]?.text || "").trim();
+    } catch (e) { console.error("Gemini error:", (e as Error)?.message); }
+  }
+  if (ANTHROPIC_KEY) {
+    try {
+      const r = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "content-type": "application/json" },
+        body: JSON.stringify({ model: MODEL, max_tokens: 700, system, messages: [{ role: "user", content: user }] }),
+      });
+      if (!r.ok) throw new Error("Anthropic HTTP " + r.status + " " + (await r.text()).slice(0, 200));
+      const data = await r.json();
+      return (data?.content?.[0]?.text || "").trim();
+    } catch (e) { console.error("Anthropic error:", (e as Error)?.message); }
+  }
+  return "";
 }
 
 Deno.serve(async (req) => {
@@ -64,42 +102,25 @@ Deno.serve(async (req) => {
   // ── Ask the LLM to pick the best match ──
   let result = { occupation_id: null as string | null, reason: "", suggested_courses: [] as string[], no_clear_interest: false };
 
-  if (ANTHROPIC_KEY) {
-    const system =
-      "You are Koott's friendly course & career advisor for international students planning to study in Australia. " +
-      "You are given a list of occupations (each with an id, title, category, skills-shortage status, and keywords) that map to Australia's Skills Priority List. " +
-      "Read the student's free-text answer about what they want to study or do, then choose the SINGLE best-matching occupation id from the list. " +
-      "Prefer occupations in 'national' or 'regional' shortage when there's a reasonable tie, since they give better visa/job outcomes. " +
-      "If the student expresses no clear interest or is just exploring, set no_clear_interest to true and still suggest a sensible in-shortage occupation as a gentle starting point. " +
-      "Reply with STRICT JSON only, no markdown, in this shape: " +
-      '{"occupation_id": string, "reason": string (2-3 warm sentences, second person), "suggested_courses": string[] (3-5 course names), "no_clear_interest": boolean}. ' +
-      "occupation_id MUST be one of the provided ids.";
-    const user =
-      `Student answer: """${answer}"""\n` +
-      (region ? `Where they're from: ${region}\n` : "") +
-      `\nOccupations to choose from (JSON):\n${JSON.stringify(compact)}`;
+  const system =
+    "You are Koott's friendly course & career advisor for international students (many from Kerala, India) planning to study in Australia. " +
+    "You are given a list of occupations (each with an id, title, category, skills-shortage status, and keywords) that map to Australia's Skills Priority List. " +
+    "Read the student's free-text answer about what they want to study or do, then choose the SINGLE best-matching occupation id from the list. " +
+    "Prefer occupations in 'national' or 'regional' shortage when there's a reasonable tie, since they give better visa/job outcomes. " +
+    "If the student expresses no clear interest or is just exploring, set no_clear_interest to true and still suggest a sensible in-shortage occupation as a gentle starting point. " +
+    "Reply with STRICT JSON only, no markdown, in this shape: " +
+    '{"occupation_id": string, "reason": string (2-3 warm sentences, second person), "suggested_courses": string[] (3-5 course names), "no_clear_interest": boolean}. ' +
+    "occupation_id MUST be one of the provided ids.";
+  const user =
+    `Student answer: """${answer}"""\n` +
+    (region ? `Where they're from: ${region}\n` : "") +
+    `\nOccupations to choose from (JSON):\n${JSON.stringify(compact)}`;
 
+  const text = await callLLM(system, user);
+  if (text) {
     try {
-      const r = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "x-api-key": ANTHROPIC_KEY,
-          "anthropic-version": "2023-06-01",
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({
-          model: MODEL,
-          max_tokens: 600,
-          system,
-          messages: [{ role: "user", content: user }],
-        }),
-      });
-      if (!r.ok) throw new Error("LLM HTTP " + r.status + " " + (await r.text()).slice(0, 200));
-      const data = await r.json();
-      const text = (data?.content?.[0]?.text || "").trim();
       const jsonStr = text.startsWith("{") ? text : text.slice(text.indexOf("{"), text.lastIndexOf("}") + 1);
       const parsed = JSON.parse(jsonStr);
-      // validate the chosen id exists
       const valid = compact.find((o) => o.id === parsed.occupation_id);
       result = {
         occupation_id: valid ? parsed.occupation_id : (compact[0]?.id ?? null),
@@ -107,10 +128,7 @@ Deno.serve(async (req) => {
         suggested_courses: Array.isArray(parsed.suggested_courses) ? parsed.suggested_courses.slice(0, 6) : [],
         no_clear_interest: !!parsed.no_clear_interest,
       };
-    } catch (e) {
-      // Fall through to keyword fallback below
-      console.error("advisor-agent LLM error:", (e as Error)?.message);
-    }
+    } catch (e) { console.error("advisor-agent parse error:", (e as Error)?.message); }
   }
 
   // ── Fallback (no key or LLM failed): simple keyword match ──
