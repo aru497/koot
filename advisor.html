@@ -131,6 +131,8 @@
     .rs-label { font-size:.6875rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--lt); margin:.2rem 0 .875rem; }
 
     @media(max-width:640px) { .field-row { grid-template-columns:1fr; } .course-detail-row { grid-template-columns:1fr 1fr; } }
+    .seg { border:none; background:transparent; padding:.45rem 1.1rem; border-radius:100px; font-size:.85rem; font-weight:650; color:var(--mut); cursor:pointer; font-family:var(--font); }
+    .seg-on { background:var(--bg); color:var(--txt); box-shadow:var(--sh-sm); }
   </style>
 </head>
 <body>
@@ -157,6 +159,27 @@
 </nav>
 
 <div class="advisor-shell">
+
+  <div id="modeBar" style="display:flex;justify-content:center;margin-bottom:1.5rem">
+    <div style="display:inline-flex;background:var(--bg-sub);border:1px solid var(--bd);border-radius:100px;padding:.25rem;gap:.15rem">
+      <button id="m-chat" class="seg seg-on" onclick="setMode('chat')">💬 Chat with AI</button>
+      <button id="m-form" class="seg" onclick="setMode('form')">📋 Fill a form</button>
+    </div>
+  </div>
+
+  <div id="agent" class="step-card" style="display:none">
+    <div class="step-title">What do you want to study in Australia?</div>
+    <div class="step-sub">Tell us in your own words — a field, a dream job, or just what you're curious about. Our AI matches you against Australia's Skills Priority List.</div>
+    <div class="field">
+      <label>In your own words</label>
+      <textarea id="ag_answer" rows="4" placeholder="e.g. I love building apps and I'm really into coding and AI… · I want a stable healthcare career · Honestly not sure yet, just exploring."></textarea>
+    </div>
+    <div class="field">
+      <label>Where are you from? <span>(optional)</span></label>
+      <input type="text" id="ag_region" placeholder="e.g. Kerala, India">
+    </div>
+    <div class="step-nav"><span></span><button class="btn btn-p btn-lg" onclick="agentStart()">Get my match →</button></div>
+  </div>
 
   <!-- ══ STEPS 1 & 2 ══ -->
   <div id="wizard">
@@ -405,6 +428,9 @@
 
 </div><!-- /advisor-shell -->
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="koott-config.js"></script>
+<script src="koott-auth.js"></script>
 <script>
 // ══════════════════════════════════════════════════════════════════
 // GOVERNMENT DATA — sourced from Australian government publications
@@ -771,7 +797,7 @@ function showResults() {
     return{...o,score:s};
   }).sort((a,b)=>b.score-a.score);
 
-  const top=scored[0];
+  let top=scored[0]; if(window.__forcedOcc){ const _f=OCCUPATIONS.find(o=>o.id===window.__forcedOcc); if(_f) top=_f; }
   const alts=scored.slice(1,3);
 
   // Shortage pct for bar
@@ -928,10 +954,74 @@ function resetAdvisor(){
   // Reset analyse steps
   ['as1','as2','as3','as4','as5'].forEach(id=>{ document.getElementById(id).classList.remove('done','active'); });
 }
+
+// ── AI agent (chat mode) layered onto the form design ──
+function setMode(m){
+  document.getElementById('m-chat').classList.toggle('seg-on', m==='chat');
+  document.getElementById('m-form').classList.toggle('seg-on', m==='form');
+  document.getElementById('agent').style.display = m==='chat' ? 'block':'none';
+  document.getElementById('wizard').style.display = m==='form' ? 'block':'none';
+  if(m==='form' && typeof goStep1==='function') goStep1();
+}
+function agentStart(){
+  var a=document.getElementById('ag_answer').value.trim();
+  if(a.length<3){ alert('Tell us a little about what you want to study — even a few words helps.'); return; }
+  var u = window.koottAuth && koottAuth.user;
+  if(u){ runAgent(u.email); return; }
+  try{ localStorage.setItem('koott_pending_advisor', JSON.stringify({answer:a, region:document.getElementById('ag_region').value.trim()})); }catch(e){}
+  if(window.koottAuth) koottAuth.signIn(); else alert('Please sign in to get your match.');
+}
+function clientAgentMatch(answer){
+  var a=(answer||'').toLowerCase(), best=OCCUPATIONS[0], bs=-1;
+  OCCUPATIONS.forEach(function(o){ var sc=0; (o.keywords||[]).forEach(function(k){ if(a.indexOf(String(k).toLowerCase())>=0) sc+=2; }); if(a.indexOf((o.title||'').toLowerCase().split(' ')[0])>=0) sc+=1; if(o.shortage==='national') sc+=1; if(sc>bs){bs=sc;best=o;} });
+  return { occupation_id:best?best.id:null, matched_title:best?best.title:null,
+    reason: bs>0 ? ('Based on what you described, '+best.title+' looks like a strong fit — and it is in demand in Australia, which helps both your job prospects and visa outcomes.') : ('We did not catch a specific field in your answer, so here is a popular high-demand option to explore: '+(best?best.title:'')+'. Add a bit more detail to refine it.'),
+    suggested_courses:(best&&best.courses||[]).slice(0,5), no_clear_interest:bs<=0 };
+}
+async function runAgent(email){
+  var answer=document.getElementById('ag_answer').value.trim();
+  var region=document.getElementById('ag_region').value.trim();
+  document.getElementById('agent').style.display='none';
+  document.getElementById('wizard').style.display='none';
+  var mb=document.getElementById('modeBar'); if(mb) mb.style.display='none';
+  var an=document.getElementById('analysing'); if(an) an.style.display='block';
+  document.getElementById('f_field').value = answer;
+  var data=null;
+  try{
+    var cfg=window.KOOTT_CONFIG;
+    var res=await fetch(cfg.SUPABASE_URL+'/functions/v1/advisor-agent',{method:'POST',headers:{'content-type':'application/json','apikey':cfg.SUPABASE_KEY,'authorization':'Bearer '+cfg.SUPABASE_KEY},body:JSON.stringify({answer:answer,email:email,region:region})});
+    var j=await res.json(); if(res.ok && j.ok) data=j;
+  }catch(e){}
+  if(!data){
+    data=clientAgentMatch(answer);
+    try{ await window.sb.from('leads').insert({email:email,study_interest:answer,region:region||null,matched_title:data.matched_title,matched_occupation_id:data.occupation_id,no_clear_interest:data.no_clear_interest,source:'advisor-client'}); }catch(e){}
+  }
+  window.__forcedOcc = data.occupation_id||null;
+  window.__agentReason = data.reason||'';
+  window.__agentCourses = data.suggested_courses||[];
+  setTimeout(function(){ if(an) an.style.display='none'; showResults(); renderAgentNote(); }, 900);
+}
+function renderAgentNote(){
+  if(!window.__agentReason) return;
+  var R=document.getElementById('results'); if(!R) return;
+  var ex=document.getElementById('agentNote'); if(ex) ex.remove();
+  var d=document.createElement('div'); d.id='agentNote';
+  d.style.cssText='border:1.5px solid var(--accent-bd);background:var(--accent-bg);border-radius:var(--rx);padding:1.1rem 1.25rem;margin-bottom:1.25rem';
+  var courses=(window.__agentCourses||[]).map(function(c){return '<span class="badge" style="margin:.12rem .15rem 0 0;display:inline-block">'+c+'</span>';}).join('');
+  d.innerHTML='<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem"><span style="font-size:1.1rem">✨</span><strong style="font-size:.95rem">Your AI match</strong></div><p style="font-size:.9rem;line-height:1.6;margin:0 0 '+(courses?'.6rem':'0')+'">'+window.__agentReason+'</p>'+(courses?'<div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--lt);margin:.2rem 0 .3rem">Courses to explore</div>'+courses:'');
+  R.insertBefore(d, R.firstChild);
+}
+window.koottAuth && koottAuth.onChange(function(u){
+  if(!u) return;
+  var pnd=null; try{ pnd=JSON.parse(localStorage.getItem('koott_pending_advisor')||'null'); }catch(e){}
+  if(pnd && pnd.answer){ try{ localStorage.removeItem('koott_pending_advisor'); }catch(e){}
+    document.getElementById('ag_answer').value=pnd.answer; if(pnd.region) document.getElementById('ag_region').value=pnd.region;
+    setMode('chat'); runAgent(u.email);
+  }
+});
+setMode('chat');
+
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="koott-config.js"></script>
-<script src="koott-auth.js"></script>
 </body>
 </html>
