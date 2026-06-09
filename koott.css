@@ -1,33 +1,32 @@
 /* ═══════════════════════════════════════════════════════════════
-   Koott — design language
+   Koott — Sabha-family design language
    White canvas · huge near-black system type · warm coral action
    · ink-black secondary · pill badges · dark window chrome
    Palettes switch via  html[data-palette="ink" | "sand"]
 ═══════════════════════════════════════════════════════════════ */
 :root {
-  /* surfaces */
-  --bg:       #ffffff;
-  --bg-sub:   #f7f7f8;
-  --bg-side:  #f3f3f4;
-  --bd:       #ececec;
-  --bd-hi:    #dcdcdc;
+  /* surfaces — warm paper, not sterile white */
+  --bg:       #fdfcfa;
+  --bg-sub:   #f6f3ee;
+  --bg-side:  #f1ede6;
+  --bd:       #ece7df;
+  --bd-hi:    #ddd6ca;
 
   /* ink */
-  --txt:      #0b0b0c;
-  --txt-2:    #2a2a2c;
-  --mut:      #6b6b70;
-  --lt:       #9a9aa0;
-  --xlt:      #c7c7cc;
+  --txt:      #1a1714;
+  --txt-2:    #3a3530;
+  --mut:      #6f675d;
+  --lt:       #9c948a;
+  --xlt:      #c7c0b5;
 
-  /* warm primary action (Koott coral) */
+  /* warm primary action (Koott coral — Sabha-red family) */
   --accent:    #e8622c;
   --accent-dk: #cc4f1e;
   --accent-bg: #fef2ec;
   --accent-bd: #f7d2bf;
   --accent-tx: #ffffff;
-  --orange:    #e8622c; /* back-compat alias for older pages */
 
-  /* ink action (signature black CTA) */
+  /* ink action (Sabha's signature black CTA) */
   --ink:      #111113;
   --ink-dk:   #000000;
 
@@ -50,7 +49,7 @@
 
   --font: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, Helvetica, Arial, sans-serif;
 
-  /* radii — softly rounded */
+  /* radii — Sabha leans softly rounded */
   --r:  8px;
   --rl: 12px;
   --rx: 16px;
@@ -92,7 +91,10 @@ html[data-accent="ink"]     { --accent:#111113; --accent-dk:#000000; --accent-bg
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
   font-family: var(--font);
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image: radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--txt) 4%, transparent) 1px, transparent 1.7px);
+  background-size: 26px 26px;
+  background-attachment: fixed;
   color: var(--txt);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -123,6 +125,7 @@ a { color: inherit; }
   color: var(--mut); text-decoration: none;
   font-size: .9rem; font-weight: 500; letter-spacing: -.01em;
   padding: .45rem .7rem; border-radius: var(--r);
+  white-space: nowrap;
   transition: color .12s, background .12s;
 }
 .nav-links a:hover { color: var(--txt); background: var(--bg-sub); }
@@ -142,7 +145,7 @@ a { color: inherit; }
 /* primary = warm accent */
 .btn-p  { background: var(--accent); color: var(--accent-tx); border-color: var(--accent); box-shadow: var(--sh-sm); }
 .btn-p:hover  { background: var(--accent-dk); border-color: var(--accent-dk); }
-/* ink = black CTA */
+/* ink = Sabha black CTA */
 .btn-d  { background: var(--ink); color: #fff; border-color: var(--ink); box-shadow: var(--sh-sm); }
 .btn-d:hover  { background: var(--ink-dk); border-color: var(--ink-dk); }
 /* secondary = outlined */

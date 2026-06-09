@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-accent="coral">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#1d4ed8">
-  <title>Australia Student Visa Tools — Work Limit, Costs, Timeline | Koott</title>
-  <meta name="description" content="Free visa-compliance tools for international students in Australia: fortnightly work-hour limit tracker, city living-cost comparison across 8 cities, and a CoE-to-arrival timeline.">
+  <meta name="theme-color" content="#ffffff">
+  <title>Visa &amp; Compliance Tools for Students in Australia | Koott</title>
+  <meta name="description" content="Free visa compliance tools for international students in Australia — city cost calculator, application timeline tracker, 48-hour fortnightly work-limit calculator, and a 60-day landing checklist.">
   <link rel="canonical" href="https://koott.live/tools.html">
   <meta name="robots" content="index, follow">
   <meta name="author" content="Koott">
@@ -14,19 +14,20 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Koott">
-  <meta property="og:title" content="Australia Student Visa Tools — Koott">
-  <meta property="og:description" content="Free visa-compliance tools for international students in Australia: fortnightly work-hour limit tracker, city living-cost comparison across 8 cities, and a CoE-to-arrival timeline.">
+  <meta property="og:title" content="Visa &amp; Compliance Tools for Students in Australia — Koott">
+  <meta property="og:description" content="City cost calculator, application timeline, 48-hour work-limit calculator, and landing checklist — for international students in Australia.">
   <meta property="og:url" content="https://koott.live/tools.html">
   <meta property="og:image" content="https://koott.live/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="en_AU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Australia Student Visa Tools — Koott">
-  <meta name="twitter:description" content="Free visa-compliance tools for international students in Australia: fortnightly work-hour limit tracker, city living-cost comparison across 8 cities, and a CoE-to-arrival timeline.">
+  <meta name="twitter:title" content="Visa &amp; Compliance Tools — Koott">
+  <meta name="twitter:description" content="City costs, timeline, work-limit calculator, landing checklist.">
   <meta name="twitter:image" content="https://koott.live/og-image.png">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Visa & Compliance Tools — Koott","description":"Student visa compliance tools for studying in Australia.","url":"https://koott.live/tools.html","isPartOf":{"@id":"https://koott.live/#website"},"about":{"@type":"Thing","name":"Studying in Australia for Kerala students"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Visa & Compliance Tools — Koott","url":"https://koott.live/tools.html","isPartOf":{"@id":"https://koott.live/#website"}}</script>
   <link rel="stylesheet" href="koott.css">
+  <script>(function(){try{var a=localStorage.getItem('koott_accent');document.documentElement.setAttribute('data-accent',a||'coral');var s=localStorage.getItem('koott_surface');if(s)document.documentElement.setAttribute('data-palette',s);}catch(e){document.documentElement.setAttribute('data-accent','coral');}})();</script>
   <style>
     .tools-wrap { max-width: 840px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
     .tool-section { background:var(--bg); border:1px solid var(--bd); border-radius:var(--rx); margin-bottom:1.5rem; overflow:hidden; }
@@ -44,7 +45,7 @@
     .city-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:.5rem; margin-bottom:1.25rem; }
     .cbtn { padding:.5rem .6rem; border:1.5px solid var(--bd); border-radius:var(--r); background:var(--bg); cursor:pointer; font-size:.8125rem; font-weight:600; color:var(--txt); text-align:center; line-height:1.3; transition:all .1s; font-family:var(--font); }
     .cbtn:hover { border-color:var(--bd-hi); background:var(--bg-sub); }
-    .cbtn.on { border-color:var(--blue); background:var(--blue-bg); color:var(--blue); }
+    .cbtn.on { border-color:var(--accent); background:var(--accent-bg); color:var(--accent-dk); }
     .ctag { display:block; font-size:.5875rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; margin-top:.1rem; }
     .ctag.r { color:var(--grn); } .ctag.m { color:var(--blue); }
     .cost-tbl { border:1px solid var(--bd); border-radius:var(--rl); overflow:hidden; margin-bottom:.75rem; }
@@ -83,7 +84,7 @@
     .dname { font-size:.75rem; font-weight:600; color:var(--mut); width:28px; }
     .dinp { flex:1; padding:.3rem .4rem; border:1.5px solid var(--bd); border-radius:5px; background:#fff; font-size:.875rem; font-weight:600; text-align:center; -moz-appearance:textfield; color:var(--txt); font-family:var(--font); }
     .dinp::-webkit-outer-spin-button,.dinp::-webkit-inner-spin-button { -webkit-appearance:none; }
-    .dinp:focus { outline:none; border-color:var(--blue); }
+    .dinp:focus { outline:none; border-color:var(--accent); box-shadow:var(--ring); }
     .cres { border:1px solid var(--bd); border-radius:var(--rl); padding:1.25rem; text-align:center; background:var(--bg-sub); }
     .hbig { font-size:3.5rem; font-weight:800; letter-spacing:-.04em; line-height:1; margin-bottom:.15rem; transition:color .3s; color:var(--mut); }
     .hof { font-size:.8125rem; color:var(--mut); margin-bottom:.75rem; }
@@ -103,29 +104,29 @@
     .ci.ck .cbox { background:var(--grn); border-color:var(--grn); color:#fff; }
 
     @media(max-width:600px) { .fn { grid-template-columns:1fr; } }
+
+    /* sign-in gate */
+    #gateWrap { position:relative; }
+    #gated { transition:filter .2s; }
+    #gateCard { position:absolute; inset:0; display:none; align-items:flex-start; justify-content:center; padding-top:2.5rem; }
+    #gateCard .inner { position:sticky; top:5rem; background:var(--bg); border:1px solid var(--bd); box-shadow:var(--sh-lg); border-radius:var(--rx); padding:1.9rem; max-width:380px; text-align:center; }
+    .locked #gated { filter:blur(6px); pointer-events:none; user-select:none; }
+    .locked #gateCard { display:flex; }
   </style>
 </head>
 <body>
-<div id="toolsGate" style="position:fixed;inset:64px 0 0 0;display:none;align-items:center;justify-content:center;z-index:300;background:rgba(255,255,255,.55);backdrop-filter:blur(2px)">
-  <div style="background:var(--bg);border:1px solid var(--bd);border-radius:var(--rx);box-shadow:var(--sh-lg);padding:2rem;max-width:380px;text-align:center;margin:1rem">
-    <div style="font-size:2rem;margin-bottom:.5rem">🔒</div>
-    <div style="font-size:1.1rem;font-weight:700;margin-bottom:.35rem">Sign in to use the Visa Tools</div>
-    <p style="font-size:.9rem;color:var(--mut);line-height:1.55;margin-bottom:1.25rem">Track your work-hour limit, compare living costs across 8 cities, and follow your application timeline — free, after a quick sign-in.</p>
-    <button class="btn btn-p btn-lg" onclick="koottAuth.signIn()">Sign in with Google →</button>
-  </div>
-</div>
 
 <nav class="nav">
-  <a class="logo" href="index.html">
-    <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+  <a class="logo" href="index.html" aria-label="Koott home">
+    <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
       <defs><clipPath id="k"><circle cx="21" cy="16" r="10"/></clipPath></defs>
-      <circle cx="11" cy="16" r="10" fill="#e8622c"/>
-      <circle cx="21" cy="16" r="10" fill="#111827"/>
-      <circle cx="11" cy="16" r="10" fill="#c14e20" clip-path="url(#k)"/>
+      <circle cx="11" cy="16" r="10" fill="var(--spark)"/>
+      <circle cx="21" cy="16" r="10" fill="#111113"/>
+      <circle cx="11" cy="16" r="10" fill="#000" opacity=".28" clip-path="url(#k)"/>
     </svg>
     koott
   </a>
-    <ul class="nav-links">
+  <ul class="nav-links">
     <li><a href="advisor.html">Course Advisor</a></li>
     <li><a href="communities.html">Communities</a></li>
     <li><a href="whatsapp.html">WhatsApp</a></li>
@@ -139,7 +140,9 @@
 <div class="tools-wrap">
   <div class="eyebrow">Compliance &amp; Planning</div>
   <h1 class="h2" style="margin-bottom:.4rem">Visa tools for international students</h1>
-  <p class="lead" style="margin-bottom:2rem;max-width:560px">City cost calculator, application timeline tracker, and the 60-hour fortnightly work limit calculator. All data sourced from Australian government sources.</p>
+  <p class="lead" style="margin-bottom:2rem;max-width:560px">City cost calculator, application timeline tracker, and the 48-hour fortnightly work limit calculator. All data sourced from Australian government sources.</p>
+
+  <div id="gateWrap"><div id="gated">
 
   <!-- ── TOOL 1: City Cost ── -->
   <div class="tool-section">
@@ -209,6 +212,14 @@
       <p class="source-note" style="margin-top:1rem">Sources: <a href="https://www.ato.gov.au/Individuals/Tax-file-number/Apply-for-a-TFN/" target="_blank">ATO — Tax File Number</a> · <a href="https://www.servicesaustralia.gov.au/medicare" target="_blank">Services Australia — Medicare</a> · <a href="https://www.fairwork.gov.au" target="_blank">Fair Work Australia</a></p>
     </div>
   </div>
+    </div><!-- #gated -->
+    <div id="gateCard"><div class="inner">
+      <div style="font-size:2rem;margin-bottom:.5rem">🔒</div>
+      <div style="font-size:1.1rem;font-weight:750;margin-bottom:.35rem">Sign in to use the tools</div>
+      <p style="font-size:.88rem;color:var(--mut);line-height:1.55;margin-bottom:1.25rem">The city cost calculator, timeline tracker, 48-hour work-limit calculator and 60-day checklist — free, after a quick Google sign-in.</p>
+      <button class="btn btn-p btn-lg" style="width:100%" onclick="koottAuth.signIn()">Sign in with Google →</button>
+    </div></div>
+  </div><!-- #gateWrap -->
 
 </div>
 
@@ -281,7 +292,7 @@ function recH(){
   else if(tot<=36){hb.style.color='var(--grn)';hf.style.background='var(--grn)';document.getElementById('cSt').textContent='✅ Well within limit';document.getElementById('cNo').textContent=`${rem.toFixed(1)} hours remaining this fortnight.`;}
   else if(tot<=44){hb.style.color='var(--amb)';hf.style.background='var(--amb)';document.getElementById('cSt').textContent='⚠️ Approaching the limit';document.getElementById('cNo').textContent=`Only ${rem.toFixed(1)}h left — be careful before accepting more shifts.`;}
   else if(tot<=48){hb.style.color='#b45309';hf.style.background='#f59e0b';document.getElementById('cSt').textContent='🔶 At the limit';document.getElementById('cNo').textContent=`${rem.toFixed(1)}h remaining. Do not work any more this fortnight.`;}
-  else{hb.style.color='var(--red)';hf.style.background='var(--red)';document.getElementById('cSt').textContent='🚨 Visa condition breach';document.getElementById('cNo').textContent=`You are ${(tot-HLIMIT).toFixed(1)}h over the 48-hour limit. Contact your university’s international student office immediately.`;}
+  else{hb.style.color='var(--red)';hf.style.background='var(--red)';document.getElementById('cSt').textContent='🚨 Visa condition breach';document.getElementById('cNo').textContent=`You are ${(tot-HLIMIT).toFixed(1)}h over the 48-hour limit. Contact your university's international student office immediately.`;}
 }
 recH();
 
@@ -293,12 +304,12 @@ const CHL=[
   {t:'Apply for Tax File Number (TFN) via ATO website',s:'ato.gov.au/tfn'},
   {t:'Confirm OSHC health cover is active from your exact arrival date',s:'immi.homeaffairs.gov.au'},
   {t:'Register for Medicare (if eligible under your bilateral agreement)',s:'servicesaustralia.gov.au/medicare'},
-  {t:'Enroll in your university’s international student orientation programme',s:'Your university portal'},
+  {t:'Enroll in your university\'s international student orientation programme',s:'Your university portal'},
   {t:'Get transport card at airport (Opal/Myki/Go Card depending on city)',s:'opal.com.au / ptv.vic.gov.au'},
   {t:'Find a local GP (general practitioner) near your accommodation',s:'healthdirect.gov.au'},
   {t:'Apply for student concession card for public transport discounts',s:'Your state transport authority'},
   {t:'Set up superannuation account once you start paid employment',s:'ato.gov.au/super'},
-  {t:'Verify your 48-hr work limit using Koott’s calculator above',s:'immi.homeaffairs.gov.au condition 8105'},
+  {t:'Verify your 48-hr work limit using Koott\'s calculator above',s:'immi.homeaffairs.gov.au condition 8105'},
   {t:'Join your Koott city and university community rooms',s:'koott — communities.html'},
   {t:'Arrange automatic rent and utilities payments',s:'Your bank app'},
 ];
@@ -312,15 +323,8 @@ buildChk();
 <script src="koott-config.js"></script>
 <script src="koott-auth.js"></script>
 <script>
-(function(){
-  function applyToolsGate(u){
-    var w=document.querySelector('.tools-wrap'), g=document.getElementById('toolsGate');
-    if(!w||!g) return;
-    if(u){ w.style.filter=''; w.style.pointerEvents=''; g.style.display='none'; }
-    else  { w.style.filter='blur(5px)'; w.style.pointerEvents='none'; g.style.display='flex'; }
-  }
-  if(window.koottAuth) koottAuth.onChange(applyToolsGate);
-})();
+(function(){ document.body.classList.add('locked'); if(window.koottAuth) koottAuth.onChange(function(u){ document.body.classList.toggle('locked', !u); }); })();
 </script>
+
 </body>
 </html>
