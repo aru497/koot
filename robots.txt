@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin.html
 Disallow: /admin
 
-Sitemap: https://koot.live/sitemap.xml
+Sitemap: https://koott.live/sitemap.xml

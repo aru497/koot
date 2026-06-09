@@ -7,6 +7,13 @@
 window.KOOTT_CONFIG = {
   SUPABASE_URL: "https://pahgngtyfeletfpbavhf.supabase.co",
   SUPABASE_KEY: "sb_publishable_lEcUmg-6b0tOdFe2c2JaCA_IzqzOBlb",
+
+  // Google Maps JavaScript API key (for the Arrival map: location, directions,
+  // nearby banks). Paste your key here. Create one at
+  // https://console.cloud.google.com/google/maps-apis  — enable "Maps JavaScript
+  // API", "Places API" and "Directions API", then RESTRICT the key by HTTP
+  // referrer to: koott.live/*, *.koott.live/*, koot-fkqg.vercel.app/*
+  GOOGLE_MAPS_KEY: "",
 };
 
 // Create the shared client (requires supabase-js UMD loaded first).

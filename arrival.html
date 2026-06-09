@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en" data-accent="coral">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
+  <title>Arrival in Australia Kit for Indian Students — TFN, Bank, Transport | Koott</title>
+  <meta name="description" content="Your first week in Australia, sorted: arrival checklist, how to open a bank account, getting a Tax File Number (TFN), and the right transport card and Service office for your state. Built for Kerala & Indian students.">
+  <link rel="canonical" href="https://koott.live/arrival.html">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Koott">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Koott">
+  <meta property="og:title" content="Arrival in Australia Kit for Indian Students — Koott">
+  <meta property="og:description" content="Arrival checklist, bank account, Tax File Number (TFN), and the right transport card and Service office for your state.">
+  <meta property="og:url" content="https://koott.live/arrival.html">
+  <meta property="og:image" content="https://koott.live/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_AU">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Arrival in Australia Kit for Indian Students — Koott">
+  <meta name="twitter:description" content="First week sorted: checklist, bank, TFN, transport card and Service office by state.">
+  <meta name="twitter:image" content="https://koott.live/og-image.png">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Arrival in Australia Kit — Koott","description":"First-week arrival guide for international students: checklist, bank account, TFN, transport by state.","url":"https://koott.live/arrival.html","isPartOf":{"@id":"https://koott.live/#website"}}</script>
+  <link rel="stylesheet" href="koott.css">
+  <style>
+    body { background: var(--bg-sub); }
+    .ax { max-width: 820px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+    .ax-head { text-align:center; margin-bottom: 1.5rem; }
+    .ax-head .eyebrow { justify-content:center; }
+
+    .sec { margin-top:2.25rem; }
+    .sec-h { font-size:1.15rem; font-weight:800; letter-spacing:-.02em; margin-bottom:.4rem; display:flex; align-items:center; gap:.5rem; }
+    .sec-sub { font-size:.9rem; color:var(--mut); line-height:1.55; margin-bottom:1.1rem; }
+    .card { background:var(--bg); border:1px solid var(--bd); border-radius:var(--rx); padding:1.3rem 1.4rem; margin-bottom:.85rem; }
+    .card p { font-size:.875rem; color:var(--mut); line-height:1.6; margin:0 0 .5rem; }
+    .links { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.5rem; }
+    .links a { font-size:.8rem; font-weight:600; padding:.35rem .7rem; border:1px solid var(--bd); border-radius:100px; color:var(--txt); text-decoration:none; background:var(--bg-sub); }
+    .links a:hover { border-color:var(--accent-bd); color:var(--accent); }
+
+    /* Readiness checker */
+    .chk-prog { display:flex; align-items:center; gap:.75rem; margin-bottom:1rem; }
+    .chk-track { flex:1; height:8px; background:var(--bd); border-radius:100px; overflow:hidden; }
+    .chk-fill { height:100%; width:0; background:var(--accent); border-radius:100px; transition:width .3s ease; }
+    .chk-pct { font-size:.8rem; font-weight:700; color:var(--accent); width:42px; text-align:right; }
+    .chk-item { display:flex; gap:.7rem; align-items:flex-start; padding:.7rem .9rem; border:1px solid var(--bd); border-radius:var(--r); background:var(--bg); margin-bottom:.45rem; cursor:pointer; transition:border-color .1s, background .1s; }
+    .chk-item:hover { border-color:var(--bd-hi); }
+    .chk-item.on { background:var(--accent-bg); border-color:var(--accent-bd); }
+    .chk-box { width:20px; height:20px; border:2px solid var(--bd-hi); border-radius:6px; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:.7rem; color:#fff; margin-top:1px; }
+    .chk-item.on .chk-box { background:var(--accent); border-color:var(--accent); }
+    .chk-tx { font-size:.875rem; line-height:1.45; }
+    .chk-tx .t { font-weight:650; color:var(--txt); }
+    .chk-tx .d { color:var(--mut); font-size:.8rem; }
+    .chk-item.on .chk-tx .t { text-decoration:line-through; color:var(--lt); }
+
+    /* State picker */
+    .state-row { display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:1rem; }
+    .state-btn { font-size:.82rem; font-weight:650; padding:.4rem .8rem; border:1.5px solid var(--bd); border-radius:100px; background:var(--bg); color:var(--mut); cursor:pointer; font-family:var(--font); }
+    .state-btn.on { border-color:var(--accent); background:var(--accent-bg); color:var(--accent); }
+    .state-panel { background:var(--bg); border:1px solid var(--bd); border-radius:var(--rx); padding:1.3rem 1.4rem; }
+    .state-panel h4 { font-size:1rem; font-weight:750; margin-bottom:.7rem; }
+    .sp-row { display:flex; gap:.6rem; padding:.55rem 0; border-bottom:1px solid var(--bd); font-size:.86rem; }
+    .sp-row:last-child { border-bottom:none; }
+    .sp-row .k { font-weight:650; min-width:118px; color:var(--txt); }
+    .sp-row .v { color:var(--mut); line-height:1.5; }
+    .sp-row .v a { color:var(--accent); font-weight:600; text-decoration:none; }
+
+    .geo-btn { display:inline-flex; align-items:center; gap:.45rem; }
+    .disc { font-size:.74rem; color:var(--lt); line-height:1.55; background:var(--bg); border:1px solid var(--bd); border-radius:var(--rl); padding:.85rem 1rem; margin-top:1.75rem; }
+
+    .ax-field { width:100%; padding:.55rem .8rem; border:1.5px solid var(--bd); border-radius:var(--r); font-family:var(--font); font-size:.87rem; background:var(--bg); color:var(--txt); }
+    .ax-field:focus { outline:none; border-color:var(--accent); }
+    .mode-row { display:flex; gap:.4rem; margin-top:.7rem; }
+    .mode-btn { font-size:.8rem; font-weight:650; padding:.4rem .75rem; border:1.5px solid var(--bd); border-radius:100px; background:var(--bg); color:var(--mut); cursor:pointer; font-family:var(--font); }
+    .mode-btn.on { border-color:var(--accent); background:var(--accent-bg); color:var(--accent); }
+    .chiplet { font-size:.76rem; font-weight:600; padding:.25rem .6rem; border:1px solid var(--bd); border-radius:100px; background:var(--bg-sub); color:var(--txt); cursor:pointer; font-family:var(--font); margin-left:.35rem; }
+    .gm-step ol { margin:.4rem 0 0 1.1rem; padding:0; font-size:.83rem; color:var(--mut); line-height:1.6; }
+
+    #gateWrap { position:relative; }
+    #gated { transition:filter .2s; }
+    #gateCard { position:absolute; inset:0; display:none; align-items:flex-start; justify-content:center; padding-top:3.5rem; }
+    #gateCard .inner { position:sticky; top:5rem; background:var(--bg); border:1px solid var(--bd); box-shadow:var(--sh-lg); border-radius:var(--rx); padding:1.9rem; max-width:380px; text-align:center; }
+    .locked #gated { filter:blur(6px); pointer-events:none; user-select:none; }
+    .locked #gateCard { display:flex; }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="logo" href="index.html">
+    <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+      <defs><clipPath id="k"><circle cx="21" cy="16" r="10"/></clipPath></defs>
+      <circle cx="11" cy="16" r="10" fill="#e8622c"/>
+      <circle cx="21" cy="16" r="10" fill="#111827"/>
+      <circle cx="11" cy="16" r="10" fill="#c14e20" clip-path="url(#k)"/>
+    </svg>
+    koott
+  </a>
+    <ul class="nav-links">
+    <li><a href="advisor.html">Course Advisor</a></li>
+    <li><a href="communities.html">Communities</a></li>
+    <li><a href="whatsapp.html">WhatsApp</a></li>
+    <li><a href="funding.html">Funding</a></li>
+    <li><a href="arrival.html" class="active">Arrival</a></li>
+    <li><a href="tools.html">Visa Tools</a></li>
+  </ul>
+  <div class="nav-right" id="koottNav"></div>
+</nav>
+
+<div class="ax">
+
+  <div class="ax-head">
+    <div class="eyebrow">🛬 Arrival Kit</div>
+    <h1 class="h2" style="margin:.3rem 0 .5rem">Your first week in Australia, sorted</h1>
+    <p class="lead" style="max-width:580px;margin:0 auto">Land, breathe, and tick things off in the right order — bank, tax number, transport, SIM. Tailored to the state you're moving to.</p>
+  </div>
+
+  <div id="gateWrap">
+    <div id="gated">
+
+      <!-- Readiness checker -->
+      <div class="sec">
+        <div class="sec-h">✅ Your readiness checker</div>
+        <div class="sec-sub">Tick these off as you go — your progress is saved on this device. Aim to finish the top group in your first 72 hours.</div>
+        <div class="chk-prog">
+          <div class="chk-track"><div class="chk-fill" id="chkFill"></div></div>
+          <div class="chk-pct" id="chkPct">0%</div>
+        </div>
+        <div id="chkList"></div>
+      </div>
+
+      <!-- Map your move -->
+      <div class="sec">
+        <div class="sec-h">🗺️ Map your move</div>
+        <div class="sec-sub">Still in India? Type the Australian address you're moving to and where you want to go — we'll show the route, how long it takes on foot or transit, and the banks nearby. Already landed? Tap "Use my location".</div>
+        <div class="card">
+          <label class="wa-label" style="font-size:.78rem;font-weight:650;display:block;margin-bottom:.3rem">🏠 Your Australian home / accommodation</label>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+            <input id="m_home" class="ax-field" placeholder="e.g. 123 George St, Sydney NSW" style="flex:1;min-width:180px">
+            <button class="btn btn-s" onclick="useMyLocation()">📍 Use my location</button>
+          </div>
+          <label class="wa-label" style="font-size:.78rem;font-weight:650;display:block;margin:.7rem 0 .3rem">📌 Where do you want to go?</label>
+          <input id="m_dest" class="ax-field" placeholder="e.g. your university, a suburb, a station">
+          <div style="margin-top:.5rem"><span style="font-size:.75rem;color:var(--lt)">Quick:</span><button class="chiplet" onclick="findBanksMap()">Banks near home</button></div>
+          <div class="mode-row" id="modeRow">
+            <button class="mode-btn on" data-mode="WALKING" onclick="setMode('WALKING',this)">🚶 Walk</button>
+            <button class="mode-btn" data-mode="TRANSIT" onclick="setMode('TRANSIT',this)">🚆 Transit</button>
+            <button class="mode-btn" data-mode="DRIVING" onclick="setMode('DRIVING',this)">🚗 Drive</button>
+          </div>
+          <div style="margin-top:.75rem"><button class="btn btn-p" onclick="getDirections()">Get directions →</button></div>
+          <div id="gmap" style="height:340px;border-radius:var(--r);margin-top:1rem;background:var(--bg-sub);display:flex;align-items:center;justify-content:center;text-align:center;color:var(--lt);font-size:.82rem;padding:1rem">Map appears here once your Google Maps key is set in config.</div>
+          <div id="dirSummary" style="margin-top:.8rem;font-size:.875rem;color:var(--txt)"></div>
+          <div id="dirSteps" class="gm-step"></div>
+          <div id="bankList" style="margin-top:.5rem"></div>
+        </div>
+        <p class="sec-sub" style="margin:.6rem 0 .3rem">Open an account online up to ~3 months before you fly, transfer funds in, then activate with your passport at a branch. The big four have fee-free international-student accounts:</p>
+        <div class="links">
+          <a href="https://www.commbank.com.au/moving-to-australia.html" target="_blank" rel="noopener">CommBank ↗</a>
+          <a href="https://www.anz.com.au/personal/center/moving-to-australia/" target="_blank" rel="noopener">ANZ ↗</a>
+          <a href="https://www.nab.com.au/personal/life-moments/international/moving-to-australia" target="_blank" rel="noopener">NAB ↗</a>
+          <a href="https://www.westpac.com.au/personal-banking/bank-accounts/transaction/moving-to-australia/" target="_blank" rel="noopener">Westpac ↗</a>
+        </div>
+      </div>
+
+      <!-- TFN -->
+      <div class="sec">
+        <div class="sec-h">🔢 Get your Tax File Number (TFN)</div>
+        <div class="sec-sub">You need a TFN to work legally and to be taxed correctly. Apply <strong>after you arrive</strong>, online via the ATO — it's <strong>100% free</strong> and posted to your Australian address in ~28 days. Never pay an agent for this.</div>
+        <div class="card">
+          <p>You'll need your passport and an Australian postal address (your accommodation is fine). Apply directly here:</p>
+          <div class="links">
+            <a href="https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn" target="_blank" rel="noopener">Apply for a TFN — ATO ↗</a>
+            <a href="https://www.ato.gov.au/" target="_blank" rel="noopener">ato.gov.au ↗</a>
+          </div>
+          <p style="font-size:.78rem;color:var(--lt);margin-top:.6rem">Give your TFN to your employer and bank once it arrives — without it you'll be taxed at the highest rate.</p>
+        </div>
+      </div>
+
+      <!-- State-specific -->
+      <div class="sec">
+        <div class="sec-h">📍 Your state: transport &amp; services</div>
+        <div class="sec-sub">Every state runs its own transport card and government service centre. Pick yours — or let us detect it from your location.</div>
+        <div class="state-row" id="stateRow"></div>
+        <button class="btn btn-s geo-btn" id="detectBtn" onclick="detectState()" style="margin-bottom:1rem">📍 Detect my state</button>
+        <div class="state-panel" id="statePanel"></div>
+      </div>
+
+      <div class="disc">
+        Links go to official government and bank websites. Transport <strong>concessions</strong> for international students are limited and differ by state and institution — most students pay full adult fares, so check with your university. Processing times, fees and rules can change; always confirm on the official site. Koott doesn't earn commission from anyone listed here.
+      </div>
+
+    </div><!-- /#gated -->
+
+    <div id="gateCard">
+      <div class="inner">
+        <div style="font-size:2rem;margin-bottom:.5rem">🔒</div>
+        <div style="font-size:1.1rem;font-weight:750;margin-bottom:.35rem">Sign in to unlock your kit</div>
+        <p style="font-size:.88rem;color:var(--mut);line-height:1.55;margin-bottom:1.25rem">The readiness checker, the nearby-bank finder, TFN steps and your state's transport &amp; service links — free, after a quick Google sign-in.</p>
+        <button class="btn btn-p btn-lg" style="width:100%" onclick="koottAuth.signIn()">Sign in with Google →</button>
+      </div>
+    </div>
+  </div><!-- /#gateWrap -->
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="koott-config.js"></script>
+<script src="koott-auth.js"></script>
+<script>
+// ── Readiness checklist ──
+const CHECK = [
+  { id:'sim',   t:'Get an Australian SIM',          d:'Telstra, Optus, Vodafone or a cheaper MVNO — at the airport or online.' },
+  { id:'addr',  t:'Confirm your address & keys',     d:'Accommodation sorted and a postal address you can receive mail at.' },
+  { id:'bank',  t:'Activate your bank account',      d:'Show your passport at a branch (or finish the online setup).' },
+  { id:'oshc',  t:'Save your OSHC card',             d:'Download the digital card from your provider app — you may need it at a clinic.' },
+  { id:'tfn',   t:'Apply for your TFN',              d:'Free via the ATO, once you have an Australian address.' },
+  { id:'transport', t:'Get your transport card',     d:'Opal / Myki / etc. for your state — top it up before day one.' },
+  { id:'enrol', t:'Enrol & attend orientation',      d:'Confirm enrolment, student ID, and your timetable with your uni.' },
+  { id:'emergency', t:'Save 000 & uni support',      d:'000 is emergency. Save your uni’s international student support line too.' },
+];
+function loadChecks(){ try{ return JSON.parse(localStorage.getItem('koott_arrival_checks')||'{}'); }catch(e){ return {}; } }
+function saveChecks(o){ try{ localStorage.setItem('koott_arrival_checks', JSON.stringify(o)); }catch(e){} }
+function renderChecks(){
+  const state = loadChecks();
+  const list = document.getElementById('chkList');
+  list.innerHTML = CHECK.map(c=>`
+    <div class="chk-item${state[c.id]?' on':''}" onclick="toggleCheck('${c.id}')">
+      <div class="chk-box">${state[c.id]?'✓':''}</div>
+      <div class="chk-tx"><div class="t">${c.t}</div><div class="d">${c.d}</div></div>
+    </div>`).join('');
+  const done = CHECK.filter(c=>state[c.id]).length;
+  const pct = Math.round(done/CHECK.length*100);
+  document.getElementById('chkFill').style.width = pct+'%';
+  document.getElementById('chkPct').textContent = pct+'%';
+}
+function toggleCheck(id){ const s=loadChecks(); s[id]=!s[id]; saveChecks(s); renderChecks(); }
+
+// ── State data ──
+const STATES = {
+  NSW: { name:'New South Wales', city:'Sydney, Newcastle, Wollongong',
+    card:'Opal', cardUrl:'https://transportnsw.info/tickets-opal/opal',
+    service:'Service NSW', serviceUrl:'https://www.service.nsw.gov.au/',
+    note:'Tap on/off with an Opal card or your contactless bank card. Weekly travel caps apply.' },
+  VIC: { name:'Victoria', city:'Melbourne, Geelong',
+    card:'Myki', cardUrl:'https://www.ptv.vic.gov.au/tickets/myki/',
+    service:'Service Victoria', serviceUrl:'https://www.service.vic.gov.au/',
+    note:'Use a physical or digital Myki on trams, trains and buses. Some institutions offer an iUSEpass.' },
+  QLD: { name:'Queensland', city:'Brisbane, Gold Coast',
+    card:'go card (Translink)', cardUrl:'https://translink.com.au/tickets-and-fares/go-card',
+    service:'Queensland Government', serviceUrl:'https://www.qld.gov.au/transport',
+    note:'Use a go card or contactless payment. Queensland has been rolling out Smart Ticketing statewide.' },
+  WA: { name:'Western Australia', city:'Perth',
+    card:'SmartRider', cardUrl:'https://www.transperth.wa.gov.au/SmartRider',
+    service:'ServiceWA / wa.gov.au', serviceUrl:'https://www.wa.gov.au/',
+    note:'Tag on and off with a SmartRider on Transperth trains, buses and ferries.' },
+  SA: { name:'South Australia', city:'Adelaide',
+    card:'metroCARD', cardUrl:'https://www.adelaidemetro.com.au/tickets-fares/metrocard',
+    service:'sa.gov.au', serviceUrl:'https://www.sa.gov.au/',
+    note:'Use a metroCARD, or tap a bank card on Adelaide Metro trams and many buses.' },
+  ACT: { name:'Aust. Capital Territory', city:'Canberra',
+    card:'MyWay', cardUrl:'https://www.transport.act.gov.au/tickets-and-myway/myway-and-fares',
+    service:'Access Canberra', serviceUrl:'https://www.accesscanberra.act.gov.au/',
+    note:'MyWay card for buses and light rail across Canberra.' },
+  TAS: { name:'Tasmania', city:'Hobart, Launceston',
+    card:'Greencard', cardUrl:'https://www.metrotas.com.au/greencard/',
+    service:'Service Tasmania', serviceUrl:'https://www.service.tas.gov.au/',
+    note:'Use a Metro Greencard on buses in Hobart, Launceston and Burnie.' },
+};
+let activeState = 'NSW';
+function renderStateRow(){
+  document.getElementById('stateRow').innerHTML = Object.keys(STATES).map(k=>
+    `<button class="state-btn${k===activeState?' on':''}" onclick="setState('${k}')">${k}</button>`).join('');
+}
+function renderStatePanel(){
+  const s = STATES[activeState];
+  document.getElementById('statePanel').innerHTML = `
+    <h4>${s.name} <span style="font-weight:500;color:var(--lt);font-size:.82rem">· ${s.city}</span></h4>
+    <div class="sp-row"><div class="k">🚆 Transport card</div><div class="v"><a href="${s.cardUrl}" target="_blank" rel="noopener">${s.card} ↗</a><br>${s.note}</div></div>
+    <div class="sp-row"><div class="k">🏛️ Government services</div><div class="v"><a href="${s.serviceUrl}" target="_blank" rel="noopener">${s.service} ↗</a> — licences, registrations, concessions &amp; more.</div></div>
+    <div class="sp-row"><div class="k">🎫 Concessions</div><div class="v">International students usually pay full adult fares; any concession depends on your state &amp; institution — check with your uni.</div></div>`;
+}
+function setState(k){ activeState=k; renderStateRow(); renderStatePanel(); }
+
+// ── Geolocation ──
+// ── Google Maps module ──
+let gmap, dirService, dirRenderer, placesSvc, homeMarker, homeAuto, destAuto, travelMode='WALKING', homeLatLng=null, bankMarkers=[];
+function gmapsReady(){ return typeof google!=='undefined' && google.maps && google.maps.places; }
+function loadGMaps(){
+  const key = window.KOOTT_CONFIG && window.KOOTT_CONFIG.GOOGLE_MAPS_KEY;
+  const el = document.getElementById('gmap');
+  if(!key){ if(el) el.innerHTML='🔑 Live map is off until a Google Maps key is added in config. You can still use the bank links below or open Google Maps directly.'; return; }
+  if(document.getElementById('gmapsScript')) return;
+  const sc=document.createElement('script'); sc.id='gmapsScript';
+  sc.src='https://maps.googleapis.com/maps/api/js?key='+encodeURIComponent(key)+'&libraries=places&loading=async&callback=initGMaps';
+  sc.async=true; sc.onerror=()=>{ if(el) el.textContent='Could not load Google Maps — check the key and its API restrictions.'; };
+  document.head.appendChild(sc);
+}
+window.initGMaps=function(){
+  const center={lat:-33.8688,lng:151.2093};
+  gmap=new google.maps.Map(document.getElementById('gmap'),{center,zoom:11,mapTypeControl:false,streetViewControl:false});
+  dirService=new google.maps.DirectionsService();
+  dirRenderer=new google.maps.DirectionsRenderer({map:gmap});
+  placesSvc=new google.maps.places.PlacesService(gmap);
+  const opt={componentRestrictions:{country:'au'},fields:['geometry','formatted_address','name']};
+  homeAuto=new google.maps.places.Autocomplete(document.getElementById('m_home'),opt);
+  destAuto=new google.maps.places.Autocomplete(document.getElementById('m_dest'),opt);
+  homeAuto.addListener('place_changed',()=>{ const p=homeAuto.getPlace(); if(p&&p.geometry){ homeLatLng=p.geometry.location; gmap.setCenter(homeLatLng); gmap.setZoom(14); setHomeMarker(homeLatLng,p.formatted_address||p.name); } });
+};
+function setHomeMarker(ll,label){ if(homeMarker)homeMarker.setMap(null); homeMarker=new google.maps.Marker({position:ll,map:gmap,title:label||'Home'}); }
+function setMode(m,btn){ travelMode=m; document.querySelectorAll('#modeRow .mode-btn').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); }
+function useMyLocation(){
+  if(!navigator.geolocation){ alert('Location isn\u2019t available on this device.'); return; }
+  navigator.geolocation.getCurrentPosition(pos=>{
+    if(!gmapsReady()){ alert('Map is still loading — try again in a second.'); return; }
+    const ll=new google.maps.LatLng(pos.coords.latitude,pos.coords.longitude);
+    homeLatLng=ll; gmap.setCenter(ll); gmap.setZoom(15); setHomeMarker(ll,'You are here');
+    document.getElementById('m_home').value='My current location';
+  }, e=>alert('Couldn\u2019t get your location: '+e.message), {timeout:10000});
+}
+function originLatLng(){
+  return new Promise((res,rej)=>{
+    if(homeLatLng) return res(homeLatLng);
+    const v=document.getElementById('m_home').value.trim(); if(!v) return rej('Enter your Australian home address first.');
+    new google.maps.Geocoder().geocode({address:v,componentRestrictions:{country:'AU'}},(r,st)=>{ if(st==='OK'&&r[0]){ homeLatLng=r[0].geometry.location; res(homeLatLng);} else rej('Couldn\u2019t find that address — try adding the suburb & state.'); });
+  });
+}
+async function getDirections(){
+  if(!gmapsReady()){ alert('Map isn\u2019t ready yet — add your Google Maps key, then reload.'); return; }
+  let origin; try{ origin=await originLatLng(); }catch(e){ alert(e); return; }
+  const destV=document.getElementById('m_dest').value.trim();
+  if(!destV){ alert('Enter where you want to go.'); return; }
+  dirService.route({origin,destination:destV+', Australia',travelMode:google.maps.TravelMode[travelMode]},(res,status)=>{
+    const sum=document.getElementById('dirSummary'), steps=document.getElementById('dirSteps');
+    if(status!=='OK'){ sum.textContent='No route found ('+status+'). Try another mode or a more specific address.'; steps.innerHTML=''; return; }
+    dirRenderer.setDirections(res);
+    const leg=res.routes[0].legs[0];
+    sum.innerHTML='<strong>'+leg.distance.text+'</strong> · about <strong>'+leg.duration.text+'</strong> by '+travelMode.toLowerCase()+'<br><span style="color:var(--lt)">'+leg.start_address+' → '+leg.end_address+'</span>';
+    steps.innerHTML='<ol>'+leg.steps.map(st=>'<li>'+st.instructions+' <span style="color:var(--lt)">('+st.distance.text+')</span></li>').join('')+'</ol>';
+  });
+}
+function findBanksMap(){
+  if(!gmapsReady()){ alert('Map isn\u2019t ready yet — add your Google Maps key, then reload.'); return; }
+  originLatLng().then(ll=>{
+    bankMarkers.forEach(m=>m.setMap(null)); bankMarkers=[];
+    placesSvc.nearbySearch({location:ll,radius:2500,type:'bank'},(res,status)=>{
+      const list=document.getElementById('bankList');
+      if(status!=='OK'||!res||!res.length){ list.textContent='No banks found nearby — try a wider area.'; return; }
+      res.slice(0,8).forEach(p=>{ bankMarkers.push(new google.maps.Marker({position:p.geometry.location,map:gmap,title:p.name})); });
+      list.innerHTML='<div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--lt);margin:.5rem 0 .3rem">Banks near home</div>'+res.slice(0,8).map(p=>'<div style="font-size:.84rem;padding:.35rem 0;border-bottom:1px solid var(--bd)"><strong>'+p.name+'</strong> <span style="color:var(--lt)">'+(p.vicinity||'')+'</span>'+(p.rating?' · \u2b50'+p.rating:'')+'</div>').join('');
+    });
+  }).catch(e=>alert(e));
+}
+
+const STATE_BY_REGION = { 'New South Wales':'NSW','Victoria':'VIC','Queensland':'QLD','Western Australia':'WA','South Australia':'SA','Australian Capital Territory':'ACT','Tasmania':'TAS','Northern Territory':null };
+function detectState(){
+  const btn = document.getElementById('detectBtn');
+  if(!navigator.geolocation){ alert('Location isn’t available — pick your state above.'); return; }
+  btn.textContent='📍 Detecting…'; btn.disabled=true;
+  navigator.geolocation.getCurrentPosition(async pos=>{
+    try{
+      const { latitude:la, longitude:lo } = pos.coords;
+      const r = await fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat='+la+'&lon='+lo+'&zoom=5', { headers:{'Accept':'application/json'} });
+      const j = await r.json();
+      const region = j && j.address && j.address.state;
+      const code = region ? STATE_BY_REGION[region] : null;
+      if(code){ setState(code); btn.textContent='📍 Detected: '+code; }
+      else { btn.textContent='📍 Detect my state'; alert('Detected '+(region||'your area')+' — pick the closest state above.'); }
+    }catch(e){ btn.textContent='📍 Detect my state'; alert('Couldn’t detect automatically — pick your state above.'); }
+    btn.disabled=false;
+  }, err=>{ btn.textContent='📍 Detect my state'; btn.disabled=false; alert('Location permission denied — pick your state above.'); }, { timeout:10000 });
+}
+
+// ── Init + gate ──
+function initArrival(){ renderChecks(); renderStateRow(); renderStatePanel(); loadGMaps(); }
+(function(){
+  document.body.classList.add('locked');
+  if(window.koottAuth) koottAuth.onChange(u=>document.body.classList.toggle('locked', !u));
+})();
+window.addEventListener('DOMContentLoaded', initArrival);
+</script>
+</body>
+</html>
