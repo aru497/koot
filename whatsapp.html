@@ -220,59 +220,57 @@
 <script src="koott-config.js"></script>
 <script src="koott-auth.js"></script>
 <script>
-const GROUPS = [
-  { name:"Malayali Students · Sydney", city:"Sydney", intake:"All intakes", members:480, desc:"The main hub for Keralite students across Sydney — housing, jobs, weekend meetups, Onam &amp; Vishu plans." },
-  { name:"UNSW Indian Students", city:"Sydney", intake:"Feb 2025", members:310, desc:"Coursework help, used-textbook swaps, and Kingsford/Kensington flat-shares near campus." },
-  { name:"Melbourne Keralites", city:"Melbourne", intake:"All intakes", members:620, desc:"Largest Malayali student group in VIC. Trams, part-time work leads, and Footscray grocery runs." },
-  { name:"Monash · Jul 2025 Intake", city:"Melbourne", intake:"Jul 2025", members:145, desc:"Just for the July starters — airport pickup buddies, week-one orientation, Clayton housing." },
-  { name:"Brisbane Indian Students", city:"Brisbane", intake:"All intakes", members:260, desc:"UQ, QUT &amp; Griffith students. Sunny meetups, cricket, and South Bank study sessions." },
-  { name:"Perth Malayali Koottayma", city:"Perth", intake:"All intakes", members:190, desc:"Tight-knit WA crew — Curtin &amp; UWA. Carpools, fruit-picking season work, and church socials." },
-  { name:"Adelaide Students · Kerala", city:"Adelaide", intake:"All intakes", members:155, desc:"Affordable city, friendly group. Adelaide Uni &amp; UniSA housing and casual job referrals." },
-  { name:"Regional NSW · Wollongong", city:"Regional NSW", intake:"All intakes", members:120, desc:"UOW regional students — the 485 visa edge, beach trips, and Gong share-house listings." },
-];
-const CITIES = ["All", "Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide", "Regional NSW"];
+let GROUPS = [];          // real, admin-approved groups from the database
+let CITIES = ["All"];
 let active = "All";
 
 const grid = document.getElementById('grid');
 const filters = document.getElementById('filters');
 
+function esc(t){ return String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function titleCase(s){ return (s||'').replace(/\b\w/g,m=>m.toUpperCase()); }
 function waIcon(){ return '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2-.5.1-1 .2-3.3-.7-2.8-1.1-4.5-3.9-4.7-4.1-.1-.2-1.1-1.4-1.1-2.7s.7-1.9 .9-2.1c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.4 0 .5l-.4.5c-.1.2-.3.3-.1.6.1.3.7 1.1 1.4 1.7.9.8 1.6 1 .9 1.1.3.1.5 0 .7-.2l.6-.7c.2-.2.3-.2.6-.1l1.9.9c.3.1.5.2.5.3.1.2.1.7-.1 1.2z"/></svg>'; }
 function checkIcon(){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>'; }
 
 function render(){
   const list = GROUPS.filter(g => active==="All" || g.city===active);
-  document.getElementById('cnt').textContent = list.length + (list.length===1?" group":" groups");
+  const cnt = document.getElementById('cnt'); if(cnt) cnt.textContent = list.length + (list.length===1?" group":" groups");
   grid.innerHTML = list.length ? list.map(g => `
     <article class="wa-card">
       <div class="wa-card-top">
         <span class="wa-ico">${waIcon()}</span>
         <div>
-          <div class="wa-card-name">${g.name}</div>
-          <span class="wa-verified">${checkIcon()} Verified by Koott</span>
+          <div class="wa-card-name">${esc(g.name)}</div>
+          <span class="wa-verified">${checkIcon()} Reviewed by Koott</span>
         </div>
       </div>
-      <div class="wa-meta">
-        <span class="badge badge-gray">${g.city}</span>
-        <span class="badge badge-acc">${g.intake}</span>
-      </div>
-      <p class="wa-desc">${g.desc}</p>
+      <div class="wa-meta">${g.city?`<span class="badge badge-gray">${esc(g.city)}</span>`:''}</div>
+      ${g.desc?`<p class="wa-desc">${esc(g.desc)}</p>`:''}
       <div class="wa-card-foot">
-        <span class="wa-members">${g.members} members</span>
-        <a class="btn btn-wa btn-sm" href="https://chat.whatsapp.com/" target="_blank" rel="noopener">
+        <a class="btn btn-wa btn-sm" href="${esc(g.url)}" target="_blank" rel="noopener nofollow">
           ${waIcon().replace('width','w')} Join on WhatsApp
         </a>
       </div>
-    </article>`).join('') : '<div class="wa-empty">No groups here yet — be the first to add one for this city.</div>';
+    </article>`).join('')
+   : `<div class="wa-empty">We're just getting started — no groups have been added here yet.<br>Know a good one? <a href="#" onclick="document.getElementById('addDlg').showModal();return false" style="color:var(--accent);font-weight:700">Submit a WhatsApp group</a> and we'll review it.</div>`;
 }
 
-filters.innerHTML = CITIES.map(c => `<button class="wa-filter${c==='All'?' on':''}" data-c="${c}">${c}</button>`).join('')
-  + '<span class="wa-count" id="cnt"></span>';
-filters.querySelectorAll('.wa-filter').forEach(b => b.addEventListener('click', () => {
-  active = b.dataset.c;
-  filters.querySelectorAll('.wa-filter').forEach(x => x.classList.toggle('on', x===b));
-  render();
-}));
-render();
+function buildFilters(){
+  filters.innerHTML = CITIES.map(c => `<button class="wa-filter${c===active?' on':''}" data-c="${esc(c)}">${esc(c)}</button>`).join('')
+    + '<span class="wa-count" id="cnt"></span>';
+  filters.querySelectorAll('.wa-filter').forEach(b => b.addEventListener('click', () => { active = b.dataset.c; buildFilters(); render(); }));
+}
+
+async function loadGroups(){
+  try{
+    const { data, error } = await window.sb.from('whatsapp_groups').select('*').eq('status','approved').order('created_at',{ascending:false});
+    if(error) throw error;
+    GROUPS = (data||[]).map(r=>({ name:r.title, city: (titleCase((r.community_id||'').replace(/[-_]/g,' ')) || 'General'), desc:r.description||'', url:r.invite_url }));
+    CITIES = ["All", ...Array.from(new Set(GROUPS.map(g=>g.city))).sort()];
+  }catch(e){ GROUPS=[]; CITIES=["All"]; }
+  buildFilters(); render();
+}
+loadGroups();
 
 const sb = window.sb;
 function waToast(msg){ const t=document.createElement('div'); t.textContent=msg; t.style.cssText="position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:.9rem 1.4rem;border-radius:100px;font-size:.9rem;font-weight:600;z-index:999;box-shadow:var(--sh-lg)"; document.body.appendChild(t); setTimeout(()=>t.remove(),4000); }
