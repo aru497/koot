@@ -1,6 +1,25 @@
+# koott.live — robots
 User-agent: *
 Allow: /
 Disallow: /admin.html
 Disallow: /admin
+
+# AI search crawlers — explicitly allowed (helps koott appear in AI answers)
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
 
 Sitemap: https://koott.live/sitemap.xml

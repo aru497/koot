@@ -28,9 +28,6 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Course & Career Advisor — Koott","url":"https://koott.live/advisor.html","isPartOf":{"@id":"https://koott.live/#website"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://koott.live/"},{"@type":"ListItem","position":2,"name":"Course Advisor","item":"https://koott.live/advisor.html"}]}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Koott Course Advisor","url":"https://koott.live/advisor.html","applicationCategory":"EducationApplication","operatingSystem":"Web, iOS, Android","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"AUD"},"publisher":{"@id":"https://koott.live/#org"},"description":"AI course-matching for international students in Australia, built on real Australian Government skills and occupation data. Free."}</script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght;500;600;700;800;900&family=JetBrains+Mono:wght;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="koott.css">
   <script>(function(){try{var a=localStorage.getItem('koott_accent');document.documentElement.setAttribute('data-accent',a||'coral');var s=localStorage.getItem('koott_surface');if(s)document.documentElement.setAttribute('data-palette',s);}catch(e){document.documentElement.setAttribute('data-accent','coral');}})();</script>
   <style>

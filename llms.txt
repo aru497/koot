@@ -1,0 +1,21 @@
+# Koott (koott.live)
+
+> Koott helps Kerala and Indian students study in Australia. It matches students to in-demand courses using real Australian Government skills and occupation data, provides 485 visa and compliance tools, and connects students to city/university communities. Free to use.
+
+## Key pages
+- [Course Advisor](https://koott.live/advisor.html): AI tool that matches students to in-demand Australian courses with salary ranges and 485 visa pathways, using the Australian Skills Priority List.
+- [Communities](https://koott.live/communities.html): City, university and intake chat rooms for Kerala and Indian students in Australia.
+- [WhatsApp Groups](https://koott.live/whatsapp.html): Verified WhatsApp groups by city and intake.
+- [Funding & Insurance](https://koott.live/funding.html): Education loan options, OSHC health cover, and cost-of-living budgeting.
+- [Arrival Kit](https://koott.live/arrival.html): First-week checklist — bank account, Tax File Number (TFN), and transport by state.
+- [Visa Tools](https://koott.live/tools.html): Cost calculator, work-hours (48 hrs/fortnight) and OSHC checks, application timeline.
+
+## Key facts
+- Work limit for student visa holders: 48 hours per fortnight.
+- Overseas Student Health Cover (OSHC) is required for a student visa.
+- 485 (Temporary Graduate) visa allows post-study work, up to several years depending on qualification.
+- Cost-of-living financial requirement: approximately A$29,710 per year (Australian Department of Home Affairs).
+
+## Notes
+- Audience: Kerala and Indian students planning to study in Australia.
+- Data sources: Jobs and Skills Australia (JSA), ABS, Department of Home Affairs.

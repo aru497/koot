@@ -29,9 +29,6 @@
   <meta name="twitter:image:alt" content="Koott — study in Australia for Kerala and Indian students">
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Communities — Koott","description":"Chat communities for Kerala and Indian students studying in Australia.","url":"https://koott.live/communities.html","isPartOf":{"@id":"https://koott.live/#website"},"about":{"@type":"Thing","name":"Studying in Australia for Kerala students"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://koott.live/"},{"@type":"ListItem","position":2,"name":"Communities","item":"https://koott.live/communities.html"}]}</script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght;500;600;700;800;900&family=JetBrains+Mono:wght;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="koott.css">
   <style>
     body { overflow: hidden; }

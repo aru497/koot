@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en" data-accent="coral" data-palette="default" data-hero="split">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#ffffff">
+  <title>Koott — Study in Australia for Kerala Students | AI Course Advisor</title>
+  <meta name="description" content="Koott helps Kerala students study in Australia. Get matched to in-demand courses with AI using real Australian government data, plan your 485 visa, and join a community of Malayali students on the same journey. Free.">
+  <link rel="canonical" href="https://koott.live/">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="Koott">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Koott">
+  <meta property="og:title" content="Study in Australia for Kerala Students — Koott">
+  <meta property="og:description" content="Koott helps Kerala students study in Australia. Get matched to in-demand courses with AI using real Australian government data, plan your 485 visa, and join a community of Malayali students on the same journey. Free.">
+  <meta property="og:url" content="https://koott.live/">
+  <meta property="og:image" content="https://koott.live/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_AU">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Study in Australia for Kerala Students — Koott">
+  <meta name="twitter:description" content="Koott helps Kerala students study in Australia. Get matched to in-demand courses with AI using real Australian government data, plan your 485 visa, and join a community of Malayali students on the same journey. Free.">
+  <meta name="twitter:image" content="https://koott.live/og-image.png">
+  <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://koott.live/#org","name":"Koott","url":"https://koott.live/","logo":"https://koott.live/apple-touch-icon.png","description":"Koott helps Kerala and Indian students study in Australia with AI-powered course matching, visa tools, and student communities, built on real Australian government data.","areaServed":{"@type":"Country","name":"Australia"},"sameAs":[]},{"@type":"WebSite","@id":"https://koott.live/#website","name":"Koott","url":"https://koott.live/","publisher":{"@id":"https://koott.live/#org"},"inLanguage":"en-AU"}]}</script>
+  <link rel="stylesheet" href="koott.css">
+  <script>(function(){try{var a=localStorage.getItem('koott_accent');document.documentElement.setAttribute('data-accent',a||'coral');var s=localStorage.getItem('koott_surface');if(s)document.documentElement.setAttribute('data-palette',s);}catch(e){document.documentElement.setAttribute('data-accent','coral');}})();</script>
+  <style>
+    /* ───────── HERO ───────── */
+    .hero { padding: clamp(3rem, 7vw, 6rem) clamp(1rem,4vw,2.25rem) 0; }
+    .hero-inner { max-width: 1080px; margin: 0 auto; }
+
+    /* center (Sabha-faithful) */
+    [data-hero="center"] .hero-inner { text-align: center; max-width: 860px; }
+    [data-hero="center"] .hero-copy { display: flex; flex-direction: column; align-items: center; }
+    [data-hero="center"] .hero-btns { justify-content: center; }
+    [data-hero="center"] .hero-window { margin-top: clamp(3rem, 6vw, 5rem); }
+    [data-hero="center"] .hero-sig { justify-content: center; }
+
+    /* split */
+    [data-hero="split"] .hero-inner { display: grid; grid-template-columns: 1.05fr .95fr; gap: clamp(2rem,4vw,3.5rem); align-items: center; }
+    [data-hero="split"] .display { font-size: clamp(2.4rem, 4.4vw, 3.9rem); }
+    [data-hero="split"] .hero-window { margin-top: 0; }
+    [data-hero="split"] .hero-btns { justify-content: flex-start; }
+
+    /* editorial (left, no window beside) */
+    [data-hero="editorial"] .hero-inner { max-width: 1000px; }
+    [data-hero="editorial"] .hero-copy { align-items: flex-start; text-align: left; }
+    [data-hero="editorial"] .hero-btns { justify-content: flex-start; }
+    [data-hero="editorial"] .display { font-size: clamp(2.8rem, 8vw, 6rem); }
+    [data-hero="editorial"] .hero-window { margin-top: clamp(2.5rem, 5vw, 4rem); }
+
+    .hero-copy > * + * { margin-top: 1.4rem; }
+    .display .accent { color: var(--accent); }
+    .hero p.lead { max-width: 560px; }
+    [data-hero="center"] p.lead { margin-left: auto; margin-right: auto; }
+    .hero-btns { display: flex; gap: .7rem; flex-wrap: wrap; }
+    .hero-sig { display: flex; align-items: center; gap: .5rem; color: var(--lt); font-size: .85rem; }
+    .hero-sig b { color: var(--mut); font-weight: 600; }
+    .ml { font-weight: 700; color: var(--accent); }
+
+    /* ───────── WARM PHOTO HERO ───────── */
+    .hero { position: relative; }
+    .hero::before {
+      content: ""; position: absolute; inset: 0; z-index: -1;
+      background: radial-gradient(120% 80% at 82% -5%, var(--accent-bg) 0%, transparent 52%);
+      opacity: .85; pointer-events: none;
+    }
+    .band { position: relative; }
+    .band::before {
+      content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      background-image: radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--txt) 5%, transparent) 1px, transparent 1.6px);
+      background-size: 24px 24px; opacity: .6;
+    }
+    .band > * { position: relative; z-index: 1; }
+    .hero-photos { position: relative; width: 100%; }
+    .hp-main { position: relative; display:block; border-radius: var(--rxl); overflow: hidden; box-shadow: var(--sh-lg); aspect-ratio: 4 / 4.4; width:100%; background: var(--bg-sub); }
+    [data-hero="center"] .hp-main { aspect-ratio: 16 / 8; }
+    [data-hero="editorial"] .hp-main { aspect-ratio: 16 / 7.5; }
+    .hp-fill { position:absolute; inset:0; width:100% !important; height:100% !important; object-fit: cover; }
+    .hp-card {
+      position: absolute; background: var(--bg); border: 1px solid var(--bd);
+      border-radius: var(--rl); box-shadow: var(--sh-lg); padding: .9rem 1rem;
+    }
+    .hp-testi { left: -20px; bottom: 30px; max-width: 256px; display: flex; gap: .55rem; align-items: flex-start; }
+    .hp-testi .quotemark { font-size: 2.2rem; line-height: .8; color: var(--accent); font-weight: 800; font-family: Georgia, serif; }
+    .hp-testi .qt { font-size: .9rem; line-height: 1.42; color: var(--txt); font-weight: 600; letter-spacing: -.01em; }
+    .hp-testi .nm { font-size: .74rem; color: var(--lt); margin-top: .4rem; }
+    .hp-testi .nm b { color: var(--mut); font-weight: 600; }
+    [data-hero="center"] .hp-testi { left: 16px; }
+    @media (max-width: 560px) {
+      .hp-testi { left: 8px; bottom: 12px; max-width: 220px; padding: .7rem .8rem; }
+    }
+
+    /* ───────── PRODUCT WINDOW MOCK ───────── */
+    .hero-window { width: 100%; max-width: 1000px; margin-inline: auto; }
+    .mock { display: grid; grid-template-columns: 188px 1fr; min-height: 332px; }
+    .mock-side { background: var(--bg-side); border-right: 1px solid var(--bd); padding: .9rem .7rem; }
+    .mock-side .ms-h { font-size: .62rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--lt); padding: .3rem .5rem .5rem; }
+    .mock-side .ms-item { display: flex; align-items: center; gap: .5rem; padding: .42rem .55rem; border-radius: var(--r); font-size: .82rem; font-weight: 600; color: var(--mut); }
+    .mock-side .ms-item.on { background: var(--bg); color: var(--txt); box-shadow: var(--sh-sm); }
+    .mock-side .ms-ico { font-size: 1rem; }
+    .mock-main { display: flex; flex-direction: column; }
+    .mock-mhead { display: flex; align-items: center; gap: .5rem; padding: .8rem 1.1rem; border-bottom: 1px solid var(--bd); }
+    .mock-mhead .mm-name { font-weight: 700; font-size: .9rem; }
+    .mock-mhead .mm-sub { font-size: .76rem; color: var(--lt); margin-left: auto; }
+    .mock-feed { padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: .85rem; }
+    .mock-msg { display: flex; gap: .65rem; }
+    .mock-msg .mav { width: 30px; height: 30px; border-radius: 50%; flex-shrink: 0; color: #fff; font-size: .68rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+    .mock-msg .mbody { min-width: 0; }
+    .mock-msg .mmeta { font-size: .72rem; color: var(--lt); margin-bottom: .12rem; }
+    .mock-msg .mmeta b { color: var(--txt); font-weight: 700; font-size: .8rem; margin-right: .4rem; }
+    .mock-msg .mtext { font-size: .84rem; line-height: 1.45; color: var(--txt-2); }
+    .mock-rxn { display: inline-flex; align-items: center; gap: .25rem; background: var(--bg-sub); border: 1px solid var(--bd); border-radius: 100px; padding: .1rem .45rem; font-size: .72rem; margin-top: .35rem; }
+    .mock-comp { margin-top: auto; padding: .8rem 1.1rem 1rem; }
+    .mock-comp .mc-box { display: flex; align-items: center; gap: .5rem; border: 1.5px solid var(--bd); border-radius: var(--rl); padding: .55rem .75rem; color: var(--lt); font-size: .82rem; }
+    .mock-comp .mc-send { margin-left: auto; width: 26px; height: 26px; border-radius: var(--r); background: var(--accent); display: flex; align-items: center; justify-content: center; color: #fff; }
+
+    /* ───────── CREDIBILITY LINE ───────── */
+    .sources { border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd); }
+    .sources-inner { max-width: 1080px; margin: 0 auto; padding: 1.15rem clamp(1rem,4vw,2.25rem); display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+    .sources-lbl { font-size: .7rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--lt); white-space: nowrap; }
+    .sources-list { font-size: .92rem; color: var(--txt-2); font-weight: 550; letter-spacing: -.01em; }
+    .sources-list i { color: var(--xlt); font-style: normal; margin: 0 .55rem; }
+
+    /* ───────── FEATURE LINEUP (editorial) ───────── */
+    .lineup { display: grid; grid-template-columns: 0.82fr 1.18fr; gap: clamp(2rem,5vw,4.5rem); align-items: start; }
+    .lineup-head { position: sticky; top: 92px; }
+    .lineup-head .h2 { margin-top: .35rem; }
+    .lineup-list { display: flex; flex-direction: column; }
+    .lineup-row {
+      display: grid; grid-template-columns: auto 1fr auto; gap: 1.4rem; align-items: start;
+      padding: 1.7rem 0; border-top: 1px solid var(--bd); text-decoration: none; color: inherit;
+      transition: padding-left .18s ease;
+    }
+    .lineup-row:last-child { border-bottom: 1px solid var(--bd); }
+    .lineup-row:hover { padding-left: .5rem; }
+    .idx { font-size: .9rem; font-weight: 700; color: var(--accent); letter-spacing: .04em; padding-top: .35rem; font-variant-numeric: tabular-nums; }
+    .lineup-title { font-size: 1.45rem; font-weight: 750; letter-spacing: -.03em; margin-bottom: .5rem; line-height: 1.1; }
+    .lineup-icon { width: 38px; height: 38px; color: var(--accent); margin-bottom: .9rem; }
+    .lineup-icon svg { width: 100%; height: 100%; }
+    .lineup-desc { font-size: .95rem; color: var(--mut); line-height: 1.6; max-width: 46ch; }
+    .lineup-arr { color: var(--lt); flex-shrink: 0; margin-top: .4rem; transition: color .15s, transform .18s; }
+    .lineup-row:hover .lineup-arr { color: var(--accent); transform: translate(2px,-2px); }
+
+    /* ───────── HOW IT WORKS ───────── */
+    .band { background: var(--bg-sub); border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd); }
+    .how-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(1.5rem,3vw,2.5rem); }
+    .how-step { position: relative; padding-top: 1.6rem; border-top: 2px solid var(--txt); }
+    .how-num { font-size: .82rem; font-weight: 800; color: var(--accent); letter-spacing: .1em; margin-bottom: .7rem; }
+    .how-title { font-size: 1.05rem; font-weight: 700; letter-spacing: -.02em; margin-bottom: .4rem; }
+    .how-desc { font-size: .88rem; color: var(--mut); line-height: 1.55; }
+
+    /* ───────── FIGURES (open, no boxes) ───────── */
+    .figures-sec .eyebrow { margin-bottom: 1.8rem; }
+    .figures { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.5rem,4vw,3.5rem); }
+    .figure { padding-top: 1.6rem; border-top: 2px solid var(--txt); }
+    .fig { display: block; font-size: clamp(3.2rem,6vw,4.6rem); font-weight: 800; letter-spacing: -.05em; line-height: .95; color: var(--txt); margin-bottom: .8rem; }
+    .fig i { color: var(--accent); font-style: normal; font-size: .55em; font-weight: 800; }
+    .figure p { font-size: .92rem; color: var(--mut); line-height: 1.55; max-width: 30ch; }
+
+    /* ───────── TESTIMONIALS (editorial pull-quotes) ───────── */
+    .testi .eyebrow { margin-bottom: 1.6rem; }
+    .testi-lead {
+      font-size: clamp(1.6rem, 3.4vw, 2.6rem); font-weight: 600; letter-spacing: -.03em;
+      line-height: 1.22; color: var(--txt); max-width: 18ch; text-wrap: balance; margin-bottom: 3rem;
+    }
+    .testi-lead em { font-style: normal; color: var(--accent); }
+    .testi-lead cite { display: flex; align-items: center; gap: .7rem; font-size: .9rem; font-weight: 600; font-style: normal; color: var(--lt); letter-spacing: 0; margin-top: 1.3rem; }
+    .testi-lead cite img, .testi-sm cite img { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+    .testi-lead cite span, .testi-sm cite span { display: flex; flex-direction: column; line-height: 1.3; }
+    .testi-lead cite b, .testi-sm cite b { color: var(--txt-2); font-weight: 700; }
+    .testi-pair { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem,5vw,4rem); padding-top: 2rem; border-top: 1px solid var(--bd); }
+    .testi-sm { font-size: 1.12rem; font-weight: 500; line-height: 1.5; color: var(--txt-2); letter-spacing: -.015em; }
+    .testi-sm cite { display: flex; align-items: center; gap: .7rem; font-size: .84rem; font-weight: 600; font-style: normal; color: var(--lt); margin-top: .9rem; }
+
+    /* ───────── COMMUNITY ───────── */
+    .comm-sec { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem,5vw,4rem); align-items: center; }
+    .comm-proof { font-size: 1rem; color: var(--mut); margin-top: 1.6rem; letter-spacing: -.01em; }
+    .comm-proof strong { color: var(--accent); font-weight: 800; font-size: 1.15rem; }
+    .comm-right { display: flex; flex-direction: column; gap: 1.4rem; }
+    .comm-photo { position:relative; display:block; width:100%; border-radius: var(--rx); overflow: hidden; box-shadow: var(--sh); aspect-ratio: 16/10; background: var(--bg-sub); }
+    .comm-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .comm-list { display: flex; flex-direction: column; }
+    .comm-line { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding: .85rem 0; border-top: 1px solid var(--bd); text-decoration: none; color: inherit; transition: color .12s; }
+    .comm-list .comm-line:last-child { border-bottom: 1px solid var(--bd); }
+    .comm-line b { font-size: 1rem; font-weight: 650; letter-spacing: -.01em; }
+    .comm-line span { font-size: .82rem; color: var(--lt); font-variant-numeric: tabular-nums; }
+    .comm-line:hover b { color: var(--accent); }
+
+    /* ───────── FINAL CTA ───────── */
+    .cta-band {
+      max-width: 1080px; margin: 0 auto;
+      padding: clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,4rem);
+    }
+    .cta-card {
+      position: relative; overflow: hidden;
+      background: var(--ink); border-radius: var(--rxl); color: #fff;
+      padding: clamp(2.5rem,5vw,4rem); text-align: center;
+      display: flex; flex-direction: column; align-items: center; gap: 1.3rem;
+    }
+    .cta-skyline { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: min(680px, 105%); height: auto; color: rgba(255,255,255,.13); pointer-events: none; }
+    .cta-card > *:not(.cta-skyline) { position: relative; z-index: 1; }
+    .cta-card .h2 { color: #fff; }
+    .cta-card p { color: rgba(255,255,255,.66); max-width: 460px; font-size: 1.02rem; }
+    .cta-card .btn-s { background: transparent; color: #fff; border-color: rgba(255,255,255,.28); }
+    .cta-card .btn-s:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.5); }
+
+    /* ───────── FOOTER ───────── */
+    .ft { border-top: 1px solid var(--bd); }
+    .ft-inner { max-width: 1080px; margin: 0 auto; padding: 2.5rem clamp(1rem,4vw,2.25rem); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.25rem; }
+    .ft-left { display: flex; align-items: center; gap: .55rem; }
+    .ft-links { display: flex; gap: 1.4rem; flex-wrap: wrap; }
+    .ft-links a { font-size: .85rem; color: var(--mut); text-decoration: none; }
+    .ft-links a:hover { color: var(--txt); }
+    .ft-sig { font-size: .82rem; color: var(--lt); }
+    .ft-sig .ml { font-weight: 700; }
+
+    @media (max-width: 900px) {
+      [data-hero="split"] .hero-inner { grid-template-columns: 1fr; }
+      [data-hero="split"] .hero-window { margin-top: 2.5rem; }
+      .lineup { grid-template-columns: 1fr; }
+      .lineup-head { position: static; }
+      .how-grid { grid-template-columns: 1fr 1fr; }
+      .figures { grid-template-columns: 1fr; }
+      .testi-pair { grid-template-columns: 1fr; gap: 1.6rem; }
+      .comm-sec { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .mock { grid-template-columns: 1fr; }
+      .mock-side { display: none; }
+      .display { font-size: clamp(2.3rem, 11vw, 3rem) !important; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="logo" href="index.html" aria-label="Koott home">
+    <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+      <defs><clipPath id="k"><circle cx="21" cy="16" r="10"/></clipPath></defs>
+      <circle cx="11" cy="16" r="10" fill="var(--spark)"/>
+      <circle cx="21" cy="16" r="10" fill="#111113"/>
+      <circle cx="11" cy="16" r="10" fill="#000" opacity=".28" clip-path="url(#k)"/>
+    </svg>
+    koott
+  </a>
+  <ul class="nav-links">
+    <li><a href="advisor.html">Course Advisor</a></li>
+    <li><a href="communities.html">Communities</a></li>
+    <li><a href="whatsapp.html">WhatsApp</a></li>
+    <li><a href="funding.html">Funding</a></li>
+    <li><a href="arrival.html">Arrival</a></li>
+    <li><a href="tools.html">Visa Tools</a></li>
+  </ul>
+  <div class="nav-right"><span id="koottNav"></span><a href="advisor.html" class="btn btn-d" style="margin-left:.5rem">Get started</a></div>
+</nav>
+
+<!-- ════════ HERO ════════ -->
+<header class="hero" data-screen-label="Landing">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <span class="pill"><span class="dot spark"></span>നമസ്കാരം 👋 &nbsp;Built by students who've been there</span>
+      <h1 class="display">Find your course.<br>Find your <span class="accent">people</span>.</h1>
+      <p class="lead">Koott matches you to in-demand courses using real Australian government data, keeps your visa on track, and drops you into a community of students on the exact same journey — so you never feel alone in it.</p>
+      <div class="hero-btns">
+        <a href="advisor.html" class="btn btn-p btn-lg">Find my course
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="communities.html" class="btn btn-s btn-lg">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Browse communities
+        </a>
+      </div>
+      <div class="hero-sig"><span class="ml">കൂട്ട്</span> <b>koott</b> — "together", in Malayalam.</div>
+    </div>
+
+    <!-- warm photo — drop your own (Shutterstock) image here -->
+    <div class="hero-window">
+      <div class="hero-photos">
+        <div class="hp-main">
+        <img class="hp-fill" src="https://images.unsplash.com/photo-1592621385612-4d7129426394?w=900&h=1000&fit=crop&q=80" alt="Indian student on campus in Australia">
+      </div>
+        <div class="hp-card hp-testi">
+          <span class="quotemark">"</span>
+          <div>
+            <div class="qt">Found my flatmate here before I even landed in Sydney.</div>
+            <div class="nm"><b>Priya S.</b> · UNSW, 2024</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ════════ CREDIBILITY LINE ════════ -->
+<div class="sources">
+  <div class="sources-inner">
+    <span class="sources-lbl">Built on official data from</span>
+    <span class="sources-list">Jobs &amp; Skills Australia<i>·</i>Australian Bureau of Statistics<i>·</i>Dept. of Home Affairs<i>·</i>QS Rankings</span>
+  </div>
+</div>
+
+<!-- ════════ FEATURES (editorial lineup) ════════ -->
+<section class="section lineup">
+  <div class="lineup-head">
+    <div class="eyebrow">What Koott does</div>
+    <h2 class="h2">Three tools,<br>one journey.</h2>
+    <p class="lead" style="margin-top:1rem">No agents, no commission, no upsell. Just the three things that actually move you from "thinking about it" to landing day.</p>
+  </div>
+  <div class="lineup-list">
+    <a class="lineup-row" href="advisor.html">
+      <span class="idx">01</span>
+      <div class="lineup-body">
+        <div class="lineup-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M24 6l18 7-18 7-18-7 18-7z"/><path d="M13 16v9c0 3 5 5 11 5s11-2 11-5v-9"/><path d="M42 13v10"/></svg>
+        </div>
+        <h3 class="lineup-title">Course &amp; Career Advisor</h3>
+        <p class="lineup-desc">Tell us what you want to study, in your own words. Our AI matches you against Australia's Skills Priority List, recommends courses with real salary ranges, and flags regional options for a longer post-study visa.</p>
+      </div>
+      <svg class="lineup-arr" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+    </a>
+    <a class="lineup-row" href="communities.html">
+      <span class="idx">02</span>
+      <div class="lineup-body">
+        <div class="lineup-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 30V16a3 3 0 0 1 3-3h17a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3H16l-8 6z"/><path d="M22 21h0M28 21h0"/><path d="M37 18a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3v5l-5-5"/></svg>
+        </div>
+        <h3 class="lineup-title">City &amp; University Communities</h3>
+        <p class="lineup-desc">Focused rooms per city, university and intake. Find your cohort before you land — housing leads, visa answers, part-time jobs, from students who did it last year.</p>
+      </div>
+      <svg class="lineup-arr" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+    </a>
+    <a class="lineup-row" href="tools.html">
+      <span class="idx">03</span>
+      <div class="lineup-body">
+        <div class="lineup-icon">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M24 5l15 5v10c0 9-6.4 16.5-15 19-8.6-2.5-15-10-15-19V10l15-5z"/><path d="M17 23l5 5 9-10"/></svg>
+        </div>
+        <h3 class="lineup-title">Visa Compliance Tools</h3>
+        <p class="lineup-desc">Track your 48-hour fortnightly work limit, compare living costs across eight cities, and follow your application timeline from CoE to landing day.</p>
+      </div>
+      <svg class="lineup-arr" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+    </a>
+  </div>
+</section>
+
+<!-- ════════ HOW IT WORKS ════════ -->
+<div class="band">
+  <section class="section">
+    <div class="sec-head" style="max-width:640px;margin-bottom:2.8rem">
+      <div class="eyebrow">How it works</div>
+      <h2 class="h2" style="margin-top:.35rem">From a question to an offer letter.</h2>
+    </div>
+    <div class="how-grid">
+      <div class="how-step"><div class="how-num">STEP 01</div><div class="how-title">Tell us about you</div><div class="how-desc">Qualification, score, work experience, and English test result — the test is optional.</div></div>
+      <div class="how-step"><div class="how-num">STEP 02</div><div class="how-title">We match your skills</div><div class="how-desc">Cross-referenced against Australia's Skills Priority List 2024.</div></div>
+      <div class="how-step"><div class="how-num">STEP 03</div><div class="how-title">Get your course plan</div><div class="how-desc">Courses and universities with regional options, fees, and your 485 visa outcome.</div></div>
+      <div class="how-step"><div class="how-num">STEP 04</div><div class="how-title">Find your people</div><div class="how-desc">Drop into the community for your city, university, and intake year.</div></div>
+    </div>
+  </section>
+</div>
+
+<!-- ════════ TESTIMONIALS (editorial) ════════ -->
+<section class="section testi">
+  <div class="eyebrow">From students who've landed</div>
+  <blockquote class="testi-lead">
+    Moving alone felt huge. Having a room full of people who'd done it <em>months before me</em> — that's the part no agent ever gave me.
+    <cite><img src="https://images.unsplash.com/photo-1595152772835-219674b2a8a6?w=120&h=120&fit=crop&q=75" alt="Rahul"><span><b>Rahul T.</b>Engineering · RMIT</span></cite>
+  </blockquote>
+  <div class="testi-pair">
+    <blockquote class="testi-sm">
+      I was terrified of getting the visa rules wrong. The work-hours tracker meant I always knew exactly where I stood.
+      <cite><img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&h=120&fit=crop&q=75" alt="Meera"><span><b>Meera K.</b>Nursing · Deakin</span></cite>
+    </blockquote>
+    <blockquote class="testi-sm">
+      The advisor pointed me to a regional uni I'd never heard of — an extra year on my 485 visa and lower fees.
+      <cite><img src="https://images.unsplash.com/photo-1530268729831-4b0b9e170218?w=120&h=120&fit=crop&q=75" alt=""><span><b data-name>Arun</b>IT · Wollongong</span></cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ════════ FIGURES ════════ -->
+<section class="section figures-sec">
+  <div class="eyebrow">Why Australia, why now</div>
+  <div class="figures">
+    <div class="figure">
+      <span class="fig">286</span>
+      <p>Occupations on the 2024 Skills Priority List with national or regional shortage status.</p>
+    </div>
+    <div class="figure">
+      <span class="fig">4<i>yr</i></span>
+      <p>Post-study work visa (485) for graduates of regional Australian universities.</p>
+    </div>
+    <div class="figure">
+      <span class="fig"><i>$</i>105K</span>
+      <p>Median starting salary for IT graduates in shortage roles (ABS 2024).</p>
+    </div>
+  </div>
+  <p class="fine" style="margin-top:1.5rem">Sources: Jobs and Skills Australia Skills Priority List 2024 · ABS Labour Statistics · Department of Home Affairs.</p>
+</section>
+
+<!-- ════════ COMMUNITY ════════ -->
+<div class="band">
+  <section class="section comm-sec">
+    <div class="comm-copy">
+      <div class="eyebrow">Your people</div>
+      <h2 class="h2">You're not doing this alone.</h2>
+      <p class="lead" style="margin-top:1rem">Every city, university and intake has its own room — where students a step ahead share housing leads, visa answers, even airport pickups. Find your <span class="ml">കൂട്ട്</span> before you land.</p>
+      <div class="comm-proof">
+        <strong>New &amp; growing</strong> — be among the first in your city &amp; university room.
+      </div>
+      <a href="communities.html" class="btn btn-d btn-lg" style="margin-top:1.6rem">Browse communities
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+    <div class="comm-right">
+      <div class="comm-photo">
+        <img class="hp-fill" src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=900&h=600&fit=crop&q=80" alt="Indian students together">
+      </div>
+      <div class="comm-list">
+        <a href="communities.html" class="comm-line"><b>Sydney Students</b><span>342</span></a>
+        <a href="communities.html" class="comm-line"><b>UNSW · 2025 intake</b><span>118</span></a>
+        <a href="communities.html" class="comm-line"><b>Housing &amp; Flatmates</b><span>271</span></a>
+        <a href="communities.html" class="comm-line"><b>Arriving Soon</b><span>144</span></a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ════════ FINAL CTA ════════ -->
+<div class="cta-band">
+  <div class="cta-card">
+    <svg class="cta-skyline" viewBox="0 0 480 120" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M0 118h480"/>
+      <path d="M64 118c0-26 10-44 26-52-2 18 6 34 22 40"/>
+      <path d="M96 118c0-34 12-58 32-68-2 24 8 46 28 54"/>
+      <path d="M150 118c0-22 9-38 22-45-1 15 6 29 19 35"/>
+      <path d="M196 118V58l30-16v76"/>
+      <path d="M226 118V46l26 12v60"/>
+      <path d="M300 118V64m12 54V64m-6 0v-8m0 0l8 4m-8-4l-8 4"/>
+      <path d="M340 118V52h40v66"/>
+      <path d="M348 60h8v8h-8zM364 60h8v8h-8zM348 76h8v8h-8zM364 76h8v8h-8z"/>
+      <path d="M404 118V40c0-6 6-10 12-10s12 4 12 10v78"/>
+    </svg>
+    <div class="eyebrow" style="color:rgba(255,255,255,.5)">Get started</div>
+    <h2 class="h2">Find your course in three minutes.</h2>
+    <p>Free. No account needed. Built on data from Australian government sources — not agents.</p>
+    <div class="hero-btns" style="justify-content:center">
+      <a href="advisor.html" class="btn btn-p btn-lg">Start the Course Advisor
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <a href="communities.html" class="btn btn-s btn-lg">Browse communities</a>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ FOOTER ════════ -->
+<footer class="ft">
+  <div class="ft-inner">
+    <div class="ft-left">
+      <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="11" cy="16" r="10" fill="var(--spark)"/><circle cx="21" cy="16" r="10" fill="#111113"/></svg>
+      <span style="font-weight:800;font-size:1rem;letter-spacing:-.03em">koott</span>
+      <span class="ft-sig" style="margin-left:.5rem">Free &amp; open · no subscription</span>
+    </div>
+    <div class="ft-links">
+      <a href="advisor.html">Course Advisor</a>
+      <a href="communities.html">Communities</a>
+      <a href="whatsapp.html">WhatsApp</a>
+      <a href="funding.html">Funding</a>
+      <a href="arrival.html">Arrival</a>
+      <a href="tools.html">Visa Tools</a>
+    </div>
+    <span class="ft-sig"><span class="ml">കൂട്ട്</span> — friends, in Malayalam.</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="koott-config.js"></script>
+<script src="koott-auth.js"></script>
+</body>
+</html>

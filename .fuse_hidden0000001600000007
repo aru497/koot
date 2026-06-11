@@ -9,9 +9,6 @@
   <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <title>Admin — Koott</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght;500;600;700;800;900&family=JetBrains+Mono:wght;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="koott.css">
   <style>
     .admin-wrap { max-width:1100px; margin:0 auto; padding:2rem 1.5rem 4rem; }
