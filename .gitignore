@@ -11,3 +11,8 @@ ACTION-PLAN.md
 .DS_Store
 .fuse_hidden*
 supabase/.temp/
+
+# local secrets — NEVER committed (repo is public)
+*.local.md
+.env
+.env.*
