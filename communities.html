@@ -228,6 +228,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="koott-config.js"></script>
+<script src="koott-haptics.js"></script>
 <script>(function(){var c=window.KOOTT_CONFIG||{};if(!c.SABHA_HOST)return;var q=new URLSearchParams(location.search).get('c');var r=q&&c.SABHA_ROOMS&&c.SABHA_ROOMS[q];location.replace(r?c.SABHA_HOST+'/rooms/'+encodeURIComponent(r):c.SABHA_HOST);})()</script>
 <script src="koott-auth.js"></script>
 <script src="koott-consult.js"></script>
@@ -294,7 +295,7 @@ function buildCommList(filter='', items=COMMS){
     const list=items.filter(c=>c.cat===cat.val&&(!filter||c.name.toLowerCase().includes(filter.toLowerCase())));
     if(!list.length)return;
     html+=`<div class="cl-section">${cat.label}</div>`;
-    html+=list.map(c=>`<div class="comm-item${activeCom===c.id?' on':''}" onclick="selectComm('${c.id}')"><span class="ci-icon">${c.icon||'💬'}</span><span class="ci-name">${escHtml(c.name)}</span></div>`).join('');
+    html+=list.map(c=>`<div class="comm-item${activeCom===c.id?' on':''}" onclick="if(window.koottHaptic)window.koottHaptic('selection');selectComm('${c.id}')"><span class="ci-icon">${c.icon||'💬'}</span><span class="ci-name">${escHtml(c.name)}</span></div>`).join('');
   });
   document.getElementById('commScroll').innerHTML = html || '<div style="padding:1.5rem 1rem;text-align:center;color:var(--lt);font-size:.8125rem">No communities found</div>';
 }
@@ -325,16 +326,16 @@ function selectComm(id){
   }
 
   // Sabha not configured yet — show a holding message instead of faking a chat.
-  document.getElementById(‘chIcon’).textContent = c.icon || ‘💬’;
-  document.getElementById(‘chName’).textContent = c.name;
-  document.getElementById(‘chDesc’).textContent = ‘Live community chat’;
-  document.getElementById(‘emptyState’).style.display=’none’;
-  const ho=document.getElementById(‘handoff’); ho.style.display=’flex’;
-  document.getElementById(‘hoMark’).textContent = c.icon || ‘💬’;
-  document.getElementById(‘hoTitle’).textContent = c.name;
-  document.getElementById(‘hoOpen’).style.display=’none’;
-  document.getElementById(‘hoDesc’).textContent =
-    ‘Chat for this community is being set up. Check back shortly — meanwhile, browse the WhatsApp groups.’;
+  document.getElementById('chIcon').textContent = c.icon || '💬';
+  document.getElementById('chName').textContent = c.name;
+  document.getElementById('chDesc').textContent = 'Live community chat';
+  document.getElementById('emptyState').style.display='none';
+  const ho=document.getElementById('handoff'); ho.style.display='flex';
+  document.getElementById('hoMark').textContent = c.icon || '💬';
+  document.getElementById('hoTitle').textContent = c.name;
+  document.getElementById('hoOpen').style.display='none';
+  document.getElementById('hoDesc').textContent =
+    'Chat for this community is being set up. Check back shortly — meanwhile, browse the WhatsApp groups.';
 }
 
 // ── WhatsApp groups (unchanged feature — independent of chat) ──

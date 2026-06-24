@@ -344,8 +344,8 @@
   <h2>Find your course in three minutes.</h2>
   <p>Free. No account needed to start. Built on data from Australian government sources — not agents.</p>
   <div class="hero-cta" style="justify-content:center">
-    <a href="advisor.html" class="nb-btn pri lg">Start the Course Advisor →</a>
-    <a href="communities.html" class="nb-btn lg" style="background:#fff">Browse communities</a>
+    <a href="advisor.html" class="nb-btn pri lg" data-haptic="medium">Start the Course Advisor →</a>
+    <a href="communities.html" class="nb-btn lg" style="background:#fff" data-haptic="light">Browse communities</a>
   </div>
 </div></div></section>
 
@@ -368,6 +368,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="koott-config.js"></script>
+<script src="koott-haptics.js"></script>
 <script src="koott-auth.js"></script>
 <script src="koott-consult.js"></script>
 <script>
@@ -378,7 +379,7 @@
       const labels={city:'City community',uni:'University',stage:'By stage',other:'Board'};
       const esc=t=>String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
       const w=document.getElementById('commList');
-      if(w) w.innerHTML=data.slice(0,4).map(c=>`<a href="communities.html?c=${encodeURIComponent(c.id)}" class="comm-row"><b>${esc(c.name)}</b><span>${labels[c.cat]||'Community'}</span></a>`).join('');
+      if(w) w.innerHTML=data.slice(0,4).map(c=>`<a href="communities.html?c=${encodeURIComponent(c.id)}" class="comm-row" data-haptic="selection"><b>${esc(c.name)}</b><span>${labels[c.cat]||'Community'}</span></a>`).join('');
     }
   }catch(e){}
 })();

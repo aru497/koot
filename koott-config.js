@@ -20,8 +20,9 @@ window.KOOTT_CONFIG = {
   // each Koott community id -> its Sabha room id. Fill this in by running
   // create-sabha-rooms.py after you create a bot in Sabha (see SABHA-SETUP.md).
   // Any community NOT in this map falls back to opening the Sabha home page.
-  // Example once populated: { "field-it": 3, "syd": 4, "monash": 5 }
-  SABHA_ROOMS: {"sydney":2,"melb":3,"brisbane":4,"perth":5,"adelaide":6,"newcastle":7,"wollongong":8,"unsw25":9,"unimelb25":10,"monash25":11,"uon25":12,"uow25":13,"deciding":14,"applied":15,"arriving":16,"first60":17,"housing":18,"jobs":19},
+  // The field-* keys are the Course Advisor's interest circles (advisor.html
+  // FIELD_CIRCLES) -> their Sabha rooms (created 2026-06-25, ids 20-29).
+  SABHA_ROOMS: {"sydney":2,"melb":3,"brisbane":4,"perth":5,"adelaide":6,"newcastle":7,"wollongong":8,"unsw25":9,"unimelb25":10,"monash25":11,"uon25":12,"uow25":13,"deciding":14,"applied":15,"arriving":16,"first60":17,"housing":18,"jobs":19,"field-it":20,"field-health":21,"field-eng":22,"field-biz":23,"field-edu":24,"field-social":25,"field-creative":26,"field-science":27,"field-agri":28,"field-hosp":29},
 };
 
 // Create the shared client (requires supabase-js UMD loaded first).

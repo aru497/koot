@@ -33,7 +33,7 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Koott Visa & Compliance Tools","url":"https://koott.live/tools.html","applicationCategory":"EducationApplication","operatingSystem":"Web, iOS, Android","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"AUD"},"publisher":{"@id":"https://koott.live/#org"},"description":"Free visa-compliance tools for international students in Australia: cost calculator, work-hours and OSHC checks, application timeline."}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght;500;600;700;800;900&family=JetBrains+Mono:wght;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="koott.css">
   <script>(function(){try{var a=localStorage.getItem('koott_accent');document.documentElement.setAttribute('data-accent',a||'coral');var s=localStorage.getItem('koott_surface');if(s)document.documentElement.setAttribute('data-palette',s);}catch(e){document.documentElement.setAttribute('data-accent','coral');}})();</script>
   <style>
@@ -197,7 +197,7 @@
         <div class="cst" id="cSt">No hours logged yet</div>
         <div class="cno" id="cNo">Enter your daily hours above to check compliance.</div>
       </div>
-      <p class="source-note">Authority: <a href="https://immi.homeaffairs.gov.au/visas/already-have-a-visa/check-visa-details-and-conditions/see-your-visa-conditions?product=500" target="_blank">Dept. of Home Affairs — Subclass 500 Condition 8105</a> · <a href="https://www.fairwork.gov.au/find-help-for/visa-holders-and-migrants/student-visa-holders" target="_blank">Fair Work Australia — Student visa holders</a></p>
+      <p class="source-note">Authority: <a href="https://immi.homeaffairs.gov.au/visas/already-have-a-visa/check-visa-details-and-conditions/see-your-visa-conditions?product=500" target="_blank">Dept. of Home Affairs — Subclass 500 Condition 8105</a> · <a href="https://www.fairwork.gov.au/find-help-for/visa-holders-migrants" target="_blank">Fair Work Australia — Student visa holders</a></p>
     </div>
   </div>
 
@@ -219,7 +219,7 @@
       <div style="font-size:2rem;margin-bottom:.5rem">🔒</div>
       <div style="font-size:1.1rem;font-weight:750;margin-bottom:.35rem">Sign in to use the tools</div>
       <p style="font-size:.88rem;color:var(--mut);line-height:1.55;margin-bottom:1.25rem">The city cost calculator, timeline tracker, 48-hour work-limit calculator and 60-day checklist — free, after a quick Google sign-in.</p>
-      <button class="btn btn-p btn-lg" style="width:100%" onclick="koottAuth.signIn()">Sign in with Google →</button>
+      <button class="btn btn-p btn-lg" style="width:100%" data-haptic="medium" onclick="koottAuth.signIn()">Sign in with Google →</button>
     </div></div>
   </div><!-- #gateWrap -->
 
@@ -323,6 +323,7 @@ buildChk();
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="koott-config.js"></script>
+<script src="koott-haptics.js"></script>
 <script src="koott-auth.js"></script>
 <script src="koott-consult.js"></script>
 <script>

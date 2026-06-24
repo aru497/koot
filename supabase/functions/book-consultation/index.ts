@@ -51,6 +51,11 @@ Deno.serve(async (req: Request) => {
   const field_interest = clean(body.field_interest, 200)
   const message = clean(body.message, 4000)
   const preferred_time = clean(body.preferred_time, 120)
+  // What the student wants. Coerce to a real boolean; leave null if absent so an
+  // empty form stays blank rather than recording a fake "false".
+  const asBool = (v: unknown) => (typeof v === 'boolean' ? v : v === 'true' ? true : v === 'false' ? false : null)
+  const wants_call = asBool(body.wants_call)
+  const wants_arrival_kit = asBool(body.wants_arrival_kit)
   const source_page = clean(body.source_page, 200)
   // user_id is client-supplied; only accept a well-formed UUID, else null.
   // (Without it, a non-UUID string would make the whole insert fail and the
@@ -74,7 +79,7 @@ Deno.serve(async (req: Request) => {
     },
     body: JSON.stringify({
       name, email, phone, study_level, field_interest, message,
-      preferred_time, source_page, user_id,
+      preferred_time, wants_call, wants_arrival_kit, source_page, user_id,
     }),
   })
   if (!insertRes.ok) {
@@ -86,8 +91,12 @@ Deno.serve(async (req: Request) => {
   // 2. Email you (best-effort — saving already succeeded)
   let emailed = false
   if (RESEND_API_KEY) {
+    const wants: string[] = []
+    if (wants_call) wants.push('1:1 call')
+    if (wants_arrival_kit) wants.push('Arrival kit')
     const rows = [
       ['Name', name], ['Email', email], ['Phone', phone],
+      ['Wants', wants.length ? wants.join(' + ') : null],
       ['Study level', study_level], ['Field of interest', field_interest],
       ['Preferred time', preferred_time], ['Message', message],
       ['From page', source_page], ['Signed-in user id', user_id],
@@ -106,7 +115,7 @@ Deno.serve(async (req: Request) => {
           from: `Koott Consultations <${FROM_EMAIL}>`,
           to: [TO_EMAIL],
           reply_to: email,
-          subject: `1:1 request — ${name}`,
+          subject: `${wants.length ? wants.join(' + ') : 'Consultation'} request — ${name}`,
           html,
         }),
       })

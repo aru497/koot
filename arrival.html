@@ -32,7 +32,7 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://koott.live/"},{"@type":"ListItem","position":2,"name":"Arrival Kit","item":"https://koott.live/arrival.html"}]}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght;500;600;700;800;900&family=JetBrains+Mono:wght;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="koott.css">
   <style>
     body { background: var(--bg-sub); }
@@ -154,7 +154,7 @@
             <button class="mode-btn" data-mode="TRANSIT" onclick="setMode('TRANSIT',this)">🚆 Transit</button>
             <button class="mode-btn" data-mode="DRIVING" onclick="setMode('DRIVING',this)">🚗 Drive</button>
           </div>
-          <div style="margin-top:.75rem"><button class="btn btn-p" onclick="getDirections()">Get directions →</button></div>
+          <div style="margin-top:.75rem"><button class="btn btn-p" data-haptic="medium" onclick="getDirections()">Get directions →</button></div>
           <div id="gmap" style="height:340px;border-radius:var(--r);margin-top:1rem;background:var(--bg-sub);display:flex;align-items:center;justify-content:center;text-align:center;color:var(--lt);font-size:.82rem;padding:1rem">Loading the map…</div>
           <div id="dirSummary" style="margin-top:.8rem;font-size:.875rem;color:var(--txt)"></div>
           <div id="dirSteps" class="gm-step"></div>
@@ -163,8 +163,8 @@
         <p class="sec-sub" style="margin:.6rem 0 .3rem">Open an account online up to ~3 months before you fly, transfer funds in, then activate with your passport at a branch. The big four have fee-free international-student accounts:</p>
         <div class="links">
           <a href="https://www.commbank.com.au/moving-to-australia.html" target="_blank" rel="noopener">CommBank ↗</a>
-          <a href="https://www.anz.com.au/personal/center/moving-to-australia/" target="_blank" rel="noopener">ANZ ↗</a>
-          <a href="https://www.nab.com.au/personal/life-moments/international/moving-to-australia" target="_blank" rel="noopener">NAB ↗</a>
+          <a href="https://www.anz.com.au/personal/bank-accounts/everyday-accounts/migrant-banking/" target="_blank" rel="noopener">ANZ ↗</a>
+          <a href="https://www.nab.com.au/personal/international-banking/moving-to-australia" target="_blank" rel="noopener">NAB ↗</a>
           <a href="https://www.westpac.com.au/personal-banking/bank-accounts/transaction/moving-to-australia/" target="_blank" rel="noopener">Westpac ↗</a>
         </div>
       </div>
@@ -203,7 +203,7 @@
         <div style="font-size:2rem;margin-bottom:.5rem">🔒</div>
         <div style="font-size:1.1rem;font-weight:750;margin-bottom:.35rem">Sign in to unlock your kit</div>
         <p style="font-size:.88rem;color:var(--mut);line-height:1.55;margin-bottom:1.25rem">The readiness checker, the nearby-bank finder, TFN steps and your state's transport &amp; service links — free, after a quick Google sign-in.</p>
-        <button class="btn btn-p btn-lg" style="width:100%" onclick="koottAuth.signIn()">Sign in with Google →</button>
+        <button class="btn btn-p btn-lg" style="width:100%" data-haptic="medium" onclick="koottAuth.signIn()">Sign in with Google →</button>
       </div>
     </div>
   </div><!-- /#gateWrap -->
@@ -212,6 +212,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="koott-config.js"></script>
+<script src="koott-haptics.js"></script>
 <script src="koott-auth.js"></script>
 <script src="koott-consult.js"></script>
 <script>
@@ -342,7 +343,22 @@ async function getDirections(){
   if(!routeLayer){ routeLayer=L.polyline([origin,dest],{color:'#e8622c',weight:4,dashArray:'6'}).addTo(lmap); lmap.fitBounds([origin,dest],{padding:[40,40]}); }
   const mode = travelMode==='DRIVING'?'driving':travelMode==='TRANSIT'?'transit':'walking';
   const g='https://www.google.com/maps/dir/?api=1&origin='+origin[0]+','+origin[1]+'&destination='+dest[0]+','+dest[1]+'&travelmode='+mode;
-  sum.innerHTML = (dist? ('<strong>'+(dist/1000).toFixed(1)+' km</strong> by road · about <strong>'+Math.round(dur/60)+' min</strong> driving'):'Route shown on the map')+'.';
+  // The public OSRM demo only routes by car, so dist/dur are driving figures.
+  // Report honestly per the chosen mode: real driving time, a labelled walking
+  // estimate (~5 km/h), and for transit defer to Google Maps for live times.
+  if(!dist){
+    sum.innerHTML = 'Route shown on the map.';
+  } else {
+    const km = (dist/1000).toFixed(1);
+    if(travelMode==='DRIVING'){
+      sum.innerHTML = '<strong>'+km+' km</strong> by road · about <strong>'+Math.round(dur/60)+' min</strong> driving.';
+    } else if(travelMode==='WALKING'){
+      const walkMin = Math.max(1, Math.round(dist/1000/5*60));
+      sum.innerHTML = '<strong>'+km+' km</strong> · roughly <strong>'+walkMin+' min</strong> on foot <span style="color:var(--lt)">(estimate)</span>.';
+    } else {
+      sum.innerHTML = '<strong>'+km+' km</strong> away · transit times vary — see live options in Google Maps below.';
+    }
+  }
   steps.innerHTML='<a class="btn btn-p" href="'+g+'" target="_blank" rel="noopener" style="margin-top:.55rem;display:inline-block">Turn-by-turn ('+mode+') →</a><div style="font-size:.74rem;color:var(--lt);margin-top:.4rem">Step-by-step walking & transit directions open in Google Maps — free, no account.</div>';
 }
 async function findBanksMap(){

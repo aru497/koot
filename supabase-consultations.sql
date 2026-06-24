@@ -20,10 +20,16 @@ create table if not exists public.consultations (
   field_interest text,        -- free text: what they want to study
   message        text,        -- what they need help with
   preferred_time text,        -- when they'd like to be contacted
+  wants_call         boolean,  -- ticked "a free 1:1 call with an advisor"
+  wants_arrival_kit  boolean,  -- ticked "a free arrival kit"
   source_page    text,        -- which koott page the request came from
   user_id        uuid,        -- Supabase auth user id if signed in, else NULL
   status         text not null default 'new'  -- new / contacted / closed
 );
+
+-- Backfill the two interest columns when re-running against an older table.
+alter table public.consultations add column if not exists wants_call        boolean;
+alter table public.consultations add column if not exists wants_arrival_kit boolean;
 
 create index if not exists consultations_created_idx on public.consultations (created_at desc);
 create index if not exists consultations_status_idx  on public.consultations (status);

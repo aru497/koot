@@ -30,7 +30,7 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://koott.live/"},{"@type":"ListItem","position":2,"name":"WhatsApp Groups","item":"https://koott.live/whatsapp.html"}]}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght;500;600;700;800;900&family=JetBrains+Mono:wght;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="koott.css">
   <script>(function(){try{var a=localStorage.getItem('koott_accent');document.documentElement.setAttribute('data-accent',a||'coral');var s=localStorage.getItem('koott_surface');if(s)document.documentElement.setAttribute('data-palette',s);}catch(e){document.documentElement.setAttribute('data-accent','coral');}})();</script>
   <style>
@@ -121,7 +121,7 @@
       <h1 class="display">Find your people<br>before you land.</h1>
       <p class="lead">Verified WhatsApp groups for Kerala &amp; Indian students in Australia — organised by city and intake. Join one, or post your own for others to find.</p>
       <div class="wa-actions">
-        <button class="btn btn-p btn-lg" onclick="addDlg.showModal()">
+        <button class="btn btn-p btn-lg" data-haptic="medium" onclick="addDlg.showModal()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
           Add your group
         </button>
@@ -211,13 +211,14 @@
       <label>Short description (optional)</label>
       <textarea id="wa_desc" placeholder="Who's it for, what's it about?"></textarea>
     </div>
-    <button class="btn btn-p btn-lg" type="submit">Submit for review</button>
+    <button class="btn btn-p btn-lg" data-haptic="medium" type="submit">Submit for review</button>
     <p class="wf-note">You'll be asked to sign in with Google so we can credit your submission and reduce spam.</p>
   </form>
 </dialog>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="koott-config.js"></script>
+<script src="koott-haptics.js"></script>
 <script src="koott-auth.js"></script>
 <script src="koott-consult.js"></script>
 <script>

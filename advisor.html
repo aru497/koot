@@ -31,7 +31,7 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Koott Course Advisor","url":"https://koott.live/advisor.html","applicationCategory":"EducationApplication","operatingSystem":"Web, iOS, Android","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"AUD"},"publisher":{"@id":"https://koott.live/#org"},"description":"AI course-matching for international students in Australia, built on real Australian Government skills and occupation data. Free."}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght;500;600;700;800;900&family=JetBrains+Mono:wght;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="koott.css">
   <script>(function(){try{var a=localStorage.getItem('koott_accent');document.documentElement.setAttribute('data-accent',a||'coral');var s=localStorage.getItem('koott_surface');if(s)document.documentElement.setAttribute('data-palette',s);}catch(e){document.documentElement.setAttribute('data-accent','coral');}})();</script>
   <style>
@@ -185,7 +185,7 @@
       <label>Where are you from? <span>(optional)</span></label>
       <input type="text" id="ag_region" placeholder="e.g. Kerala, India">
     </div>
-    <div class="step-nav"><span></span><button class="btn btn-p btn-lg" onclick="agentStart()">Get my match →</button></div>
+    <div class="step-nav"><span></span><button class="btn btn-p btn-lg" data-haptic="medium" onclick="agentStart()">Get my match →</button></div>
   </div>
 
   <!-- ══ STEPS 1 & 2 ══ -->
@@ -278,7 +278,7 @@
 
       <div class="step-nav">
         <span></span>
-        <button class="btn btn-p" onclick="goStep2()">Continue →</button>
+        <button class="btn btn-p" data-haptic="light" onclick="goStep2()">Continue →</button>
       </div>
     </div>
 
@@ -349,7 +349,7 @@
 
       <div class="step-nav">
         <button class="btn btn-s" onclick="goStep1()">← Back</button>
-        <button class="btn btn-p" onclick="startAnalysis()">Analyse my profile →</button>
+        <button class="btn btn-p" data-haptic="medium" onclick="startAnalysis()">Analyse my profile →</button>
       </div>
     </div>
   </div>
@@ -429,7 +429,7 @@
 
     <p class="source-note" style="margin-top:1.25rem;text-align:center">
       Data sources: <a href="https://www.jobsandskills.gov.au/data/skills-priority-list" target="_blank">Skills Priority List 2024</a> ·
-      <a href="https://lmip.gov.au" target="_blank">LMIP Labour Market</a> ·
+      <a href="https://www.jobsandskills.gov.au/data" target="_blank">Jobs &amp; Skills Australia</a> ·
       <a href="https://cricos.education.gov.au" target="_blank">CRICOS</a> ·
       <a href="https://www.abs.gov.au" target="_blank">ABS Statistics</a> ·
       <a href="https://immi.homeaffairs.gov.au" target="_blank">Department of Home Affairs</a>
@@ -440,6 +440,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="koott-config.js"></script>
+<script src="koott-haptics.js"></script>
 <script src="koott-auth.js"></script>
 <script src="koott-consult.js"></script>
 <script>
@@ -926,7 +927,7 @@ function showResults() {
     </div>
     <div style="margin-bottom:.5rem;font-size:.875rem;font-weight:600">Job titles you can apply for:</div>
     <div class="job-chips">${top.jobs.map(j=>`<span class="job-chip">${j}</span>`).join('')}</div>
-    <p class="source-note" style="margin-top:.75rem">Source: <a href="https://lmip.gov.au" target="_blank">LMIP Labour Market Information Portal</a> · <a href="https://www.abs.gov.au/statistics/labour/earnings-and-work-hours" target="_blank">ABS Employee Earnings 2024</a> · <a href="https://qilt.edu.au" target="_blank">QILT Graduate Outcomes Survey 2024</a></p>
+    <p class="source-note" style="margin-top:.75rem">Source: <a href="https://www.jobsandskills.gov.au/data" target="_blank">Jobs &amp; Skills Australia (Labour Market data)</a> · <a href="https://www.abs.gov.au/statistics/labour/earnings-and-work-hours" target="_blank">ABS Employee Earnings 2024</a> · <a href="https://qilt.edu.au" target="_blank">QILT Graduate Outcomes Survey 2024</a></p>
   </div>`;
   document.getElementById('r_jobMarket').innerHTML = jobMarketHtml;
 

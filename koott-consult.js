@@ -1,12 +1,11 @@
-/* ══════════════════════════════════════════════════════════
-   Koott — 1:1 consultation widget (self-contained)
-   Injects a floating "Book a free 1:1 call" button + a dialog.
+/* Koott — 1:1 consultation widget (self-contained)
+   Injects a floating "Talk to an expert" button + a dialog.
    Posts to the `book-consultation` Edge Function, which saves the
    request and emails the Koott team. Include AFTER koott-config.js
    (and koott-auth.js if you want the signed-in user attached):
      <script src="koott-consult.js"></script>
    Trigger it from any element with: onclick="koottConsult.open()"
-══════════════════════════════════════════════════════════ */
+*/
 (function () {
   function cfg() { return window.KOOTT_CONFIG || {}; }
 
@@ -43,6 +42,10 @@
       '.kc-f:focus{outline:none;box-shadow:var(--sh-sm,3px 3px 0 #141414)}' +
       'textarea.kc-f{resize:vertical;min-height:64px}' +
       '.kc-row{display:flex;gap:.6rem}.kc-row>div{flex:1}' +
+      '.kc-wants{display:flex;flex-direction:column;gap:.45rem;margin:.3rem 0 .2rem}' +
+      '.kc-want{display:flex;align-items:flex-start;gap:.55rem;font-size:.86rem;font-weight:600;' +
+        'color:var(--txt,#141414);cursor:pointer;line-height:1.35}' +
+      '.kc-want input{width:17px;height:17px;margin-top:1px;accent-color:#e8632a;cursor:pointer;flex-shrink:0}' +
       '.kc-msg{font-size:.82rem;margin-top:.6rem;font-weight:600}' +
       '.kc-x{border:2px solid var(--ink,#141414);background:var(--bg,#fff);border-radius:6px;cursor:pointer;' +
         'font-weight:800;padding:.15rem .5rem;font-family:var(--font,Inter,sans-serif)}';
@@ -56,8 +59,8 @@
     d.innerHTML =
       '<form class="kc-in" id="kcForm" onsubmit="return koottConsult._submit(event)">' +
         '<div class="kc-hd"><div class="kc-ttl">Talk to an expert</div>' +
-          '<button type="button" class="kc-x" onclick="koottConsult.close()">✕</button></div>' +
-        ‘<div class="kc-sub">Our advisors have been through this journey. Get free, honest guidance on courses, universities, visa &amp; funding — no agents, no commission.</div>’ +
+          '<button type="button" class="kc-x" onclick="koottConsult.close()">&#10005;</button></div>' +
+        '<div class="kc-sub">Our advisors have been through this journey. Get free, honest guidance on courses, universities, visa &amp; funding &mdash; no agents, no commission.</div>' +
         // Honeypot: hidden from humans; bots fill it and get silently dropped.
         '<input id="kc_hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" ' +
           'style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" />' +
@@ -70,14 +73,19 @@
           '<div><label class="kc-lbl">Study level</label><select class="kc-f" id="kc_level">' +
             '<option value="">Not sure yet</option><option>Undergraduate</option><option>Postgraduate / Masters</option><option>PhD / Research</option><option>Diploma / VET</option></select></div>' +
         '</div>' +
+        '<label class="kc-lbl">What would you like?</label>' +
+        '<div class="kc-wants">' +
+          '<label class="kc-want"><input type="checkbox" id="kc_want_call" checked> A free 1:1 call with an advisor</label>' +
+          '<label class="kc-want"><input type="checkbox" id="kc_want_kit"> A free arrival kit (bank, SIM, transport &amp; first-week checklist)</label>' +
+        '</div>' +
         '<label class="kc-lbl">What do you want to study?</label>' +
-        '<input class="kc-f" id="kc_field" maxlength="200" placeholder="e.g. Nursing, IT, Business…">' +
+        '<input class="kc-f" id="kc_field" maxlength="200" placeholder="e.g. Nursing, IT, Business...">' +
         '<label class="kc-lbl">How can we help?</label>' +
-        '<textarea class="kc-f" id="kc_msg" maxlength="4000" placeholder="Your question, timeline, anything you’re unsure about…"></textarea>' +
+        '<textarea class="kc-f" id="kc_msg" maxlength="4000" placeholder="Your question, timeline, anything you are unsure about..."></textarea>' +
         '<label class="kc-lbl">Best time to reach you</label>' +
         '<input class="kc-f" id="kc_time" maxlength="120" placeholder="e.g. weekday evenings IST">' +
         '<div class="kc-msg" id="kc_status" style="display:none"></div>' +
-        '<button class="btn btn-p" type="submit" id="kc_submit" style="width:100%;justify-content:center;margin-top:1rem">Book my free session →</button>' +
+        '<button class="btn btn-p" type="submit" id="kc_submit" style="width:100%;justify-content:center;margin-top:1rem">Book my free session &rarr;</button>' +
         '<p style="font-size:.7rem;color:var(--lt,#6b7280);text-align:center;margin-top:.6rem;font-family:var(--mono,monospace)">We only use this to contact you about your study plans.</p>' +
       '</form>';
     document.body.appendChild(d);
@@ -99,7 +107,7 @@
         '<span class="kc-fm">Talk to an expert</span>' +
         '<span class="kc-fs">Book a free call</span>' +
       '</div>';
-    b.onclick = function () { window.koottConsult.open(); };
+    b.onclick = function () { if (window.koottHaptic) window.koottHaptic('rigid'); window.koottConsult.open(); };
     document.body.appendChild(b);
   }
 
@@ -130,12 +138,13 @@
         name: val('kc_name'), email: val('kc_email'), phone: val('kc_phone'),
         study_level: val('kc_level'), field_interest: val('kc_field'),
         message: val('kc_msg'), preferred_time: val('kc_time'),
+        wants_call: checked('kc_want_call'), wants_arrival_kit: checked('kc_want_kit'),
         source_page: location.pathname, user_id: u ? u.id : null,
         hp_url: val('kc_hp'),
       };
       if (!payload.name) { setStatus('Please enter your name.', 'err'); return false; }
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(payload.email || '')) { setStatus('Please enter a valid email.', 'err'); return false; }
-      btn.disabled = true; var old = btn.textContent; btn.textContent = 'Sending…';
+      btn.disabled = true; var old = btn.textContent; btn.textContent = 'Sending...';
       setStatus('', '');
       fetch(c.SUPABASE_URL + '/functions/v1/book-consultation', {
         method: 'POST',
@@ -144,15 +153,18 @@
       }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
         .then(function (res) {
           if (res.ok && res.j && res.j.ok) {
+            if (window.koottHaptic) window.koottHaptic('success');
             document.getElementById('kcForm').reset();
-            setStatus('✅ Thanks! We’ve got your request and will be in touch soon.', 'ok');
-            btn.textContent = 'Sent ✓';
+            setStatus('Thanks! We have got your request and will be in touch soon.', 'ok');
+            btn.textContent = 'Sent';
             setTimeout(function () { window.koottConsult.close(); btn.disabled = false; btn.textContent = old; }, 2200);
           } else {
+            if (window.koottHaptic) window.koottHaptic('error');
             setStatus((res.j && res.j.error) || 'Something went wrong. Please try again.', 'err');
             btn.disabled = false; btn.textContent = old;
           }
         }).catch(function () {
+          if (window.koottHaptic) window.koottHaptic('error');
           setStatus('Network error — please check your connection and try again.', 'err');
           btn.disabled = false; btn.textContent = old;
         });
@@ -160,6 +172,7 @@
     },
   };
   function val(id) { var e = document.getElementById(id); return e ? e.value.trim() : ''; }
+  function checked(id) { var e = document.getElementById(id); return e ? !!e.checked : false; }
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function () { injectCss(); buildFab(); });
