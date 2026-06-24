@@ -415,6 +415,9 @@
     <div class="rs-label" style="margin-top:1.5rem">Visa &amp; Stay Outcome</div>
     <div id="r_visa"></div>
 
+    <!-- Connect with your field circle (people interested in the same course) -->
+    <div id="r_connect" style="margin-top:1.5rem"></div>
+
     <!-- Community CTA -->
     <div class="community-cta" style="margin-top:1.5rem" id="r_commCTA">
       <div>
@@ -438,6 +441,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="koott-config.js"></script>
 <script src="koott-auth.js"></script>
+<script src="koott-consult.js"></script>
 <script>
 // ══════════════════════════════════════════════════════════════════
 // GOVERNMENT DATA — sourced from Australian government publications
@@ -952,6 +956,9 @@ function showResults() {
   const city = topCourses[0]?.uni.city||'Australia';
   document.getElementById('r_ctaTitle').textContent=`💬 Join the ${city} student community`;
   document.getElementById('r_ctaText').textContent=`Connect with other ${top.title.split('/')[0].trim()} students in ${city}. Housing, work rights, orientation tips.`;
+
+  // ── Connect with your field circle (people interested in the same course) ──
+  try{ renderConnect(top); }catch(e){}
 }
 
 function resetAdvisor(){
@@ -1017,6 +1024,80 @@ function renderAgentNote(){
   var courses=(window.__agentCourses||[]).map(function(c){return '<span class="badge" style="margin:.12rem .15rem 0 0;display:inline-block">'+c+'</span>';}).join('');
   d.innerHTML='<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.4rem"><span style="font-size:1.1rem">✨</span><strong style="font-size:.95rem">Your AI match</strong></div><p style="font-size:.9rem;line-height:1.6;margin:0 0 '+(courses?'.6rem':'0')+'">'+window.__agentReason+'</p>'+(courses?'<div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--lt);margin:.2rem 0 .3rem">Courses to explore</div>'+courses:'');
   R.insertBefore(d, R.firstChild);
+}
+
+// ── Interest circles: connect a matched student with people exploring the same field ──
+// Keys are occupation categories (see OCCUPATIONS[].cat); ids match supabase-interest-circles.sql.
+var FIELD_CIRCLES = {
+  IT:          {id:'field-it',       name:'IT & Software',            icon:'💻'},
+  Healthcare:  {id:'field-health',   name:'Healthcare & Nursing',     icon:'🏥'},
+  Engineering: {id:'field-eng',      name:'Engineering',              icon:'⚙️'},
+  Business:    {id:'field-biz',      name:'Business & Commerce',      icon:'📊'},
+  Education:   {id:'field-edu',      name:'Education & Teaching',     icon:'📚'},
+  SocialWork:  {id:'field-social',   name:'Social Work & Community',  icon:'🤝'},
+  Creative:    {id:'field-creative', name:'Creative & Design',        icon:'🎨'},
+  Science:     {id:'field-science',  name:'Science & Research',       icon:'🔬'},
+  Agriculture: {id:'field-agri',     name:'Agriculture & Environment',icon:'🌿'},
+  Hospitality: {id:'field-hosp',     name:'Hospitality & Tourism',    icon:'🍽️'}
+};
+var CIRCLE_BY_ID = {};
+Object.keys(FIELD_CIRCLES).forEach(function(k){ CIRCLE_BY_ID[FIELD_CIRCLES[k].id] = FIELD_CIRCLES[k]; });
+
+async function renderConnect(top){
+  var box=document.getElementById('r_connect'); if(!box || !top) return;
+  var circle = FIELD_CIRCLES[top.cat];
+  if(!circle){ box.style.display='none'; return; }
+  box.style.display='';
+  // Honest social proof from the leads table (graceful if the RPC isn't deployed yet).
+  var n=0;
+  try{ var r=await window.sb.rpc('field_interest_count',{p_cat:top.cat}); if(r && !r.error && typeof r.data==='number') n=r.data; }catch(e){}
+  var line = n>=5
+    ? (n+' students have already matched into '+circle.name+' — meet them in the circle.')
+    : ('Be one of the first in the '+circle.name+' circle and connect with students exploring the same path.');
+  box.innerHTML =
+    '<div class="community-cta" style="background:var(--accent-bg);border-color:var(--accent-bd)">'
+    +   '<div>'
+    +     '<strong style="display:block;font-size:.9rem;color:var(--accent-dk);margin-bottom:.15rem">'+circle.icon+' Meet your '+circle.name+' circle</strong>'
+    +     '<span style="font-size:.8125rem;color:var(--accent-dk)">'+line+'</span>'
+    +   '</div>'
+    +   '<div style="display:flex;gap:.5rem;flex-wrap:wrap">'
+    +     '<button class="btn btn-p btn-sm" onclick="connectJoin(\''+circle.id+'\',this)">Yes, connect me →</button>'
+    +     '<button class="btn btn-s btn-sm" onclick="dismissConnect()">Not now</button>'
+    +   '</div>'
+    + '</div>';
+}
+function dismissConnect(){ var b=document.getElementById('r_connect'); if(b) b.style.display='none'; }
+async function connectJoin(circleId, btn){
+  var u = window.koottAuth && koottAuth.user;
+  if(!u){ if(window.koottAuth) koottAuth.signIn(); return; }
+  var circle = CIRCLE_BY_ID[circleId] || {id:circleId, name:'your', icon:'🤝'};
+  if(btn){ btn.disabled=true; btn.textContent='Connecting…'; }
+  var err=null;
+  try{ var r=await window.sb.from('memberships').insert({user_id:u.id, community_id:circleId}); err=r.error; }
+  catch(e){ err=e; }
+  if(err && !/duplicate/i.test(err.message||'')){
+    if(btn){ btn.disabled=false; btn.textContent='Yes, connect me →'; }
+    alert('Could not connect right now: '+(err.message||err)); return;
+  }
+  var box=document.getElementById('r_connect'); if(!box) return;
+  box.innerHTML =
+    '<div class="community-cta">'
+    +   '<div>'
+    +     '<strong style="display:block;font-size:.9rem;color:#15803d;margin-bottom:.15rem">✅ You\'re in the '+circle.name+' circle!</strong>'
+    +     '<span style="font-size:.8125rem;color:#166534">Say hi and meet students exploring the same path as you.</span>'
+    +   '</div>'
+    +   '<a href="'+circleChatUrl(circle.id)+'" target="_blank" rel="noopener" class="wa-btn">Open the circle →</a>'
+    + '</div>';
+}
+// Where a circle's live chat lives. Sabha rooms use integer ids (no slugs), so
+// we look up the mapping from koott-config; if it's not set yet we fall back to
+// the communities directory, which itself routes into Sabha.
+function circleChatUrl(circleId){
+  var cfg = window.KOOTT_CONFIG || {};
+  var host = cfg.SABHA_HOST || '';
+  var roomId = (cfg.SABHA_ROOMS || {})[circleId];
+  if(host && roomId) return host + '/rooms/' + encodeURIComponent(roomId);
+  return 'communities.html?c=' + encodeURIComponent(circleId);
 }
 window.koottAuth && koottAuth.onChange(function(u){
   if(!u) return;

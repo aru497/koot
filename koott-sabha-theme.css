@@ -1,0 +1,104 @@
+/* ════════════════════════════════════════════════════════════════
+   Koott × Sabha — custom theme
+   Paste this into Sabha:  Admin →  /accounts/custom_styles/edit
+   (the "Custom CSS" editor). It is stored in the DB and injected
+   inline into <head> on every page, so it overrides the bundled CSS.
+
+   It restyles Sabha into Koott's neobrutalist language:
+     • warm paper background, near-black ink (#141414) borders
+     • orange accent #E8632A (links, primary actions, selection)
+     • Inter typeface, hard offset shadows, softly-squared corners
+
+   NOTE on the variables: Sabha's real accent var is --color-link
+   (NOT --color-primary, which does not exist in the source). We
+   override the semantic --color-* vars and the Tailwind tokens that
+   actually drive the UI. Koott has no dark mode, so we pin a single
+   warm light theme regardless of the OS color scheme.
+   ──────────────────────────────────────────────────────────────── */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  /* Koott palette */
+  --koott-orange: #e8632a;
+  --koott-orange-dk: #c8501c;
+  --koott-ink: #141414;
+  --koott-paper: #faf8f4;
+  --koott-paper-2: #f4f2ec;
+
+  /* ── Sabha semantic colors (confirmed vars) ── */
+  --color-link: var(--koott-orange);
+  --color-text: var(--koott-ink);
+  --color-text-reversed: #ffffff;
+  --color-border: var(--koott-ink);
+  --color-bg: var(--koott-paper);
+  --color-selected: var(--koott-orange);
+  --color-selected-dark: var(--koott-orange-dk);
+  --color-contrast: var(--koott-ink);
+
+  /* ── Tailwind v4 token layer ── */
+  --primary: var(--koott-orange);
+  --primary-foreground: var(--koott-ink);
+  --secondary: var(--koott-paper-2);
+  --accent: var(--koott-orange);
+  --accent-foreground: var(--koott-ink);
+  --ring: var(--koott-orange);
+  --border: var(--koott-ink);
+  --input: var(--koott-ink);
+  --control-border: var(--koott-ink);
+
+  /* Typeface */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+}
+
+/* Pin the light theme even when the OS is in dark mode (Koott is light-only). */
+:root:not([data-theme]),
+[data-theme="dark"] {
+  --color-bg: var(--koott-paper);
+  --color-text: var(--koott-ink);
+  --color-border: var(--koott-ink);
+  --color-link: var(--koott-orange);
+}
+
+/* Warm paper background with Koott's faint ink grid. */
+body {
+  background-color: var(--koott-paper);
+  background-image:
+    linear-gradient(rgba(20,20,20,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20,20,20,.05) 1px, transparent 1px);
+  background-size: 28px 28px;
+  color: var(--koott-ink);
+}
+
+/* Links pick up the orange accent. */
+a { color: var(--koott-orange); }
+
+/* Buttons → neobrutalist: ink border + hard offset shadow, press on hover.
+   Targets common button shapes; harmless where selectors don't match. */
+button.btn, .btn, input[type="submit"], button[type="submit"] {
+  border: 2px solid var(--koott-ink) !important;
+  border-radius: 10px !important;
+  box-shadow: 3px 3px 0 var(--koott-ink) !important;
+  font-weight: 700;
+  transition: transform .08s, box-shadow .08s;
+}
+button.btn:hover, .btn:hover, input[type="submit"]:hover, button[type="submit"]:hover {
+  transform: translate(2px,2px) !important;
+  box-shadow: 1px 1px 0 var(--koott-ink) !important;
+}
+
+/* Primary / send buttons fill in Koott orange. */
+.btn--primary, .btn-primary, [type="submit"].btn {
+  background: var(--koott-orange) !important;
+  color: var(--koott-ink) !important;
+}
+
+/* Inputs / text fields get the ink border. */
+input, textarea, select, .input, .txt {
+  border-color: var(--koott-ink) !important;
+}
+
+/* Cards / message composer surfaces sit on white with an ink edge. */
+.card, .message, .composer, .box, dialog {
+  border-color: var(--koott-ink);
+}

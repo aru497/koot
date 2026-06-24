@@ -1,0 +1,52 @@
+# Sabha chat — self-hosted deployment
+#
+# 1. Copy this to your VPS as docker-compose.yml
+# 2. Create a .env file (see below) on the same server
+# 3. Run: docker compose up -d
+#
+# Minimum server: Ubuntu 22.04+, 2 GB RAM, 1 CPU, 40 GB disk
+# Recommended:    Ubuntu 24.04,  4 GB RAM, 2 CPU, 80 GB disk
+#
+# ── .env template ────────────────────────────────────────────────────────────
+# APP_HOST=chat.koott.live
+# TLS_DOMAIN=chat.koott.live
+# SECRET_KEY_BASE=<run: openssl rand -hex 64>
+# APP_NAME=Koott Communities
+# APP_SHORT_NAME=Koott Chat
+# APP_DESCRIPTION=Chat for Indian students in Australia
+#
+# # Email — sign up at resend.com (free tier is enough to start)
+# RESEND_API_KEY=re_...
+# SUPPORT_EMAIL=hello@koott.live
+# MAILER_FROM_NAME=Koott Communities
+# MAILER_FROM_EMAIL=hello@koott.live
+#
+# # Web push (run: bundle exec rails webpush:generate_vapid_keys inside the container)
+# VAPID_PUBLIC_KEY=
+# VAPID_PRIVATE_KEY=
+#
+# # SSO — must match SABHA_SSO_SECRET in your Supabase Edge Function secrets
+# AUTH_METHOD=sso
+# SSO_PROVIDER_URL=https://koott.live/sso.html
+# SSO_SECRET=<generate: openssl rand -hex 32>
+#
+# # Cookie domain — must match APP_HOST
+# COOKIE_DOMAIN=chat.koott.live
+#
+# # WebSockets — keep false unless you need AnyCable scaling
+# ANYCABLE_ENABLED=false
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+  web:
+    image: ghcr.io/sabha-co/sabha:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    env_file: .env
+    volumes:
+      - sabha_storage:/rails/storage
+
+volumes:
+  sabha_storage:

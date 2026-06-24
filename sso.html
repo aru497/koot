@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/favicon.ico?v=2" sizes="any">
+  <title>Signing in… | Koott</title>
+  <link rel="stylesheet" href="koott.css">
+  <style>
+    body { display:flex; align-items:center; justify-content:center; min-height:100vh; background:var(--bg); }
+    .sso-card { text-align:center; padding:2.5rem 2rem; max-width:380px; }
+    .sso-icon { font-size:2.5rem; margin-bottom:1.1rem; }
+    .sso-title { font-size:1.1rem; font-weight:700; margin-bottom:.4rem; color:var(--txt); }
+    .sso-sub { font-size:.875rem; color:var(--mut); line-height:1.6; }
+    .sso-spinner { display:inline-block; width:20px; height:20px; border:2.5px solid var(--bd); border-top-color:var(--blue); border-radius:50%; animation:spin .7s linear infinite; margin-top:1.25rem; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="sso-card">
+    <div class="sso-icon" id="ssoIcon">🔑</div>
+    <div class="sso-title" id="ssoTitle">Signing you in to Sabha…</div>
+    <div class="sso-sub" id="ssoSub">Connecting your Koott account to the chat room. This takes a moment.</div>
+    <div class="sso-spinner" id="ssoSpinner"></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="koott-config.js"></script>
+  <script>
+  (async function () {
+    var params = new URLSearchParams(location.search);
+    var sso    = params.get('sso');
+    var sig    = params.get('sig');
+
+    function showError(msg) {
+      document.getElementById('ssoIcon').textContent    = '❌';
+      document.getElementById('ssoTitle').textContent   = 'Sign-in failed';
+      document.getElementById('ssoSub').textContent     = msg;
+      document.getElementById('ssoSpinner').style.display = 'none';
+    }
+
+    if (!sso || !sig) {
+      showError('Invalid SSO request — missing parameters. Please try opening the chat room again.');
+      return;
+    }
+
+    var sb = window.sb;
+    var sessionResult = await sb.auth.getSession();
+    var session = sessionResult.data && sessionResult.data.session;
+
+    if (!session) {
+      // Not signed in to Koott yet. Start Google sign-in and come straight back
+      // here — location.href still carries ?sso=&sig=, so after auth this page
+      // re-runs with a session and continues into Sabha automatically.
+      document.getElementById('ssoTitle').textContent = 'Signing you in…';
+      document.getElementById('ssoSub').textContent =
+        'Redirecting to Google to confirm it’s you, then straight into the chat.';
+      var r = await sb.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: location.href },
+      });
+      if (r && r.error) showError('Could not start sign-in: ' + r.error.message);
+      return;
+    }
+
+    var sabhaHost = (window.KOOTT_CONFIG || {}).SABHA_HOST || '';
+    if (!sabhaHost) {
+      showError('Sabha is not yet configured for this Koott instance.');
+      return;
+    }
+
+    try {
+      var fnUrl =
+        window.KOOTT_CONFIG.SUPABASE_URL +
+        '/functions/v1/sabha-sso' +
+        '?sso=' + encodeURIComponent(sso) +
+        '&sig=' + encodeURIComponent(sig);
+
+      // apikey = publishable key (required by the Supabase gateway); the user's
+      // access_token stays in Authorization so the function can identify them.
+      var res  = await fetch(fnUrl, { headers: {
+        apikey: window.KOOTT_CONFIG.SUPABASE_KEY,
+        Authorization: 'Bearer ' + session.access_token,
+      } });
+      var data = await res.json();
+
+      if (data.callback_url) {
+        location.href = data.callback_url;
+      } else {
+        showError(data.error || 'An unexpected error occurred. Please try again.');
+      }
+    } catch (e) {
+      showError('Connection error. Please check your internet and try again.');
+    }
+  })();
+  </script>
+</body>
+</html>

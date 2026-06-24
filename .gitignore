@@ -6,3 +6,8 @@ aus*.png
 # local SEO audit docs (not served)
 FULL-AUDIT-REPORT.md
 ACTION-PLAN.md
+
+# OS / editor / tooling artifacts
+.DS_Store
+.fuse_hidden*
+supabase/.temp/

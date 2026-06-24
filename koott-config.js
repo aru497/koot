@@ -11,6 +11,17 @@ window.KOOTT_CONFIG = {
   // (Optional) Not required — the Arrival map uses free OpenStreetMap/Leaflet,
   // no API key or billing needed. Left here only for future use.
   GOOGLE_MAPS_KEY: "",
+
+  // Sabha chat integration — set to your Sabha instance URL after deployment.
+  // Leave blank to keep using Koott's built-in chat for all communities.
+  SABHA_HOST: "https://chat.koott.live",
+
+  // Sabha rooms are identified by integer id (there are NO slugs), so we map
+  // each Koott community id -> its Sabha room id. Fill this in by running
+  // create-sabha-rooms.py after you create a bot in Sabha (see SABHA-SETUP.md).
+  // Any community NOT in this map falls back to opening the Sabha home page.
+  // Example once populated: { "field-it": 3, "syd": 4, "monash": 5 }
+  SABHA_ROOMS: {},
 };
 
 // Create the shared client (requires supabase-js UMD loaded first).

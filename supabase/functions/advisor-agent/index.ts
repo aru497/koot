@@ -11,17 +11,18 @@
 //  The LLM only PICKS from real data — it never invents salaries/courses,
 //  so the frontend renders the grounded result for that occupation.
 //
-//  LLM key (pick ONE — set as a function secret):
-//    GEMINI_API_KEY     Google AI Studio — has a FREE tier (recommended)
-//    ANTHROPIC_API_KEY  Claude — cheap (~$0.005/match), no free tier
-//  If neither is set, it falls back to on-device keyword matching.
+//  LLM key (set as a function secret):
+//    ANTHROPIC_API_KEY  Claude — preferred provider (~$0.005/match on Haiku)
+//    GEMINI_API_KEY     Google AI Studio — optional fallback (has a FREE tier)
+//  Claude is used whenever ANTHROPIC_API_KEY is set; otherwise Gemini; otherwise
+//  it falls back to on-device keyword matching.
 // ════════════════════════════════════════════════════════════════
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const SUPABASE_URL  = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_KEY   = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const ANTHROPIC_KEY = Deno.env.get("ANTHROPIC_API_KEY") || "";
-const MODEL         = Deno.env.get("AGENT_MODEL") || "claude-haiku-4-5-20251001";
+const MODEL         = Deno.env.get("AGENT_MODEL") || "claude-haiku-4-5";
 const GEMINI_KEY    = Deno.env.get("GEMINI_API_KEY") || "";          // Google AI Studio (FREE tier)
 const GEMINI_MODEL  = Deno.env.get("GEMINI_MODEL") || "gemini-2.0-flash";
 
@@ -39,8 +40,20 @@ function validEmail(e: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e || "");
 }
 
-// Calls whichever LLM is configured: Gemini (free) preferred, then Anthropic. Returns raw text or "".
+// Calls whichever LLM is configured: Anthropic (Claude) preferred, then Gemini. Returns raw text or "".
 async function callLLM(system: string, user: string): Promise<string> {
+  if (ANTHROPIC_KEY) {
+    try {
+      const r = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "content-type": "application/json" },
+        body: JSON.stringify({ model: MODEL, max_tokens: 700, system, messages: [{ role: "user", content: user }] }),
+      });
+      if (!r.ok) throw new Error("Anthropic HTTP " + r.status + " " + (await r.text()).slice(0, 200));
+      const data = await r.json();
+      return (data?.content?.[0]?.text || "").trim();
+    } catch (e) { console.error("Anthropic error:", (e as Error)?.message); }
+  }
   if (GEMINI_KEY) {
     try {
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_KEY}`;
@@ -57,18 +70,6 @@ async function callLLM(system: string, user: string): Promise<string> {
       const data = await r.json();
       return (data?.candidates?.[0]?.content?.parts?.[0]?.text || "").trim();
     } catch (e) { console.error("Gemini error:", (e as Error)?.message); }
-  }
-  if (ANTHROPIC_KEY) {
-    try {
-      const r = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "x-api-key": ANTHROPIC_KEY, "anthropic-version": "2023-06-01", "content-type": "application/json" },
-        body: JSON.stringify({ model: MODEL, max_tokens: 700, system, messages: [{ role: "user", content: user }] }),
-      });
-      if (!r.ok) throw new Error("Anthropic HTTP " + r.status + " " + (await r.text()).slice(0, 200));
-      const data = await r.json();
-      return (data?.content?.[0]?.text || "").trim();
-    } catch (e) { console.error("Anthropic error:", (e as Error)?.message); }
   }
   return "";
 }
