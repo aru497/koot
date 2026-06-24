@@ -237,9 +237,13 @@ const SABHA_ROOMS = (window.KOOTT_CONFIG && window.KOOTT_CONFIG.SABHA_ROOMS) || 
 
 let user=null, activeCom=null, COMMS=[], commSearchTimer=null;
 
-// Deep-link: the advisor links here as ?c=<communityId> to pre-select a community.
+// Deep-link: the advisor/homepage links here as ?c=<communityId> to pre-select a community.
+// If the Sabha room is already mapped, skip the directory and go straight to Sabha.
 const _dl=new URLSearchParams(location.search), deepC=_dl.get('c');
 if(deepC) activeCom=deepC;
+if(deepC && SABHA_HOST && SABHA_ROOMS[deepC]){
+  location.replace(SABHA_HOST + '/rooms/' + encodeURIComponent(SABHA_ROOMS[deepC]));
+}
 
 // ── Auth UI (nav only — the directory is open to everyone) ──
 function applySignedIn(u){
