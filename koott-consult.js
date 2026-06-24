@@ -15,12 +15,20 @@
     var s = document.createElement('style');
     s.id = 'koottConsultCss';
     s.textContent =
-      '.kc-fab{position:fixed;right:18px;bottom:18px;z-index:500;display:inline-flex;align-items:center;gap:.5rem;' +
-        'padding:.7rem 1.05rem;border:3px solid var(--ink,#141414);border-radius:100px;background:var(--pri,#e8632a);' +
-        'color:var(--ink,#141414);font-family:var(--font,Inter,sans-serif);font-weight:800;font-size:.9rem;cursor:pointer;' +
-        'box-shadow:var(--sh-sm,3px 3px 0 #141414);transition:transform .08s,box-shadow .08s}' +
-      '.kc-fab:hover{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink,#141414)}' +
-      '@media(max-width:560px){.kc-fab span.kc-fab-tx{display:none}.kc-fab{padding:.7rem;font-size:1.1rem}}' +
+      '.kc-fab{position:fixed;right:20px;bottom:20px;z-index:500;display:inline-flex;align-items:center;gap:.65rem;' +
+        'padding:.5rem .9rem .5rem .5rem;border:3px solid #141414;border-radius:100px;background:#fff;' +
+        'color:#141414;font-family:Inter,sans-serif;cursor:pointer;white-space:nowrap;' +
+        'box-shadow:4px 4px 0 #141414;transition:transform .1s,box-shadow .1s}' +
+      '.kc-fab:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 #141414}' +
+      '.kc-fav{width:38px;height:38px;border-radius:50%;background:#e8632a;border:2.5px solid #141414;' +
+        'display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative}' +
+      '.kc-fdot{position:absolute;top:0;right:0;width:10px;height:10px;background:#22c55e;border-radius:50%;' +
+        'border:2px solid #fff;animation:kcpulse 2s ease-in-out infinite}' +
+      '@keyframes kcpulse{0%,100%{opacity:1}50%{opacity:.35}}' +
+      '.kc-flbl{display:flex;flex-direction:column;align-items:flex-start}' +
+      '.kc-fm{font-size:.875rem;font-weight:800;line-height:1.25;color:#141414}' +
+      '.kc-fs{font-size:.68rem;font-weight:500;color:#6b7280;line-height:1.25}' +
+      '@media(max-width:480px){.kc-flbl{display:none}.kc-fab{padding:.5rem}}' +
       '#kcDlg{border:3px solid var(--ink,#141414);border-radius:16px;padding:0;box-shadow:var(--sh-lg,8px 8px 0 #141414);' +
         'max-width:460px;width:calc(100% - 2rem);color:var(--txt,#141414);background:var(--bg,#fff);margin:auto}' +
       '#kcDlg::backdrop{background:rgba(20,20,20,.45)}' +
@@ -47,9 +55,9 @@
     d.id = 'kcDlg';
     d.innerHTML =
       '<form class="kc-in" id="kcForm" onsubmit="return koottConsult._submit(event)">' +
-        '<div class="kc-hd"><div class="kc-ttl">📞 Book a free 1:1 call</div>' +
+        '<div class="kc-hd"><div class="kc-ttl">Talk to an expert</div>' +
           '<button type="button" class="kc-x" onclick="koottConsult.close()">✕</button></div>' +
-        '<div class="kc-sub">Tell us a little about your plans and we’ll reach out to help you 1:1 — choosing a course, universities, visa or funding. Free, no obligation.</div>' +
+        ‘<div class="kc-sub">Our advisors have been through this journey. Get free, honest guidance on courses, universities, visa &amp; funding — no agents, no commission.</div>’ +
         // Honeypot: hidden from humans; bots fill it and get silently dropped.
         '<input id="kc_hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" ' +
           'style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" />' +
@@ -69,7 +77,7 @@
         '<label class="kc-lbl">Best time to reach you</label>' +
         '<input class="kc-f" id="kc_time" maxlength="120" placeholder="e.g. weekday evenings IST">' +
         '<div class="kc-msg" id="kc_status" style="display:none"></div>' +
-        '<button class="btn btn-p" type="submit" id="kc_submit" style="width:100%;justify-content:center;margin-top:1rem">Request my free 1:1 →</button>' +
+        '<button class="btn btn-p" type="submit" id="kc_submit" style="width:100%;justify-content:center;margin-top:1rem">Book my free session →</button>' +
         '<p style="font-size:.7rem;color:var(--lt,#6b7280);text-align:center;margin-top:.6rem;font-family:var(--mono,monospace)">We only use this to contact you about your study plans.</p>' +
       '</form>';
     document.body.appendChild(d);
@@ -81,8 +89,16 @@
     b.id = 'kcFab';
     b.className = 'kc-fab';
     b.type = 'button';
-    b.setAttribute('aria-label', 'Book a free 1:1 call');
-    b.innerHTML = '<span aria-hidden="true">📞</span><span class="kc-fab-tx">Free 1:1 call</span>';
+    b.setAttribute('aria-label', 'Talk to an expert — free');
+    b.innerHTML =
+      '<div class="kc-fav">' +
+        '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>' +
+        '<span class="kc-fdot"></span>' +
+      '</div>' +
+      '<div class="kc-flbl">' +
+        '<span class="kc-fm">Talk to an expert</span>' +
+        '<span class="kc-fs">Free · No obligation</span>' +
+      '</div>';
     b.onclick = function () { window.koottConsult.open(); };
     document.body.appendChild(b);
   }
