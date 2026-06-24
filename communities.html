@@ -316,28 +316,24 @@ function selectComm(id){
   activeCom=id;
   buildCommList();
 
-  document.getElementById('chIcon').textContent = c.icon || '💬';
-  document.getElementById('chName').textContent = c.name;
-  document.getElementById('chDesc').textContent = 'Live community chat';
-
-  document.getElementById('emptyState').style.display='none';
-  const ho=document.getElementById('handoff'); ho.style.display='flex';
-  document.getElementById('hoMark').textContent = c.icon || '💬';
-  document.getElementById('hoTitle').textContent = c.name;
-
   const url = sabhaRoomUrl(id);
-  const open = document.getElementById('hoOpen');
   if(url){
-    open.href = url;
-    open.style.display='';
-    document.getElementById('hoDesc').textContent =
-      'This community’s live chat is hosted on Sabha — Koott’s dedicated community platform. Click below to jump in; your Koott sign-in carries over automatically.';
-  } else {
-    // SABHA_HOST not configured yet — be honest, don't fake a chat.
-    open.style.display='none';
-    document.getElementById('hoDesc').textContent =
-      'Chat for this community is being set up. Check back shortly — meanwhile, browse the WhatsApp groups.';
+    // Go straight to Sabha — no intermediate panel needed.
+    window.location.href = url;
+    return;
   }
+
+  // Sabha not configured yet — show a holding message instead of faking a chat.
+  document.getElementById(‘chIcon’).textContent = c.icon || ‘💬’;
+  document.getElementById(‘chName’).textContent = c.name;
+  document.getElementById(‘chDesc’).textContent = ‘Live community chat’;
+  document.getElementById(‘emptyState’).style.display=’none’;
+  const ho=document.getElementById(‘handoff’); ho.style.display=’flex’;
+  document.getElementById(‘hoMark’).textContent = c.icon || ‘💬’;
+  document.getElementById(‘hoTitle’).textContent = c.name;
+  document.getElementById(‘hoOpen’).style.display=’none’;
+  document.getElementById(‘hoDesc’).textContent =
+    ‘Chat for this community is being set up. Check back shortly — meanwhile, browse the WhatsApp groups.’;
 }
 
 // ── WhatsApp groups (unchanged feature — independent of chat) ──
