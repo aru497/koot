@@ -21,7 +21,7 @@ window.KOOTT_CONFIG = {
   // create-sabha-rooms.py after you create a bot in Sabha (see SABHA-SETUP.md).
   // Any community NOT in this map falls back to opening the Sabha home page.
   // Example once populated: { "field-it": 3, "syd": 4, "monash": 5 }
-  SABHA_ROOMS: {},
+  SABHA_ROOMS: {"sydney":2,"melb":3,"brisbane":4,"perth":5,"adelaide":6,"newcastle":7,"wollongong":8,"unsw25":9,"unimelb25":10,"monash25":11,"uon25":12,"uow25":13,"deciding":14,"applied":15,"arriving":16,"first60":17,"housing":18,"jobs":19},
 };
 
 // Create the shared client (requires supabase-js UMD loaded first).
