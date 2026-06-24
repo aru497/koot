@@ -97,7 +97,7 @@
       '</div>' +
       '<div class="kc-flbl">' +
         '<span class="kc-fm">Talk to an expert</span>' +
-        '<span class="kc-fs">Free · No obligation</span>' +
+        '<span class="kc-fs">Book a free call</span>' +
       '</div>';
     b.onclick = function () { window.koottConsult.open(); };
     document.body.appendChild(b);
