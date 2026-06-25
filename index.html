@@ -108,35 +108,24 @@
 
     /* ══ Layered animated hero ══ */
     .hero{position:relative;overflow:hidden;padding:clamp(2.6rem,7vw,5rem) 0 clamp(2rem,5vw,3.4rem);isolation:isolate}
-    /* layer 0 — drifting coral gradient blobs */
-    .hero-bg{position:absolute;inset:-20% -10%;z-index:-3;pointer-events:none;filter:blur(46px);opacity:.45}
+    /* layer 0 — real flowing gradient (canvas mesh, painted in JS) */
+    .hero-grad{position:absolute;inset:0;width:100%;height:100%;z-index:-3;pointer-events:none;opacity:.9}
     /* real Sydney photo on the right, replacing the (inaccurate) dotted map */
     .hero-photo{position:absolute;z-index:-2;inset:0 0 0 auto;width:min(60vw,860px);pointer-events:none;
       background:url('images/sydney-skyline.jpg') center/cover no-repeat;opacity:.92;
       -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 48%);mask-image:linear-gradient(90deg,transparent 0%,#000 48%)}
     @media(max-width:760px){.hero-photo{inset:0;width:100%;opacity:.16;
       -webkit-mask-image:linear-gradient(180deg,transparent,#000 74%);mask-image:linear-gradient(180deg,transparent,#000 74%)}}
-    .blob{position:absolute;border-radius:50%;mix-blend-mode:multiply}
-    .blob.b1{width:46vw;height:46vw;left:-4%;top:-12%;background:radial-gradient(circle,rgba(232,98,44,.42),transparent 66%);animation:drift1 24s ease-in-out infinite}
-    .blob.b2{width:42vw;height:42vw;right:-6%;top:-18%;background:radial-gradient(circle,rgba(247,180,120,.5),transparent 66%);animation:drift2 30s ease-in-out infinite}
-    .blob.b3{width:38vw;height:38vw;left:38%;top:18%;background:radial-gradient(circle,rgba(255,210,150,.45),transparent 64%);animation:drift3 27s ease-in-out infinite}
-    @keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(7%,5%) scale(1.12)}}
-    @keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-6%,7%) scale(1.15)}}
-    @keyframes drift3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-5%,-6%) scale(.9)}}
-    /* layer 1 — Australia map silhouette (dotted), bleeds the gradient through */
     .hero-map{display:none}
-    .hero-map .au-fill{fill:url(#auDots)}
-    .hero-map .au-line{fill:none;stroke:var(--accent);stroke-width:2.2;opacity:.5;
-      stroke-dasharray:4200;stroke-dashoffset:4200;animation:draw 3.2s ease forwards .2s}
-    @keyframes draw{to{stroke-dashoffset:0}}
-    /* layer 2 — self-drawing geometric line shapes */
-    .hero-lines{position:absolute;inset:0;z-index:-2;pointer-events:none;opacity:.55}
-    .hero-lines [data-draw]{fill:none;stroke:var(--accent-dk);stroke-width:1.4;opacity:.4;
-      stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw 2.6s ease forwards}
-    /* soft fade so the map/blobs never fight the copy */
+    /* continuous coral beam sweeping across the hero */
+    .hero-beam{position:absolute;inset:0;z-index:-2;pointer-events:none;overflow:hidden}
+    .hero-beam::before{content:"";position:absolute;top:-30%;left:-45%;width:30%;height:160%;transform:skewX(-12deg);filter:blur(12px);
+      background:linear-gradient(100deg,transparent,rgba(232,98,44,.55),transparent);animation:beam 4.6s ease-in-out infinite}
+    @keyframes beam{0%{left:-45%}62%,100%{left:132%}}
+    /* soft fade so the gradient/photo never fight the copy */
     .hero::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
-      background:linear-gradient(90deg, var(--bg) 14%, rgba(253,252,250,.55) 46%, transparent 72%)}
-    @media(max-width:760px){.hero::after{background:linear-gradient(180deg,transparent,var(--bg) 78%)}.hero-map{opacity:.32;right:-22%}}
+      background:linear-gradient(90deg, var(--bg) 10%, rgba(253,252,250,.42) 42%, transparent 70%)}
+    @media(max-width:760px){.hero::after{background:linear-gradient(180deg,transparent,var(--bg) 78%)}}
 
     .hero-copy{position:relative;max-width:640px}
     .pill{display:inline-flex;align-items:center;gap:.5rem;background:var(--card);border:1px solid var(--bd);
@@ -297,9 +286,10 @@
 
     /* ── reduced motion ── */
     @media(prefers-reduced-motion:reduce){
-      *{animation:none!important;transition:none!important}
-      .au-line,.hero-lines [data-draw]{stroke-dashoffset:0!important}
-      h1 .grad{background-position:0 50%}
+      /* pause only the decorative loops — keep a calm static gradient (JS paints one frame) */
+      .hero-beam::before,.tw-cur{animation:none!important}
+      h1 .grad{animation:none!important;background-position:0 50%}
+      html{scroll-behavior:auto}
     }
   </style>
 </head>
@@ -321,28 +311,12 @@
 </div></nav>
 
 <header class="hero">
-  <!-- layer 0 · drifting coral gradient -->
-  <div class="hero-bg" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
+  <!-- layer 0 · real flowing gradient (canvas) + continuous coral beam -->
+  <canvas id="grad" class="hero-grad" aria-hidden="true"></canvas>
+  <div class="hero-beam" aria-hidden="true"></div>
   <!-- layer 1 · real Sydney skyline photo (replaces the inaccurate map) -->
   <div class="hero-photo" aria-hidden="true"></div>
-  <!-- layer 1 · Australia map (dotted, draws in) -->
-  <svg class="hero-map" viewBox="0 0 1000 860" aria-hidden="true" focusable="false">
-    <defs>
-      <pattern id="auDots" width="15" height="15" patternUnits="userSpaceOnUse">
-        <circle cx="2" cy="2" r="1.6" fill="#e8622c" opacity="0.32"/>
-      </pattern>
-    </defs>
-    <g>
-      <path class="au-fill" d="M250 250 L232 198 L255 150 L335 120 L382 150 L430 128 L470 92 L500 140 L545 108 L566 152 L600 92 L628 58 L646 96 L632 162 L694 252 L744 362 L722 432 L690 472 L702 522 L650 548 L560 562 L470 546 L440 582 L408 546 L360 524 L250 560 L182 540 L150 470 L166 380 L200 320 Z"/>
-      <path class="au-line" d="M250 250 L232 198 L255 150 L335 120 L382 150 L430 128 L470 92 L500 140 L545 108 L566 152 L600 92 L628 58 L646 96 L632 162 L694 252 L744 362 L722 432 L690 472 L702 522 L650 548 L560 562 L470 546 L440 582 L408 546 L360 524 L250 560 L182 540 L150 470 L166 380 L200 320 Z"/>
-      <path class="au-fill" d="M648 612 L676 604 L690 638 L666 668 L640 650 Z"/>
-    </g>
-  </svg>
-  <!-- layer 2 · self-drawing line shapes -->
-  <svg class="hero-lines" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
-    <circle data-draw style="--len:1340" cx="820" cy="120" r="210" stroke-dasharray="1340" stroke-dashoffset="1340"/>
-    <path data-draw style="--len:900;animation-delay:.5s" d="M40 470 C 240 420, 420 540, 640 460" stroke-dasharray="900" stroke-dashoffset="900"/>
-  </svg>
+  <!-- (inaccurate dotted map + draw-once lines removed; gradient + beam + photo above) -->
 
   <div class="wrap"><div class="hero-copy">
     <span class="pill"><span class="dot"></span><span class="ml">നമസ്കാരം</span>&nbsp;👋 · Built by students who've done it</span>
@@ -661,6 +635,36 @@ function koottReset(){
 // Entry points
 function koottSearch(e){ e.preventDefault(); runSearch(document.getElementById('q').value); return false; }
 function koottGo(q){ const i=document.getElementById('q'); if(i)i.value=q; runSearch(q); }
+
+// Real flowing gradient — a soft coral mesh painted on a canvas (no library,
+// no framework). Animates continuously; paints one static frame under
+// prefers-reduced-motion so it stays calm but never goes flat/grey.
+(function(){
+  var c=document.getElementById('grad'); if(!c||!c.getContext) return;
+  var ctx=c.getContext('2d'), dpr=Math.min(window.devicePixelRatio||1,2), W=0,H=0;
+  function size(){ W=c.width=Math.max(1,(c.offsetWidth*dpr)|0); H=c.height=Math.max(1,(c.offsetHeight*dpr)|0); }
+  var cols=[[232,98,44],[247,166,96],[255,206,140],[238,112,66]];
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  function frame(t){
+    if(!W) size();
+    ctx.globalCompositeOperation='source-over';
+    ctx.fillStyle='#fdfcfa'; ctx.fillRect(0,0,W,H);
+    ctx.globalCompositeOperation='multiply';
+    var s=t/1000;
+    for(var i=0;i<cols.length;i++){
+      var col=cols[i];
+      var x=(0.5+0.46*Math.sin(s*0.16+i*1.9))*W;
+      var y=(0.5+0.44*Math.cos(s*0.13+i*2.3))*H;
+      var r=Math.max(W,H)*0.66;
+      var g=ctx.createRadialGradient(x,y,0,x,y,r);
+      g.addColorStop(0,'rgba('+col[0]+','+col[1]+','+col[2]+',0.55)');
+      g.addColorStop(1,'rgba('+col[0]+','+col[1]+','+col[2]+',0)');
+      ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+    }
+    if(!reduce) requestAnimationFrame(frame);
+  }
+  size(); window.addEventListener('resize',size); requestAnimationFrame(frame);
+})();
 
 // Typewriter "Try:" hint (vanilla port of the Aceternity effect) — rotates real
 // example queries with a blinking caret; clicking the hint runs that query
