@@ -110,12 +110,6 @@
     .hero{position:relative;overflow:hidden;padding:clamp(2.6rem,7vw,5rem) 0 clamp(2rem,5vw,3.4rem);isolation:isolate}
     /* layer 0 — drifting coral gradient blobs */
     .hero-bg{position:absolute;inset:-20% -10%;z-index:-3;pointer-events:none;filter:blur(46px);opacity:.9}
-    /* real Sydney photo — right-side backdrop, faded toward the copy */
-    .hero-photo{position:absolute;z-index:-3;inset:0 0 0 auto;width:min(66vw,900px);pointer-events:none;
-      background:url('images/sydney-harbour.jpg') center right/cover no-repeat;opacity:.8;
-      -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 58%);mask-image:linear-gradient(90deg,transparent 0%,#000 58%)}
-    @media(max-width:760px){.hero-photo{inset:0;width:100%;opacity:.14;
-      -webkit-mask-image:linear-gradient(180deg,transparent,#000 72%);mask-image:linear-gradient(180deg,transparent,#000 72%)}}
     .blob{position:absolute;border-radius:50%;mix-blend-mode:multiply}
     .blob.b1{width:46vw;height:46vw;left:-4%;top:-12%;background:radial-gradient(circle,rgba(232,98,44,.42),transparent 66%);animation:drift1 24s ease-in-out infinite}
     .blob.b2{width:42vw;height:42vw;right:-6%;top:-18%;background:radial-gradient(circle,rgba(247,180,120,.5),transparent 66%);animation:drift2 30s ease-in-out infinite}
@@ -124,7 +118,7 @@
     @keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-6%,7%) scale(1.15)}}
     @keyframes drift3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-5%,-6%) scale(.9)}}
     /* layer 1 — Australia map silhouette (dotted), bleeds the gradient through */
-    .hero-map{position:absolute;z-index:-2;right:-6%;top:50%;transform:translateY(-50%);width:min(62vw,720px);opacity:.12;pointer-events:none}
+    .hero-map{position:absolute;z-index:-2;right:-6%;top:50%;transform:translateY(-50%);width:min(62vw,720px);opacity:.5;pointer-events:none}
     .hero-map .au-fill{fill:url(#auDots)}
     .hero-map .au-line{fill:none;stroke:var(--accent);stroke-width:2.2;opacity:.5;
       stroke-dasharray:4200;stroke-dashoffset:4200;animation:draw 3.2s ease forwards .2s}
@@ -278,11 +272,13 @@
     .pbtn{margin-top:1.1rem}
 
     /* ── final CTA ── */
-    .final{position:relative;background:var(--ink);color:#fff;border-radius:var(--rxl);padding:clamp(2.5rem,5vw,3.6rem);text-align:center;overflow:hidden}
+    .final{position:relative;color:#fff;border-radius:var(--rxl);padding:clamp(3rem,6vw,4.6rem) clamp(2.5rem,5vw,3.6rem);text-align:center;overflow:hidden;
+      background:linear-gradient(180deg,rgba(20,18,15,.5) 0%,rgba(20,18,15,.8) 100%),url('images/sydney-harbour.jpg') center 38%/cover no-repeat}
+    .final>*{position:relative;z-index:1}
     .final h2{color:#fff} .final h2 em{color:#f0894e}
-    .final p{color:rgba(255,255,255,.72);max-width:46ch;margin:1rem auto 1.7rem;font-size:1.05rem}
+    .final p{color:rgba(255,255,255,.86);max-width:46ch;margin:1rem auto 1.7rem;font-size:1.05rem}
     .final .row{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
-    .final .sky{position:absolute;left:0;right:0;bottom:0;width:100%;opacity:.14;pointer-events:none}
+    .final .sky{display:none}
 
     /* ── footer ── */
     .ft{border-top:1px solid var(--bd);margin-top:1rem}
@@ -321,8 +317,6 @@
 <header class="hero">
   <!-- layer 0 · drifting coral gradient -->
   <div class="hero-bg" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
-  <!-- layer 0b · real Sydney harbour photo, faded into the right -->
-  <div class="hero-photo" aria-hidden="true"></div>
   <!-- layer 1 · Australia map (dotted, draws in) -->
   <svg class="hero-map" viewBox="0 0 1000 860" aria-hidden="true" focusable="false">
     <defs>
