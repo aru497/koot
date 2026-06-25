@@ -109,7 +109,13 @@
     /* ══ Layered animated hero ══ */
     .hero{position:relative;overflow:hidden;padding:clamp(2.6rem,7vw,5rem) 0 clamp(2rem,5vw,3.4rem);isolation:isolate}
     /* layer 0 — drifting coral gradient blobs */
-    .hero-bg{position:absolute;inset:-20% -10%;z-index:-3;pointer-events:none;filter:blur(46px);opacity:.9}
+    .hero-bg{position:absolute;inset:-20% -10%;z-index:-3;pointer-events:none;filter:blur(46px);opacity:.45}
+    /* real Sydney photo on the right, replacing the (inaccurate) dotted map */
+    .hero-photo{position:absolute;z-index:-2;inset:0 0 0 auto;width:min(60vw,860px);pointer-events:none;
+      background:url('images/sydney-skyline.jpg') center/cover no-repeat;opacity:.92;
+      -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 48%);mask-image:linear-gradient(90deg,transparent 0%,#000 48%)}
+    @media(max-width:760px){.hero-photo{inset:0;width:100%;opacity:.16;
+      -webkit-mask-image:linear-gradient(180deg,transparent,#000 74%);mask-image:linear-gradient(180deg,transparent,#000 74%)}}
     .blob{position:absolute;border-radius:50%;mix-blend-mode:multiply}
     .blob.b1{width:46vw;height:46vw;left:-4%;top:-12%;background:radial-gradient(circle,rgba(232,98,44,.42),transparent 66%);animation:drift1 24s ease-in-out infinite}
     .blob.b2{width:42vw;height:42vw;right:-6%;top:-18%;background:radial-gradient(circle,rgba(247,180,120,.5),transparent 66%);animation:drift2 30s ease-in-out infinite}
@@ -118,7 +124,7 @@
     @keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-6%,7%) scale(1.15)}}
     @keyframes drift3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-5%,-6%) scale(.9)}}
     /* layer 1 — Australia map silhouette (dotted), bleeds the gradient through */
-    .hero-map{position:absolute;z-index:-2;right:-6%;top:50%;transform:translateY(-50%);width:min(62vw,720px);opacity:.5;pointer-events:none}
+    .hero-map{display:none}
     .hero-map .au-fill{fill:url(#auDots)}
     .hero-map .au-line{fill:none;stroke:var(--accent);stroke-width:2.2;opacity:.5;
       stroke-dasharray:4200;stroke-dashoffset:4200;animation:draw 3.2s ease forwards .2s}
@@ -317,6 +323,8 @@
 <header class="hero">
   <!-- layer 0 · drifting coral gradient -->
   <div class="hero-bg" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
+  <!-- layer 1 · real Sydney skyline photo (replaces the inaccurate map) -->
+  <div class="hero-photo" aria-hidden="true"></div>
   <!-- layer 1 · Australia map (dotted, draws in) -->
   <svg class="hero-map" viewBox="0 0 1000 860" aria-hidden="true" focusable="false">
     <defs>
