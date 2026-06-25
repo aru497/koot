@@ -81,5 +81,39 @@
 
     // Convenience: the field-circle community id for an advisor category.
     fieldCircleId: function (cat) { return FIELD_CIRCLE[cat] || null; },
+
+    // ── Phase 2: find students like you ──
+    // Scores every opted-in peer (from the consent-gated discoverable_peers RPC)
+    // against `me` by weighted attribute overlap and returns the top matches.
+    // Any shared dimension contributes, so "same field" OR "same city" both match.
+    matchPeers: function (me, limit) {
+      var self = this;
+      if (!sb() || !user()) return Promise.resolve([]);
+      var ready = me ? Promise.resolve(me) : self.get();
+      return ready.then(function (myp) {
+        myp = myp || {};
+        return sb().rpc('discoverable_peers').then(function (r) {
+          if (!r || r.error || !Array.isArray(r.data)) return [];
+          var W = { field: 10, destination_uni: 8, destination_city: 5, intake: 4, stage: 3 };
+          var LABEL = { field: 'same field', destination_uni: 'same university',
+            destination_city: 'same city', intake: 'same intake', stage: 'same stage' };
+          var mine = myp.interests || [];
+          return r.data.map(function (p) {
+            var score = 0, reasons = [];
+            Object.keys(W).forEach(function (k) {
+              if (myp[k] && p[k] && myp[k] === p[k]) { score += W[k]; reasons.push(LABEL[k]); }
+            });
+            var pi = p.interests || [];
+            var shared = mine.filter(function (x) { return pi.indexOf(x) >= 0; }).length;
+            if (shared) { score += shared; reasons.push(shared + ' shared interest' + (shared > 1 ? 's' : '')); }
+            return { id: p.id, name: p.full_name, avatar: p.avatar_url, field: p.field,
+              field_label: p.field_label, city: p.destination_city, uni: p.destination_uni,
+              stage: p.stage, allow_dms: p.allow_dms, score: score, reasons: reasons };
+          }).filter(function (p) { return p.score > 0; })
+            .sort(function (a, b) { return b.score - a.score; })
+            .slice(0, limit || 6);
+        });
+      }).catch(function () { return []; });
+    },
   };
 })();

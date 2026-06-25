@@ -418,6 +418,9 @@
     <!-- Connect with your field circle (people interested in the same course) -->
     <div id="r_connect" style="margin-top:1.5rem"></div>
 
+    <!-- Phase 2: students like you (only shown when real matches exist) -->
+    <div id="r_peers" style="margin-top:1.5rem;display:none"></div>
+
     <!-- Community CTA -->
     <div class="community-cta" style="margin-top:1.5rem" id="r_commCTA">
       <div>
@@ -817,7 +820,7 @@ function showResults() {
   // only they can read it; discovery stays opt-in). Builds the matching foundation
   // and lets us connect them to the right rooms. Silent + best-effort.
   if(window.koottProfile && window.koottAuth && koottAuth.user){
-    try{ koottProfile.save({
+    var myProfile = {
       field: koottProfile.fieldCircleId(top.cat) || top.cat,
       field_label: (FIELD_CIRCLES[top.cat]||{}).name || null,
       field_text: fieldVal,
@@ -825,7 +828,9 @@ function showResults() {
       interests: selectedInterests,
       location_pref: selectedLocation,
       stage: 'deciding'
-    }); }catch(e){}
+    };
+    try{ koottProfile.save(myProfile); }catch(e){}
+    try{ renderPeers(myProfile); }catch(e){}  // Phase 2: students like you
   }
 
   // Shortage pct for bar
@@ -1130,6 +1135,43 @@ function circleChatUrl(circleId){
   var roomId = (cfg.SABHA_ROOMS || {})[circleId];
   if(host && roomId) return host + '/rooms/' + encodeURIComponent(roomId);
   return 'communities.html?c=' + encodeURIComponent(circleId);
+}
+
+// ── Phase 2: "Students like you" ── shows opted-in peers on a similar path.
+// Only renders when there are real matches; stays hidden otherwise (no fake data).
+async function renderPeers(myProfile){
+  var box = document.getElementById('r_peers'); if(!box) return;
+  function esc(t){ return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  if(!(window.koottProfile && window.koottAuth && koottAuth.user)){ box.style.display='none'; return; }
+  var peers = [];
+  try{ peers = await koottProfile.matchPeers(myProfile, 4); }catch(e){ peers = []; }
+  if(!peers || !peers.length){ box.style.display='none'; return; }
+  var rows = peers.map(function(p){
+    var name = esc(p.name || 'A koott student');
+    var initials = ((p.name||'K').trim()[0]||'K').toUpperCase();
+    var where = [p.field_label, p.uni||p.city, p.stage].filter(Boolean).join(' · ');
+    var why = (p.reasons||[]).join(' · ');
+    var roomUrl = circleChatUrl(p.field || (myProfile&&myProfile.field) || '');
+    var av = p.avatar
+      ? '<img src="'+esc(p.avatar)+'" alt="" style="width:100%;height:100%;object-fit:cover">'
+      : initials;
+    return '<div style="display:flex;align-items:center;gap:.65rem;padding:.6rem 0;border-top:1px solid var(--bd)">'
+      + '<div style="width:36px;height:36px;border-radius:50%;flex-shrink:0;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.82rem;overflow:hidden">'+av+'</div>'
+      + '<div style="flex:1;min-width:0">'
+      +   '<div style="font-weight:700;font-size:.9rem;color:var(--txt)">'+name+'</div>'
+      +   '<div style="font-size:.78rem;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(where||'On the same journey')+'</div>'
+      +   (why?('<div style="font-size:.72rem;color:var(--accent-dk);margin-top:.05rem">↳ '+esc(why)+'</div>'):'')
+      + '</div>'
+      + '<a href="'+roomUrl+'" target="_blank" rel="noopener" class="btn btn-s btn-sm" style="flex-shrink:0">Say hi →</a>'
+      + '</div>';
+  }).join('');
+  box.innerHTML =
+    '<div class="community-cta" style="display:block">'
+    + '<strong style="display:block;font-size:.9rem;margin-bottom:.15rem">🧭 Students like you</strong>'
+    + '<span style="font-size:.8125rem;color:var(--mut)">koott students on a similar path who opted in to connect — say hi in your shared circle.</span>'
+    + rows
+    + '</div>';
+  box.style.display='';
 }
 window.koottAuth && koottAuth.onChange(function(u){
   if(!u) return;
