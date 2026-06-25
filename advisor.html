@@ -442,6 +442,7 @@
 <script src="koott-config.js"></script>
 <script src="koott-haptics.js"></script>
 <script src="koott-auth.js"></script>
+<script src="koott-profile.js"></script>
 <script src="koott-consult.js"></script>
 <script>
 // ══════════════════════════════════════════════════════════════════
@@ -812,6 +813,21 @@ function showResults() {
   let top=scored[0]; if(window.__forcedOcc){ const _f=OCCUPATIONS.find(o=>o.id===window.__forcedOcc); if(_f) top=_f; }
   const alts=scored.slice(1,3);
 
+  // Phase 1 profile matching: persist the student's OWN profile (RLS-protected —
+  // only they can read it; discovery stays opt-in). Builds the matching foundation
+  // and lets us connect them to the right rooms. Silent + best-effort.
+  if(window.koottProfile && window.koottAuth && koottAuth.user){
+    try{ koottProfile.save({
+      field: koottProfile.fieldCircleId(top.cat) || top.cat,
+      field_label: (FIELD_CIRCLES[top.cat]||{}).name || null,
+      field_text: fieldVal,
+      study_level: targetQ || null,
+      interests: selectedInterests,
+      location_pref: selectedLocation,
+      stage: 'deciding'
+    }); }catch(e){}
+  }
+
   // Shortage pct for bar
   const shortPct = top.shortage==='national'?92:top.shortage==='regional'?70:top.shortage==='difficulty'?55:30;
   const demandPct = Math.min(top.growth*3+50,98);
@@ -1068,12 +1084,19 @@ async function renderConnect(top){
     +     '<button class="btn btn-p btn-sm" onclick="connectJoin(\''+circle.id+'\',this)">Yes, connect me →</button>'
     +     '<button class="btn btn-s btn-sm" onclick="dismissConnect()">Not now</button>'
     +   '</div>'
+    +   '<label style="display:flex;align-items:flex-start;gap:.4rem;font-size:.75rem;color:var(--accent-dk);margin-top:.6rem;cursor:pointer;flex-basis:100%">'
+    +     '<input type="checkbox" id="r_discoverable" checked style="margin-top:.15rem;accent-color:var(--accent)">'
+    +     '<span>Let other koott students on the same path find me and say hi. Only your name, field &amp; destination are shown — never your email. You can turn this off anytime.</span>'
+    +   '</label>'
     + '</div>';
 }
 function dismissConnect(){ var b=document.getElementById('r_connect'); if(b) b.style.display='none'; }
 async function connectJoin(circleId, btn){
   var u = window.koottAuth && koottAuth.user;
   if(!u){ if(window.koottAuth) koottAuth.signIn(); return; }
+  // Read the discoverability opt-in before we replace the CTA markup.
+  var dEl = document.getElementById('r_discoverable');
+  var wantDiscover = dEl ? !!dEl.checked : false;
   var circle = CIRCLE_BY_ID[circleId] || {id:circleId, name:'your', icon:'🤝'};
   if(btn){ btn.disabled=true; btn.textContent='Connecting…'; }
   var err=null;
@@ -1082,6 +1105,11 @@ async function connectJoin(circleId, btn){
   if(err && !/duplicate/i.test(err.message||'')){
     if(btn){ btn.disabled=false; btn.textContent='Yes, connect me →'; }
     alert('Could not connect right now: '+(err.message||err)); return;
+  }
+  // Phase 1: record this circle on the student's profile + honour the opt-in.
+  if(window.koottProfile){
+    try{ koottProfile.save({ field: circle.id, field_label: circle.name, stage: 'deciding',
+      discoverable: wantDiscover, allow_dms: wantDiscover }); }catch(e){}
   }
   var box=document.getElementById('r_connect'); if(!box) return;
   box.innerHTML =
