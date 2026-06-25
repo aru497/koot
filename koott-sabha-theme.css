@@ -114,6 +114,25 @@ dialog, .popover, .popup, [popover], [role="listbox"], [role="menu"],
   border-radius: 12px !important;
 }
 
+/* Keep avatars square (the bottom-of-rail profile pic was rendering stretched
+   / "laying down" because its aspect ratio broke). */
+.avatar, .avatar > img, .avatar img {
+  aspect-ratio: 1 !important;
+  object-fit: cover !important;
+}
+.sidebar__tool.avatar {
+  inline-size: 40px !important;
+  block-size: 40px !important;
+  min-block-size: 40px !important;
+  flex: 0 0 auto !important;
+}
+.sidebar__tool.avatar img {
+  inline-size: 100% !important;
+  block-size: 100% !important;
+  object-fit: cover !important;
+  border-radius: 50% !important;
+}
+
 /* Scrollbars */
 * { scrollbar-width: thin; scrollbar-color: var(--koott-orange) var(--koott-paper-2); }
 ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -131,11 +150,25 @@ body {
   max-block-size: 100dvh !important;
   overflow: hidden !important;
 }
-/* Flexbox: the message scroll area must be allowed to shrink, otherwise it
-   grows to fit all content and shoves the composer off-screen. */
-.messages { min-block-size: 0 !important; }
+/* The room panel (#app) is a flex column: [.messages, .composer]. It needs a
+   DEFINITE height (not just max-height) or the flex column can't constrain the
+   message list, so the composer gets pushed below the fold. Pin it to exactly
+   the space under the koott bar; the message list scrolls, composer stays put. */
+/* #main-content IS the flex column that holds the message list + composer
+   (rooms/show yields straight into <main id="main-content">; there is no #app
+   wrapper around the composer). Pin it to the space under the koott bar minus
+   ~14px so the composer sits cleanly above the viewport edge instead of being
+   clipped. The message list scrolls; the composer stays put. */
+#main-content {
+  block-size: calc(100dvh - 52px - 14px) !important;
+  max-block-size: calc(100dvh - 52px - 14px) !important;
+}
+.messages { flex: 1 1 0 !important; min-block-size: 0 !important; }
 .message-area { min-block-size: 0 !important; max-block-size: 100% !important; }
-#main-content > #app { max-block-size: calc(100dvh - 52px) !important; }
+.composer {
+  flex: 0 0 auto !important;
+  padding-block-end: max(0.5rem, env(safe-area-inset-bottom)) !important;
+}
 /* Empty rooms: Sabha sizes the empty message area to 100vh (full viewport),
    which overflows. Make it fill its container instead. */
 .message-area:not(:has(.message)):not(:has(.dm-conversation)) {
