@@ -109,13 +109,14 @@
     /* ══ Layered animated hero ══ */
     .hero{position:relative;overflow:hidden;padding:clamp(2.6rem,7vw,5rem) 0 clamp(2rem,5vw,3.4rem);isolation:isolate}
     /* layer 0 — real flowing gradient (canvas mesh, painted in JS) */
-    .hero-grad{position:absolute;inset:0;width:100%;height:100%;z-index:-3;pointer-events:none;opacity:.9}
-    /* real Sydney photo on the right, replacing the (inaccurate) dotted map */
-    .hero-photo{position:absolute;z-index:-2;inset:0 0 0 auto;width:min(60vw,860px);pointer-events:none;
-      background:url('images/sydney-skyline.jpg') center/cover no-repeat;opacity:.92;
-      -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 48%);mask-image:linear-gradient(90deg,transparent 0%,#000 48%)}
-    @media(max-width:760px){.hero-photo{inset:0;width:100%;opacity:.16;
-      -webkit-mask-image:linear-gradient(180deg,transparent,#000 74%);mask-image:linear-gradient(180deg,transparent,#000 74%)}}
+    .hero-grad{position:absolute;inset:0;width:100%;height:100%;z-index:-3;pointer-events:none;opacity:.18}
+    /* real Sydney harbour photo on the right (crisp, full colour) */
+    .hero-photo{position:absolute;z-index:-2;inset:0 0 0 auto;width:min(58vw,880px);pointer-events:none;
+      background:url('images/sydney-harbour.jpg') center/cover no-repeat;opacity:1;
+      -webkit-mask-image:linear-gradient(90deg,transparent 0%,#000 38%);mask-image:linear-gradient(90deg,transparent 0%,#000 38%)}
+    /* mobile: a clean full-width image banner above the copy */
+    @media(max-width:760px){.hero-photo{position:relative;z-index:0;inset:auto;width:100%;height:190px;opacity:1;margin:0 0 1.5rem;
+      border-radius:var(--rx);-webkit-mask-image:none;mask-image:none}}
     .hero-map{display:none}
     /* continuous coral beam sweeping across the hero */
     .hero-beam{position:absolute;inset:0;z-index:-2;pointer-events:none;overflow:hidden}
@@ -271,7 +272,7 @@
 
     /* ── final CTA ── */
     .final{position:relative;color:#fff;border-radius:var(--rxl);padding:clamp(3rem,6vw,4.6rem) clamp(2.5rem,5vw,3.6rem);text-align:center;overflow:hidden;
-      background:linear-gradient(180deg,rgba(20,18,15,.5) 0%,rgba(20,18,15,.8) 100%),url('images/sydney-harbour.jpg') center 38%/cover no-repeat}
+      background:linear-gradient(180deg,rgba(20,18,15,.5) 0%,rgba(20,18,15,.8) 100%),url('images/sydney-skyline.jpg') center 38%/cover no-repeat}
     .final>*{position:relative;z-index:1}
     .final h2{color:#fff} .final h2 em{color:#f0894e}
     .final p{color:rgba(255,255,255,.86);max-width:46ch;margin:1rem auto 1.7rem;font-size:1.05rem}
