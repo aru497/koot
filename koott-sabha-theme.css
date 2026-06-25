@@ -41,15 +41,16 @@ a:hover { color: var(--koott-orange-dk); }
 /* Sidebar / nav surfaces */
 #nav, .sidebar__container, .sidebar__tools { background-color: var(--koott-paper); }
 
-/* Neobrutalist room pills */
-.room { border-radius: 10px; }
+/* Room list: flat, clean channel list (no boxes/borders per item) */
+.room { border-radius: 8px; margin-block: 0; }
 .rooms .btn, .room.btn {
-  border: 2px solid var(--koott-ink);
-  box-shadow: 2px 2px 0 var(--koott-ink);
+  border: none !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
 }
-
-/* FIX black-on-black: hovered + current room -> orange fill, ink text */
-.room:hover, .room--current {
+/* Subtle orange tint on hover; solid orange for the current room (always readable) */
+.room:hover { background-color: rgba(232, 99, 42, 0.12) !important; color: var(--koott-ink) !important; }
+.room--current {
   --btn-background: var(--koott-orange);
   --btn-color: var(--koott-ink);
   background-color: var(--koott-orange) !important;
@@ -57,6 +58,23 @@ a:hover { color: var(--koott-orange-dk); }
 }
 .room:hover .room__contents, .room--current .room__contents,
 .room:hover .btn__text, .room--current .btn__text { color: var(--koott-ink) !important; }
+
+/* ---- Move the room list / sidebar to the LEFT (conventional chat layout) ---- */
+body {
+  grid-template-areas: "sidebar nav" "sidebar main" !important;
+  grid-template-columns: var(--sidebar-width) 1fr !important;
+}
+/* Pin the icon tool-rail to the left edge, with its divider on the right */
+.sidebar__tools {
+  inset-inline-start: 0 !important;
+  inset-inline-end: auto !important;
+  border-inline-start: 0 !important;
+  border-inline-end: 1px solid var(--color-border-darker) !important;
+}
+/* The room-list panel reserves space for the tool-rail on the left now */
+.sidebar__container { padding-inline: var(--sidebar-tools-width) 0 !important; }
+/* The room-header bar spans the main area, to the right of the left sidebar */
+#nav { inset-inline-start: var(--sidebar-width) !important; inset-inline-end: 0 !important; }
 
 /* Primary / send buttons in koott orange */
 .btn--primary, [type="submit"].btn, .composer .btn--primary {
@@ -101,3 +119,33 @@ dialog, .popover, .popup, [popover], [role="listbox"], [role="menu"],
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--koott-paper-2); }
 ::-webkit-scrollbar-thumb { background: var(--koott-orange); border-radius: 3px; }
+
+/* ---- Layout fixes for the 52px koott top bar ----
+   The reset sets `body { min-height: 100dvh }`; combined with our 52px top
+   offset that makes the body taller than the viewport, so the composer falls
+   below the fold and needs a scroll. Pin the body to exactly the viewport. */
+html { overflow: hidden !important; }
+body {
+  min-block-size: 0 !important;
+  block-size: 100dvh !important;
+  max-block-size: 100dvh !important;
+  overflow: hidden !important;
+}
+/* Flexbox: the message scroll area must be allowed to shrink, otherwise it
+   grows to fit all content and shoves the composer off-screen. */
+.messages { min-block-size: 0 !important; }
+.message-area { min-block-size: 0 !important; max-block-size: 100% !important; }
+#main-content > #app { max-block-size: calc(100dvh - 52px) !important; }
+/* Empty rooms: Sabha sizes the empty message area to 100vh (full viewport),
+   which overflows. Make it fill its container instead. */
+.message-area:not(:has(.message)):not(:has(.dm-conversation)) {
+  block-size: 100% !important;
+}
+/* Keep the first messages clear of the fixed room-header bar on desktop too
+   (Sabha only pads for this on mobile). */
+.messages { padding-block-start: var(--navbar-height) !important; }
+
+/* Sidebar top: stop the blurred header band from overlapping the first rooms.
+   Drop the heavy backdrop blur and give the list a clean opaque background. */
+.sidebar__container, #sidebar { background-color: var(--koott-paper) !important; }
+body.library-collapsed #sidebar { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
