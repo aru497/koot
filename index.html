@@ -161,6 +161,12 @@
     .trust{margin-top:1.3rem;font-size:.8rem;color:var(--lt);display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
     .trust b{color:var(--txt-2);font-weight:650}
 
+    /* ── typewriter "Try:" hint above the search ── */
+    .tw-hint{margin-top:1.25rem;font-size:1rem;color:var(--mut);font-weight:500;min-height:1.5em;cursor:pointer;max-width:600px}
+    .tw-hint .tw-q{color:var(--txt);font-weight:650}
+    .tw-cur{display:inline-block;width:2px;height:1.05em;background:var(--accent);margin-left:1px;vertical-align:-2px;border-radius:1px;animation:twblink 1.05s steps(1,end) infinite}
+    @keyframes twblink{50%{opacity:0}}
+
     /* ── progress bar (shows progress only — never the query) ── */
     .prog{margin-top:1.6rem;max-width:600px;display:none}
     .prog.on{display:block;animation:fade .3s ease}
@@ -334,6 +340,7 @@
     <p class="sub">Describe what you want to study, in your own words. Koott matches it to in-demand Australian occupations using real government shortage data — with salaries, your 485 visa, and your community.</p>
 
     <div class="searchwrap">
+      <div class="tw-hint" id="twHint" aria-hidden="true">Try: "<span class="tw-q" id="tw"></span><span class="tw-cur"></span>"</div>
       <form class="search" onsubmit="return koottSearch(event)">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
         <input id="q" type="text" autocomplete="off" aria-label="Describe what you want to study" placeholder="e.g. &quot;B.Sc nurse — what's in demand?&quot; or &quot;data &amp; AI, scholarships&quot;">
@@ -644,6 +651,26 @@ function koottReset(){
 // Entry points
 function koottSearch(e){ e.preventDefault(); runSearch(document.getElementById('q').value); return false; }
 function koottGo(q){ const i=document.getElementById('q'); if(i)i.value=q; runSearch(q); }
+
+// Typewriter "Try:" hint (vanilla port of the Aceternity effect) — rotates real
+// example queries with a blinking caret; clicking the hint runs that query
+// through the in-page search. Respects prefers-reduced-motion.
+(function(){
+  var el=document.getElementById('tw'); if(!el) return;
+  var phrases=["B.Sc nurse — what's in demand?","Data Science & AI, scholarships","Cybersecurity, regional, 485 visa","Civil engineering in Australia","Switching careers into IT"];
+  var hint=document.getElementById('twHint');
+  if(hint) hint.addEventListener('click',function(){ var q=el.textContent.trim(); if(q) koottGo(q); });
+  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches){ el.textContent=phrases[0]; return; }
+  var i=0,j=0,del=false;
+  (function tick(){
+    var p=phrases[i];
+    el.textContent = del ? p.slice(0,--j) : p.slice(0,++j);
+    var wait=del?34:74+Math.random()*46;
+    if(!del&&j>=p.length){ del=true; wait=1500; }
+    else if(del&&j<=0){ del=false; i=(i+1)%phrases.length; wait=320; }
+    setTimeout(tick,wait);
+  })();
+})();
 
 // ── In-demand lineup: top occupations by real ceiling headroom ──
 (function(){
