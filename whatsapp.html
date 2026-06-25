@@ -94,6 +94,13 @@
     .dlg-x { border: none; background: none; font-size: 1.5rem; color: var(--lt); cursor: pointer; line-height: 1; }
     .wf-note { font-size: .78rem; color: var(--lt); line-height: 1.5; }
 
+    /* Closing image band */
+    .wa-band { max-width: 1080px; margin: 0 auto; padding: 0 clamp(1rem,4vw,2.25rem) clamp(1rem,3vw,2rem); }
+    .wa-band-inner { position: relative; min-height: clamp(220px,32vw,340px); border-radius: var(--rxl); overflow: hidden; box-shadow: var(--sh-lg); display: flex; align-items: flex-end; background-image: linear-gradient(180deg,rgba(20,18,15,.45),rgba(20,18,15,.78)), url('images/students-group.jpg'); background-size: cover; background-position: center; }
+    .wa-band-cap { padding: clamp(1.5rem,4vw,2.4rem); color: #fff; }
+    .wa-band-cap h2 { font-size: clamp(1.5rem,3.2vw,2.2rem); font-weight: 750; letter-spacing: -.03em; line-height: 1.1; color: #fff; }
+    .wa-band-cap p { margin-top: .55rem; font-size: clamp(.95rem,1.6vw,1.05rem); color: rgba(255,255,255,.82); max-width: 460px; line-height: 1.5; }
+
     @media (max-width: 760px) { .wa-grid { grid-template-columns: 1fr; } .wa-count { width:100%; margin:.3rem 0 0; } }
   </style>
 </head>
@@ -149,6 +156,16 @@
       <p>Post it free. It goes live once our team reviews it — usually within a day.</p>
     </div>
     <button class="btn btn-p btn-lg" onclick="addDlg.showModal()">Add your group</button>
+  </div>
+</section>
+
+<!-- Closing image band -->
+<section class="wa-band">
+  <div class="wa-band-inner">
+    <div class="wa-band-cap">
+      <h2>Your cohort, before you even land.</h2>
+      <p>Find your people, swap arrival tips, and walk into your first week already knowing someone.</p>
+    </div>
   </div>
 </section>
 

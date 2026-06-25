@@ -94,6 +94,13 @@
     #gateCard .inner { position:sticky; top:5rem; background:var(--card); border:1px solid var(--bd); box-shadow:var(--sh-lg); border-radius:var(--rxl); padding:1.9rem; max-width:380px; text-align:center; }
     .locked #gated { filter:blur(6px); pointer-events:none; user-select:none; }
     .locked #gateCard { display:flex; }
+
+    /* Closing image band */
+    .arr-band { position:relative; margin-top:2.75rem; min-height:clamp(220px,32vw,340px); border-radius:var(--rxl); overflow:hidden; box-shadow:var(--sh-lg);
+      background:linear-gradient(180deg,rgba(20,18,15,.45),rgba(20,18,15,.78)), url('images/sydney-harbour.jpg'); background-size:cover; background-position:center; }
+    .arr-band-in { position:relative; min-height:clamp(220px,32vw,340px); display:flex; flex-direction:column; justify-content:flex-end; padding:1.75rem 1.9rem; }
+    .arr-band h2 { color:#fff; font-size:clamp(1.3rem,3vw,1.7rem); font-weight:800; letter-spacing:-.02em; margin:0 0 .4rem; line-height:1.15; }
+    .arr-band p { color:rgba(255,255,255,.9); font-size:.92rem; line-height:1.5; margin:0; max-width:38ch; }
   </style>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -208,6 +215,13 @@
       </div>
     </div>
   </div><!-- /#gateWrap -->
+
+  <section class="arr-band" aria-label="Arrival in Australia">
+    <div class="arr-band-in">
+      <h2>Your first week, sorted.</h2>
+      <p>Land in Australia knowing exactly what to do — bank, tax number and transport, in the right order.</p>
+    </div>
+  </section>
 
 </div>
 

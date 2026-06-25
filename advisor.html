@@ -140,6 +140,18 @@
     @media(max-width:640px) { .field-row { grid-template-columns:1fr; } .course-detail-row { grid-template-columns:1fr 1fr; } }
     .seg { border:none; background:transparent; padding:.45rem 1.1rem; border-radius:100px; font-size:.85rem; font-weight:650; color:var(--mut); cursor:pointer; font-family:var(--font); }
     .seg-on { background:var(--card); color:var(--txt); box-shadow:var(--sh-sm); }
+
+    /* ── Closing image band ── */
+    .photo-band {
+      position:relative; margin-top:2.5rem; border-radius:var(--rxl); overflow:hidden;
+      box-shadow:var(--sh-lg); border:1px solid var(--bd);
+      min-height:clamp(220px,32vw,340px); display:flex; align-items:flex-end;
+      background-image:linear-gradient(180deg,rgba(20,18,15,.45),rgba(20,18,15,.78)), url('images/sydney-harbour.jpg');
+      background-size:cover; background-position:center;
+    }
+    .photo-band-inner { padding:1.75rem 1.75rem 1.6rem; color:#fff; max-width:520px; }
+    .photo-band-inner h2 { font-size:clamp(1.25rem,3.2vw,1.7rem); font-weight:800; letter-spacing:-.025em; line-height:1.15; margin:0 0 .35rem; color:#fff; }
+    .photo-band-inner p { font-size:.95rem; line-height:1.45; margin:0; color:rgba(255,255,255,.9); }
   </style>
 </head>
 <body>
@@ -437,6 +449,14 @@
       <a href="https://immi.homeaffairs.gov.au" target="_blank">Department of Home Affairs</a>
     </p>
   </div>
+
+  <!-- Closing image band -->
+  <section class="photo-band" aria-label="Study in Australia">
+    <div class="photo-band-inner">
+      <h2>Find the course Australia is hiring for.</h2>
+      <p>Matched to real Australian Government skills data — so your study plan leads somewhere.</p>
+    </div>
+  </section>
 
 </div><!-- /advisor-shell -->
 

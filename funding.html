@@ -76,6 +76,15 @@
     #gateCard .inner { position:sticky; top:5rem; background:var(--card); border:1px solid var(--bd); box-shadow:var(--sh-lg); border-radius:var(--rxl); padding:1.9rem; max-width:380px; text-align:center; }
     .locked #gated { filter:blur(6px); pointer-events:none; user-select:none; }
     .locked #gateCard { display:flex; }
+
+    /* closing image band */
+    .fx-band { position:relative; overflow:hidden; border-radius:var(--rxl); margin-top:2.75rem;
+      min-height:clamp(220px,32vw,340px); display:flex; align-items:flex-end;
+      box-shadow:var(--sh-lg); border:1px solid var(--bd);
+      background:linear-gradient(180deg,rgba(20,18,15,.45) 0%,rgba(20,18,15,.78) 100%),url('images/sydney-skyline.jpg') center 42%/cover no-repeat; }
+    .fx-band .band-in { position:relative; z-index:1; padding:clamp(1.5rem,4vw,2.4rem); color:#fff; }
+    .fx-band h2 { color:#fff; font-size:clamp(1.4rem,3.4vw,2rem); font-weight:800; letter-spacing:-.02em; margin:0 0 .35rem; }
+    .fx-band p { color:rgba(255,255,255,.88); font-size:clamp(.9rem,1.6vw,1.02rem); line-height:1.55; margin:0; max-width:46ch; }
   </style>
 </head>
 <body>
@@ -208,6 +217,13 @@
       </div>
     </div>
   </div><!-- /#gateWrap -->
+
+  <section class="fx-band" aria-label="Funding your study in Australia">
+    <div class="band-in">
+      <h2>Fund your Australia plan.</h2>
+      <p>From the visa money rule to loans and OSHC — get the money side sorted before you lodge.</p>
+    </div>
+  </section>
 
 </div>
 
