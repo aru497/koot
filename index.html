@@ -109,6 +109,13 @@
     .chip{background:var(--card);border:1px solid var(--line);border-radius:var(--r-pill);padding:.35rem .85rem;font-size:.85rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all .12s}
     .chip:hover{border-color:var(--pri);color:var(--pri);background:var(--pri-soft)}
 
+    /* Typewriter search hint */
+    .tw-hint{margin-top:1.4rem;font-size:1.05rem;color:var(--muted);font-weight:500;min-height:1.5em}
+    .tw-hint .tw-q{color:var(--ink);font-weight:700}
+    .tw-cur{display:inline-block;width:2px;height:1.05em;background:var(--pri);margin-left:2px;vertical-align:-2px;border-radius:1px;animation:twblink 1.05s steps(1,end) infinite}
+    @keyframes twblink{50%{opacity:0}}
+    @media(prefers-reduced-motion:reduce){.tw-cur{animation:none}}
+
     /* Stat strip */
     .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:clamp(2.5rem,5vw,3.5rem)}
     .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:1.3rem 1.4rem;box-shadow:var(--sh-sm)}
@@ -192,6 +199,8 @@
   <span class="pill"><span class="ml">നമസ്കാരം</span> 👋 · Built for Kerala &amp; Indian students</span>
   <h1>Your Australia plan, built around <em>you</em>.</h1>
   <p class="sub">Tell us what you want to study — in your own words. We'll map it to in-demand courses, real salaries and your visa, then connect you with a community who've done it.</p>
+
+  <div class="tw-hint" aria-hidden="true">Try: "<span class="tw-q" id="tw"></span><span class="tw-cur"></span>"</div>
 
   <form class="search" onsubmit="return koottSearch(event)">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
@@ -298,6 +307,25 @@
 <script src="koott-profile.js"></script>
 <script src="koott-consult.js"></script>
 <script>
+  // Typewriter effect (vanilla port of the Aceternity component) — rotates real
+  // example searches as a hint above the search box. Clicking it runs the query.
+  (function(){
+    var el=document.getElementById('tw'); if(!el) return;
+    var phrases=["I'm a B.Sc nurse, want PR","Data Science + scholarships","Cybersecurity, regional, 485 visa","Accounting in Melbourne","Switching careers into IT"];
+    var hint=el.closest('.tw-hint');
+    if(hint) hint.addEventListener('click',function(){ var q=el.textContent.trim(); if(q) koottGo(q); });
+    if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches){ el.textContent=phrases[0]; return; }
+    var i=0,j=0,del=false;
+    (function tick(){
+      var p=phrases[i];
+      el.textContent = del ? p.slice(0,--j) : p.slice(0,++j);
+      var wait=del?34:74+Math.random()*46;
+      if(!del&&j>=p.length){ del=true; wait=1500; }
+      else if(del&&j<=0){ del=false; i=(i+1)%phrases.length; wait=320; }
+      setTimeout(tick,wait);
+    })();
+  })();
+
   // Smart search + popular chips route into the Course Advisor with the query.
   function koottGo(q){ if(window.koottHaptic)window.koottHaptic('medium'); location.href='advisor.html?q='+encodeURIComponent(q); }
   function koottSearch(e){ e.preventDefault(); var v=(document.getElementById('q').value||'').trim(); location.href='advisor.html'+(v?('?q='+encodeURIComponent(v)):''); return false; }
