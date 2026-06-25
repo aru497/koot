@@ -1141,6 +1141,9 @@ window.koottAuth && koottAuth.onChange(function(u){
 });
 setMode('chat');
 
+// Prefill from the homepage smart-search (?q=...) so the search box flows straight in.
+(function(){ try{ var q=new URLSearchParams(location.search).get('q'); if(q){ var el=document.getElementById('ag_answer'); if(el){ el.value=q; setMode('chat'); setTimeout(function(){ try{ el.focus(); el.setSelectionRange(el.value.length, el.value.length); }catch(e){} }, 60); } } }catch(e){} })();
+
 </script>
 
 </body>

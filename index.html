@@ -15,7 +15,7 @@
   <meta name="author" content="Koott">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Koott">
-  <meta property="og:title" content="Study in Australia, with people who've got you">
+  <meta property="og:title" content="Your Australia plan, built around you">
   <meta property="og:description" content="Koott matches Kerala & Indian students to in-demand Australian courses with AI, plans your 485 visa, and connects you to a community on the same journey. Free.">
   <meta property="og:url" content="https://koott.live/">
   <meta property="og:image" content="https://koott.live/og-image.png">
@@ -24,7 +24,7 @@
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="en_AU">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Study in Australia, with people who've got you">
+  <meta name="twitter:title" content="Your Australia plan, built around you">
   <meta name="twitter:description" content="AI course matching, visa tools, and a community of Kerala & Indian students. Free.">
   <meta name="twitter:image" content="https://koott.live/og-image.png">
   <meta name="twitter:image:alt" content="Koott — study in Australia for Kerala and Indian students">
@@ -32,329 +32,254 @@
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":"Koott site navigation","itemListElement":[{"@type":"SiteNavigationElement","position":1,"name":"Course Advisor","url":"https://koott.live/advisor.html"},{"@type":"SiteNavigationElement","position":2,"name":"Communities","url":"https://koott.live/communities.html"},{"@type":"SiteNavigationElement","position":3,"name":"WhatsApp Groups","url":"https://koott.live/whatsapp.html"},{"@type":"SiteNavigationElement","position":4,"name":"Funding & Insurance","url":"https://koott.live/funding.html"},{"@type":"SiteNavigationElement","position":5,"name":"Arrival Kit","url":"https://koott.live/arrival.html"},{"@type":"SiteNavigationElement","position":6,"name":"Visa Tools","url":"https://koott.live/tools.html"}]}</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
   <style>
-    /* ═══════ KOOTT — Neobrutalism Design System ═══════
-       Tokens: primary #E8632A · secondary #C8501C · success #16A34A · warning #D97706 · danger #DC2626
-               surface #FAF8F4 · text #141414 · Inter / JetBrains Mono · spacing 4·8·12·16·24·32
-       Style:  thick ink borders (3px) · hard offset shadows (no blur) · high contrast · WCAG 2.2 AA */
+    /* ─── Koott — modern, clean, warm (orange) ─── */
     :root{
-      --pri:#E8632A; --sec:#C8501C; --ok:#16A34A; --warn:#D97706; --dng:#DC2626;
-      --surface:#FAF8F4; --ink:#141414; --paper:#FFFFFF; --muted:#4A5568;
-      --brd:3px solid var(--ink); --bd:var(--ink); --bg:#FFFFFF; --bg-sub:#FAF8F4; --txt:#141414; --lt:#4A5568; --rl:10px; --font:'Inter',system-ui,sans-serif;
-      --sh:6px 6px 0 var(--ink); --sh-sm:4px 4px 0 var(--ink); --sh-lg:9px 9px 0 var(--ink);
-      --s1:4px;--s2:8px;--s3:12px;--s4:16px;--s6:24px;--s8:32px;--s12:48px;--s16:64px;
+      --pri:#E8632A; --pri-dk:#C8501C; --pri-soft:#FDEEE6;
+      --ink:#17191F; --muted:#5C6573; --faint:#8A93A0;
+      --bg:#FBFAF8; --card:#FFFFFF; --line:#ECE6DE; --line-2:#F2EDE6;
+      --ok:#16A34A;
+      --r:14px; --r-lg:22px; --r-pill:100px;
+      --sh-sm:0 1px 2px rgba(23,25,31,.05);
+      --sh:0 2px 6px rgba(23,25,31,.05), 0 12px 28px -14px rgba(23,25,31,.14);
+      --sh-lg:0 4px 10px rgba(23,25,31,.05), 0 28px 56px -22px rgba(23,25,31,.22);
+      --font:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
       --mono:'JetBrains Mono',ui-monospace,monospace;
     }
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
-    body{font-family:'Inter',system-ui,sans-serif;background-color:var(--surface);background-image:linear-gradient(rgba(20,20,20,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(20,20,20,.05) 1px,transparent 1px);background-size:28px 28px;color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
-    a{color:inherit}
-    .wrap{max-width:1180px;margin:0 auto;padding:0 clamp(1rem,4vw,2rem)}
+    body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:1120px;margin:0 auto;padding:0 clamp(1.1rem,4vw,2rem)}
     .section{padding:clamp(3rem,7vw,5.5rem) 0}
-    .mono{font-family:var(--mono)}
-    .tag{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--mono);font-size:.74rem;font-weight:700;letter-spacing:.02em;text-transform:uppercase;background:var(--pri);color:var(--ink);border:var(--brd);border-radius:8px;padding:.35rem .7rem;box-shadow:var(--sh-sm)}
-    h2.t{font-size:clamp(1.9rem,4vw,2.9rem);font-weight:900;letter-spacing:-.03em;line-height:1.02;margin:var(--s4) 0 0}
-    .lead{font-size:1.05rem;color:var(--muted);max-width:54ch;margin-top:var(--s4)}
 
     /* Buttons */
-    .nb-btn{display:inline-flex;align-items:center;gap:.5rem;font-family:'Inter';font-weight:800;font-size:.95rem;line-height:1;padding:.85rem 1.3rem;border:var(--brd);border-radius:10px;background:var(--paper);color:var(--ink);box-shadow:var(--sh-sm);cursor:pointer;text-decoration:none;transition:transform .08s, box-shadow .08s}
-    .nb-btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
-    .nb-btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
-    .nb-btn:focus-visible{outline:3px solid var(--sec);outline-offset:2px}
-    .nb-btn.pri{background:var(--pri)}
-    .nb-btn.dark{background:var(--ink);color:#fff}
-    .nb-btn.lg{font-size:1.05rem;padding:1rem 1.6rem}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-weight:700;font-size:.95rem;
+      padding:.8rem 1.35rem;border-radius:var(--r-pill);border:1.5px solid transparent;cursor:pointer;
+      transition:transform .12s ease,box-shadow .12s ease,background .12s ease;white-space:nowrap;font-family:var(--font)}
+    .btn-pri{background:var(--pri);color:#fff;box-shadow:0 6px 16px -6px rgba(232,99,42,.6)}
+    .btn-pri:hover{background:var(--pri-dk);transform:translateY(-1px);box-shadow:0 10px 22px -8px rgba(232,99,42,.7)}
+    .btn-ink{background:var(--ink);color:#fff}
+    .btn-ink:hover{transform:translateY(-1px);box-shadow:var(--sh)}
+    .btn-ghost{background:var(--card);color:var(--ink);border-color:var(--line)}
+    .btn-ghost:hover{border-color:var(--ink);transform:translateY(-1px)}
+    .btn-lg{padding:.95rem 1.7rem;font-size:1rem}
 
     /* Nav */
-    .nb-nav{display:flex;align-items:center;gap:.25rem;padding:.85rem clamp(1rem,4vw,2rem);border-bottom:var(--brd);background:var(--surface);position:sticky;top:0;z-index:500}
-    .nb-logo{display:flex;align-items:center;gap:.5rem;font-weight:900;font-size:1.25rem;letter-spacing:-.04em;text-decoration:none;color:var(--ink);margin-right:1.25rem}
-    .nb-links{display:flex;align-items:center;gap:.1rem;flex:1;list-style:none}
-    .nb-links a{font-weight:700;font-size:.88rem;padding:.4rem .7rem;border:2px solid transparent;border-radius:8px;text-decoration:none}
-    .nb-links a:hover{border-color:var(--ink);background:var(--pri)}
-    .nb-right{display:flex;align-items:center;gap:.5rem}
-    /* koott-auth renders into #koottNav — give its button the brutalist look */
-    #koottNav .btn{font-family:'Inter';font-weight:800;border:var(--brd);border-radius:10px;background:var(--pri);color:var(--ink);box-shadow:var(--sh-sm);padding:.6rem 1rem}
-    #koottNav .koott-acct-btn{display:inline-flex;align-items:center;gap:.5rem;border:var(--brd);border-radius:10px;box-shadow:var(--sh-sm);background:var(--paper);padding:.3rem .6rem .3rem .35rem}
-    #koottNav .koott-acct-btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
-    /* avatar — constrain the Google photo so it doesn't blow up the chip */
-    #koottNav .av{width:30px;height:30px;border-radius:7px;border:2px solid var(--ink);overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--pri);color:var(--ink);font-size:.72rem;font-weight:800;flex-shrink:0}
+    .nav{position:sticky;top:0;z-index:500;background:rgba(251,250,248,.85);backdrop-filter:saturate(180%) blur(12px);
+      border-bottom:1px solid var(--line)}
+    .nav-in{display:flex;align-items:center;gap:1.5rem;height:64px;max-width:1120px;margin:0 auto;padding:0 clamp(1.1rem,4vw,2rem)}
+    .logo{display:flex;align-items:center;gap:.5rem;font-weight:900;font-size:1.3rem;letter-spacing:-.04em}
+    .nav-links{display:flex;align-items:center;gap:.35rem;flex:1;list-style:none}
+    .nav-links a{font-weight:600;font-size:.9rem;color:var(--muted);padding:.45rem .7rem;border-radius:8px}
+    .nav-links a:hover{color:var(--ink);background:var(--pri-soft)}
+    .nav-right{display:flex;align-items:center;gap:.6rem}
+    #koottNav .btn{background:transparent;color:var(--muted);box-shadow:none;border:0;padding:.5rem .6rem;font-weight:700}
+    #koottNav .btn:hover{color:var(--ink)}
+    #koottNav .koott-acct-btn{display:inline-flex;align-items:center;gap:.5rem;border:1.5px solid var(--line);border-radius:var(--r-pill);background:var(--card);padding:.25rem .7rem .25rem .3rem;box-shadow:var(--sh-sm)}
+    #koottNav .av{width:30px;height:30px;border-radius:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--pri);color:#fff;font-size:.74rem;font-weight:800;flex-shrink:0}
     #koottNav .av img{width:100%;height:100%;object-fit:cover;display:block}
-    #koottNav .koott-acct-btn .nm{font-weight:700;font-size:.85rem;line-height:1;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    #koottNav .koott-acct-btn .cv{font-size:.7rem;color:var(--lt)}
-    @media(max-width:880px){.nb-links{display:none}}
+    #koottNav .koott-acct-btn .nm{font-weight:700;font-size:.85rem;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    #koottNav .koott-acct-btn .cv{font-size:.7rem;color:var(--faint)}
+    @media(max-width:860px){.nav-links{display:none}}
 
     /* Hero */
-    .hero{padding:clamp(2.5rem,6vw,4.5rem) 0;position:relative}
-    .hero .wrap{position:relative;z-index:1}
-    .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(2rem,5vw,3.5rem);align-items:center}
-    .hero h1{font-size:clamp(2.7rem,6vw,4.4rem);font-weight:900;letter-spacing:-.045em;line-height:.98}
-    .hi{background:var(--pri);box-shadow:3px 3px 0 var(--ink);padding:0 .15em;border:2px solid var(--ink);border-radius:6px;white-space:nowrap}
-    /* Funky "Australia" + map badge */
-    .au-word{display:inline-block;background:var(--pri);border:2px solid var(--ink);border-radius:6px;box-shadow:3px 3px 0 var(--ink);padding:0 .14em;transform:rotate(-1.8deg)}
-    .au-map{display:inline-block;width:.82em;height:.82em;margin-left:.16em;transform:rotate(8deg) translateY(-.04em)}
-    .au-map svg{display:block;width:100%;height:100%;filter:drop-shadow(2px 2px 0 var(--ink))}
-    /* Jumping kangaroo shadow */
-    .roo{position:absolute;left:2px;bottom:8px;width:74px;z-index:0;pointer-events:none}
-    .roo-body{display:block;width:100%;height:auto;fill:var(--ink);opacity:.15;transform-origin:bottom center}
-    .roo-sh{position:absolute;left:50%;bottom:-2px;width:50px;height:8px;background:var(--ink);border-radius:50%;transform:translateX(-50%);opacity:.16}
-    /* hop only on hover */
-    .hero:hover .roo-body{animation:hop 1s cubic-bezier(.34,.62,.4,1) infinite}
-    .hero:hover .roo-sh{animation:hopsh 1s cubic-bezier(.34,.62,.4,1) infinite}
-    @keyframes hop{0%,100%{transform:translateY(0) rotate(0)}45%{transform:translateY(-30px) rotate(-7deg)}}
-    @keyframes hopsh{0%,100%{transform:translateX(-50%) scale(1);opacity:.18}45%{transform:translateX(-50%) scale(.55);opacity:.06}}
-    @media(max-width:880px){.roo{display:none}}
-    .hero .lead{font-size:1.15rem;margin-top:var(--s6)}
-    .hero-cta{display:flex;gap:var(--s3);flex-wrap:wrap;margin-top:var(--s8)}
-    .sig{margin-top:var(--s6);font-family:var(--mono);font-size:.82rem;color:var(--muted)}
-    .sig b{color:var(--sec)}
-    .dotlive{width:9px;height:9px;border-radius:50%;background:var(--ok);border:2px solid var(--ink);position:relative}
-    .wave{display:inline-block;transform-origin:72% 78%;animation:wv 2.6s ease-in-out infinite}
-    @keyframes wv{0%,55%,100%{transform:rotate(0)}8%{transform:rotate(14deg)}16%{transform:rotate(-8deg)}24%{transform:rotate(14deg)}32%{transform:rotate(-4deg)}40%{transform:rotate(10deg)}48%{transform:rotate(0)}}
+    .hero{position:relative;text-align:center;padding:clamp(2.5rem,7vw,5rem) 0 clamp(1.5rem,4vw,3rem);overflow:hidden}
+    .hero::before{content:"";position:absolute;inset:0;z-index:-1;
+      background:radial-gradient(120% 70% at 50% -8%, var(--pri-soft) 0%, rgba(253,238,230,0) 55%)}
+    .pill{display:inline-flex;align-items:center;gap:.5rem;background:var(--card);border:1px solid var(--line);
+      border-radius:var(--r-pill);padding:.4rem .9rem;font-size:.82rem;font-weight:600;color:var(--muted);box-shadow:var(--sh-sm)}
+    .pill .ml{color:var(--ink);font-weight:800}
+    h1{font-size:clamp(2.4rem,6.2vw,4rem);font-weight:900;letter-spacing:-.045em;line-height:1.02;margin:1.4rem auto .9rem;max-width:14ch}
+    h1 em{font-style:normal;color:var(--pri)}
+    .sub{font-size:clamp(1.02rem,2.2vw,1.2rem);color:var(--muted);max-width:50ch;margin:0 auto}
 
-    /* Mock window */
-    .mock{border:var(--brd);border-radius:14px;overflow:hidden;box-shadow:var(--sh-lg);background:var(--paper)}
-    .mock-bar{display:flex;align-items:center;gap:.5rem;padding:.7rem .9rem;border-bottom:var(--brd);background:var(--pri)}
-    .mock-bar i{width:13px;height:13px;border-radius:50%;border:2px solid var(--ink);display:block}
-    .mock-bar i:nth-child(1){background:#ff5f57}.mock-bar i:nth-child(2){background:#fff}.mock-bar i:nth-child(3){background:#28c840}
-    .mock-ttl{margin-left:.5rem;font-family:var(--mono);font-size:.76rem;font-weight:700}
-    .mock-body{display:grid;grid-template-columns:148px 1fr;min-height:300px}
-    .mock-side{background:var(--surface);border-right:var(--brd);padding:var(--s3) var(--s2)}
-    .mock-sh{font-family:var(--mono);font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:var(--s2) var(--s2) var(--s1)}
-    .mock-it{display:flex;align-items:center;gap:.5rem;padding:.4rem .55rem;border-radius:7px;font-size:.8rem;font-weight:700;border:2px solid transparent}
-    .mock-it.on{background:var(--pri);border:2px solid var(--ink)}
-    .mock-feed{padding:var(--s4);display:flex;flex-direction:column;gap:var(--s3)}
-    .mock-msg{display:flex;gap:.6rem}
-    .mock-av{width:32px;height:32px;border-radius:8px;border:2px solid var(--ink);flex-shrink:0;color:#fff;font-size:.66rem;font-weight:800;display:flex;align-items:center;justify-content:center}
-    .mock-meta{font-family:var(--mono);font-size:.7rem;color:var(--muted)}
-    .mock-meta b{color:var(--ink);font-weight:800;margin-right:.35rem;font-family:'Inter'}
-    .mock-txt{font-size:.85rem;line-height:1.45}
-    .mock-rxn{display:inline-block;margin-top:.3rem;background:var(--surface);border:2px solid var(--ink);border-radius:100px;padding:.05rem .45rem;font-size:.72rem;font-weight:700}
-    .mock-comp{margin-top:auto;padding:var(--s3) var(--s4) var(--s4)}
-    .mock-box{display:flex;align-items:center;gap:.5rem;border:var(--brd);border-radius:10px;padding:.55rem .75rem;color:var(--muted);font-size:.82rem}
-    .mock-send{margin-left:auto;width:28px;height:28px;border-radius:7px;border:2px solid var(--ink);background:var(--sec);color:#fff;display:flex;align-items:center;justify-content:center}
+    /* Search */
+    .search{display:flex;align-items:center;gap:.5rem;max-width:640px;margin:2rem auto 0;background:var(--card);
+      border:1.5px solid var(--line);border-radius:var(--r-pill);box-shadow:var(--sh);padding:.45rem .45rem .45rem 1.1rem}
+    .search:focus-within{border-color:var(--pri);box-shadow:0 0 0 4px var(--pri-soft),var(--sh)}
+    .search svg{color:var(--faint);flex-shrink:0}
+    .search input{flex:1;border:0;outline:0;font-family:var(--font);font-size:1rem;color:var(--ink);background:transparent;min-width:0}
+    .search input::placeholder{color:var(--faint)}
+    .search .btn{padding:.7rem 1.2rem}
+    @media(max-width:520px){.search .btn span{display:none}.search .btn{padding:.7rem .9rem}}
+    .pops{display:flex;align-items:center;justify-content:center;gap:.5rem;flex-wrap:wrap;margin-top:1.1rem;font-size:.88rem}
+    .pops .lbl{color:var(--faint);font-weight:600}
+    .chip{background:var(--card);border:1px solid var(--line);border-radius:var(--r-pill);padding:.35rem .85rem;font-size:.85rem;font-weight:600;color:var(--muted);cursor:pointer;transition:all .12s}
+    .chip:hover{border-color:var(--pri);color:var(--pri);background:var(--pri-soft)}
 
-    /* Trust */
-    .trust{border-top:var(--brd);border-bottom:var(--brd);background:var(--sec)}
-    .trust .wrap{display:flex;align-items:center;gap:clamp(.8rem,3vw,2rem);flex-wrap:wrap;padding:var(--s4) clamp(1rem,4vw,2rem)}
-    .trust-lbl{font-family:var(--mono);font-size:.7rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pri)}
-    .trust-items{display:flex;gap:clamp(.8rem,3vw,2rem);flex-wrap:wrap;font-size:.92rem;font-weight:700;color:#fff}
+    /* Stat strip */
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:clamp(2.5rem,5vw,3.5rem)}
+    .stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:1.3rem 1.4rem;box-shadow:var(--sh-sm)}
+    .stat .n{font-size:1.7rem;font-weight:900;letter-spacing:-.03em;line-height:1}
+    .stat .n.free{color:var(--pri)}
+    .stat .l{font-size:.82rem;color:var(--muted);margin-top:.45rem;line-height:1.45}
+    @media(max-width:760px){.stats{grid-template-columns:1fr 1fr}}
 
-    /* Cards */
-    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s6);margin-top:var(--s12)}
-    .nb-card{display:flex;flex-direction:column;padding:var(--s6);background:var(--paper);border:var(--brd);border-radius:14px;box-shadow:var(--sh);text-decoration:none;color:inherit;transition:transform .1s, box-shadow .1s}
-    .nb-card:hover{transform:translate(-2px,-2px);box-shadow:var(--sh-lg)}
-    .nb-ico{width:54px;height:54px;border-radius:12px;border:var(--brd);display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:var(--sh-sm)}
-    .nb-num{font-family:var(--mono);font-size:.8rem;font-weight:800;margin:var(--s4) 0 .3rem}
-    .nb-card h3{font-size:1.2rem;font-weight:900;letter-spacing:-.02em;margin-bottom:.4rem}
-    .nb-card p{font-size:.92rem;color:var(--muted);flex:1}
-    .nb-card .go{margin-top:var(--s4);font-weight:800;font-size:.9rem;display:inline-flex;align-items:center;gap:.3rem}
+    /* Section heads */
+    .eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--pri)}
+    h2{font-size:clamp(1.7rem,3.6vw,2.5rem);font-weight:900;letter-spacing:-.03em;line-height:1.08;margin-top:.5rem}
+    .lead{font-size:1.05rem;color:var(--muted);max-width:56ch;margin-top:.9rem}
 
-    /* Band */
-    .band{background:var(--pri);border-top:var(--brd);border-bottom:var(--brd)}
-    .steps4{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s6);margin-top:var(--s12)}
-    .step4{background:var(--paper);border:var(--brd);border-radius:12px;box-shadow:var(--sh-sm);padding:var(--s4)}
-    .step4 .n{font-family:var(--mono);font-size:.74rem;font-weight:800;color:var(--sec)}
-    .step4 h4{font-size:1.05rem;font-weight:900;margin:.5rem 0 .3rem;letter-spacing:-.01em}
-    .step4 p{font-size:.86rem;color:var(--muted)}
+    /* Feature cards */
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:2.2rem}
+    .card{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);
+      padding:1.6rem;box-shadow:var(--sh-sm);transition:transform .14s,box-shadow .14s}
+    .card:hover{transform:translateY(-3px);box-shadow:var(--sh)}
+    .ico{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;background:var(--pri-soft);color:var(--pri);margin-bottom:1rem}
+    .card h3{font-size:1.15rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.35rem}
+    .card p{font-size:.92rem;color:var(--muted);flex:1}
+    .card .go{margin-top:1rem;font-weight:700;font-size:.9rem;color:var(--pri);display:inline-flex;align-items:center;gap:.3rem}
+    @media(max-width:860px){.grid3{grid-template-columns:1fr}}
 
-    /* Figures */
-    .figs{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--s6);margin-top:var(--s12)}
-    .figbox{border:var(--brd);border-radius:14px;box-shadow:var(--sh);padding:var(--s6);background:var(--paper)}
-    .figbox:nth-child(1){background:#FFF7D6}.figbox:nth-child(2){background:#EAE6FF}.figbox:nth-child(3){background:#DEF7E6}
-    .figbox .big{font-size:clamp(2.8rem,6vw,4rem);font-weight:900;letter-spacing:-.05em;line-height:1;font-family:var(--mono)}
-    .figbox .big i{font-style:normal;font-size:.5em}
-    .figbox p{font-size:.9rem;color:var(--muted);margin-top:var(--s3)}
+    /* Your people */
+    .people{display:grid;grid-template-columns:1.25fr 1fr;gap:1.2rem;margin-top:2.2rem;align-items:stretch}
+    .pcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);padding:1.7rem;box-shadow:var(--sh-sm);display:flex;flex-direction:column}
+    .pcard.feature{background:linear-gradient(135deg,var(--pri) 0%,var(--pri-dk) 100%);color:#fff;border:0;justify-content:space-between;box-shadow:var(--sh)}
+    .pcard.feature h3{font-size:1.5rem;font-weight:900;letter-spacing:-.02em;line-height:1.15;max-width:18ch}
+    .pcard.feature p{color:rgba(255,255,255,.85);margin-top:.6rem;font-size:.96rem}
+    .pcard.feature .btn{margin-top:1.4rem;align-self:flex-start;background:#fff;color:var(--ink)}
+    .pcard.feature .btn:hover{background:#fff;transform:translateY(-1px)}
+    .pcard h4{font-size:1.1rem;font-weight:800;letter-spacing:-.01em}
+    .pcard .desc{font-size:.92rem;color:var(--muted);margin-top:.45rem;flex:1}
+    .pcard .meta{font-size:.84rem;color:var(--faint);margin-top:1.1rem;line-height:1.5}
+    .pcard .meta b{color:var(--ink);font-weight:700}
+    .pcard .pbtn{margin-top:1.1rem}
+    @media(max-width:860px){.people{grid-template-columns:1fr}}
 
-    /* Community */
-    .commrow{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,3.5rem);align-items:center}
-    .comm-list{display:flex;flex-direction:column;gap:var(--s3)}
-    .comm-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:var(--s4);background:var(--paper);border:var(--brd);border-radius:12px;box-shadow:var(--sh-sm);text-decoration:none;color:inherit;transition:transform .08s,box-shadow .08s}
-    .comm-row:hover{transform:translate(-2px,-2px);box-shadow:var(--sh)}
-    .comm-row b{font-size:1.02rem;font-weight:800}
-    .comm-row span{font-family:var(--mono);font-size:.76rem;color:var(--muted)}
+    /* Communities mini-list */
+    .commlist{display:flex;flex-direction:column;gap:.5rem;margin-top:1rem}
+    .commrow{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.7rem .9rem;border:1px solid var(--line);border-radius:11px;transition:all .12s}
+    .commrow:hover{border-color:var(--pri);background:var(--pri-soft)}
+    .commrow b{font-size:.92rem;font-weight:700}
+    .commrow span{font-size:.76rem;color:var(--faint)}
 
-    /* CTA */
-    .cta{background:var(--sec);border:var(--brd);border-radius:18px;box-shadow:var(--sh-lg);padding:clamp(2.5rem,5vw,4rem);text-align:center;color:#fff}
-    .cta h2{font-size:clamp(1.9rem,4vw,2.7rem);font-weight:900;letter-spacing:-.03em}
-    .cta p{color:rgba(255,255,255,.85);max-width:44ch;margin:var(--s4) auto var(--s6);font-size:1.05rem}
-
-
-    .cta{position:relative;overflow:hidden}
-    .cta>*{position:relative;z-index:1}
-    .cta-skyline{position:absolute;left:50%;bottom:-2px;transform:translateX(-50%);width:min(680px,116%);height:auto;opacity:.16;z-index:0;pointer-events:none}
-
-
-    /* Rolling market ticker */
-    .ticker{display:flex;align-items:stretch;border-top:var(--brd);border-bottom:var(--brd);background:var(--ink);color:#fff;overflow:hidden}
-    .ticker-tag{display:flex;align-items:center;gap:.45rem;flex-shrink:0;background:var(--pri);color:var(--ink);font-family:var(--mono);font-weight:800;font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;padding:.7rem 1rem;border-right:var(--brd);white-space:nowrap}
-    .ticker-vp{overflow:hidden;flex:1}
-    .ticker-track{display:inline-flex;white-space:nowrap;animation:tick 42s linear infinite;will-change:transform}
-    .ticker:hover .ticker-track{animation-play-state:paused}
-    .ti{display:inline-flex;align-items:center;gap:.45rem;font-family:var(--mono);font-size:.82rem;font-weight:700;padding:.7rem 1.5rem;border-right:1px solid rgba(255,255,255,.14)}
-    .ti b{font-weight:800}
-    .ti .up{color:#34d399}.ti .neu{color:var(--pri)}
-    @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    /* Final CTA */
+    .final{background:var(--ink);color:#fff;border-radius:var(--r-lg);padding:clamp(2.5rem,5vw,3.6rem);text-align:center}
+    .final h2{color:#fff}
+    .final p{color:rgba(255,255,255,.7);max-width:46ch;margin:.9rem auto 1.6rem;font-size:1.05rem}
+    .final .row{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap}
 
     /* Footer */
-    .ft{border-top:var(--brd);background:var(--ink);color:#fff}
-    .ft .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:var(--s4);padding:var(--s8) clamp(1rem,4vw,2rem)}
-    .ft a{color:#fff;text-decoration:none;font-size:.88rem;font-weight:600;opacity:.85}
-    .ft a:hover{opacity:1;color:var(--pri)}
-    .ft-links{display:flex;gap:var(--s6);flex-wrap:wrap}
-
-    @media(max-width:880px){
-      .hero-grid{grid-template-columns:1fr}.mock{margin-top:var(--s8)}
-      .cards{grid-template-columns:1fr}.steps4{grid-template-columns:1fr 1fr}
-      .figs{grid-template-columns:1fr}.commrow{grid-template-columns:1fr}
-    }
-    @media(max-width:560px){.mock-side{display:none}.mock-body{grid-template-columns:1fr}}
+    .ft{border-top:1px solid var(--line);margin-top:1rem}
+    .ft-in{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;padding:2.2rem clamp(1.1rem,4vw,2rem)}
+    .ft-in a{color:var(--muted);font-size:.88rem;font-weight:600}
+    .ft-in a:hover{color:var(--pri)}
+    .ft-links{display:flex;gap:1.3rem;flex-wrap:wrap}
+    .ft .note{font-family:var(--mono);font-size:.74rem;color:var(--faint)}
+    .ft .note b{color:var(--pri)}
   </style>
 </head>
 <body>
 
-<nav class="nb-nav">
-  <a class="nb-logo" href="index.html" aria-label="Koott home">
-    <img src="koott-logo.svg" alt="Koott" height="30" style="height:30px;width:auto;display:block">
+<nav class="nav"><div class="nav-in">
+  <a class="logo" href="index.html" aria-label="Koott home">
+    <img src="koott-logo.svg" alt="Koott" height="28" style="height:28px;width:auto;display:block">
+    koott
   </a>
-  <ul class="nb-links">
+  <ul class="nav-links">
     <li><a href="advisor.html">Course Advisor</a></li>
     <li><a href="communities.html">Communities</a></li>
-    <li><a href="whatsapp.html">WhatsApp</a></li>
     <li><a href="funding.html">Funding</a></li>
     <li><a href="arrival.html">Arrival</a></li>
     <li><a href="tools.html">Visa Tools</a></li>
   </ul>
-  <div class="nb-right"><span id="koottNav"></span><a href="advisor.html" class="nb-btn pri">Get started</a></div>
-</nav>
+  <div class="nav-right"><span id="koottNav"></span><a href="advisor.html" class="btn btn-pri" data-haptic="medium">Get started</a></div>
+</div></nav>
 
-<header class="hero"><div class="wrap hero-grid">
-  <div>
-    <span class="tag"><span class="dotlive"></span>നമസ്കാരം <span class="wave">👋</span> Built by students who've been there</span>
-    <h1 style="margin-top:var(--s6)">Study in <span class="au-word">Australia</span><span class="au-map"><svg viewBox="20 24 104 102" xmlns="http://www.w3.org/2000/svg"><path d="M30 54 L40 48 L50 46 L58 44 L64 48 L68 54 L72 56 L76 52 L80 46 L84 30 L86 46 L92 54 L100 62 L110 76 L116 88 L116 98 L110 106 L102 108 L94 104 L86 108 L76 103 L66 107 L56 104 L46 107 L39 101 L33 91 L29 79 L27 68 L27 60 Z" fill="#E8632A" stroke="#141414" stroke-width="3" stroke-linejoin="round"/><path d="M104 114 L109 112 L113 116 L111 122 L105 122 Z" fill="#E8632A" stroke="#141414" stroke-width="2.6" stroke-linejoin="round"/></svg></span>,<br>with people who've <span class="hi">got you</span>.</h1>
-    <p class="lead">Koott matches you to in-demand courses using real Australian government data, keeps your visa on track, and drops you into a community of students on the exact same journey.</p>
-    <div class="hero-cta">
-      <a href="advisor.html" class="nb-btn pri lg">Find my course →</a>
-      <a href="communities.html" class="nb-btn lg">Browse communities</a>
-    </div>
-    <div class="sig">കൂട്ട് &nbsp;<b>koott</b> — “together”, in Malayalam.</div>
+<header class="hero"><div class="wrap">
+  <span class="pill"><span class="ml">നമസ്കാരം</span> 👋 · Built for Kerala &amp; Indian students</span>
+  <h1>Your Australia plan, built around <em>you</em>.</h1>
+  <p class="sub">Tell us what you want to study — in your own words. We'll map it to in-demand courses, real salaries and your visa, then connect you with a community who've done it.</p>
+
+  <form class="search" onsubmit="return koottSearch(event)">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input id="q" type="text" autocomplete="off" placeholder="e.g. &quot;I'm a B.Sc nurse, want PR&quot; or &quot;data, scholarships&quot;">
+    <button class="btn btn-pri" type="submit" data-haptic="medium">Find my course <span>→</span></button>
+  </form>
+  <div class="pops">
+    <span class="lbl">Popular:</span>
+    <button class="chip" onclick="koottGo('Nursing')">Nursing</button>
+    <button class="chip" onclick="koottGo('Data Science')">Data Science</button>
+    <button class="chip" onclick="koottGo('Cybersecurity')">Cybersecurity</button>
+    <button class="chip" onclick="koottGo('Social Work')">Social Work</button>
+    <button class="chip" onclick="koottGo('Accounting')">Accounting</button>
   </div>
 
-  <div class="mock">
-    <div class="mock-bar"><i></i><i></i><i></i><span class="mock-ttl">Koott · Communities</span></div>
-    <div class="mock-body">
-      <aside class="mock-side">
-        <div class="mock-sh">Cities</div>
-        <div class="mock-it on"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>Sydney</div>
-        <div class="mock-it"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>Melbourne</div>
-        <div class="mock-it"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>Newcastle</div>
-        <div class="mock-sh" style="margin-top:.4rem">By stage</div>
-        <div class="mock-it"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>Deciding</div>
-        <div class="mock-it"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>Arriving</div>
-      </aside>
-      <a href="communities.html" style="display:flex;flex-direction:column;flex:1;text-decoration:none;color:inherit;align-items:center;justify-content:center;gap:.6rem;padding:1.4rem 1rem;text-align:center">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#E8632A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg>
-        <div style="font-weight:900;font-size:.95rem;color:#141414">Live rooms on Sabha</div>
-        <div style="font-size:.78rem;color:#6b7280;line-height:1.5;max-width:200px">City, university &amp; intake rooms — your Koott sign-in opens them all.</div>
-        <div style="margin-top:.2rem;padding:.4rem .9rem;border:2.5px solid #141414;border-radius:100px;background:#E8632A;color:#141414;font-weight:800;font-size:.8rem;box-shadow:3px 3px 0 #141414">Browse communities →</div>
-      </a>
-    </div>
+  <div class="stats">
+    <div class="stat"><div class="n">286</div><div class="l">shortage occupations tracked from the Skills Priority List</div></div>
+    <div class="stat"><div class="n">4&nbsp;yrs</div><div class="l">post-study work visa (485) at regional universities</div></div>
+    <div class="stat"><div class="n">A$29.7K</div><div class="l">living-cost benchmark, demystified</div></div>
+    <div class="stat"><div class="n free">Free</div><div class="l">no agents, no commission, ever</div></div>
   </div>
-</div>
-<div class="roo" aria-hidden="true">
-  <svg class="roo-body" viewBox="0 0 130 140" xmlns="http://www.w3.org/2000/svg"><path d="M104 40 C100 34 95 33 92 37 L89 21 L86 9 L82 23 L78 10 L74 24 C68 27 64 33 66 41 C68 49 64 55 62 63 C60 71 56 77 50 83 C40 93 28 101 18 111 C13 115 11 119 18 118 C30 114 44 106 54 98 C60 94 64 92 68 94 C76 98 82 105 84 115 L80 125 L108 125 L102 112 C100 106 98 100 96 94 C98 88 96 82 90 80 C86 78 84 74 82 70 L92 73 L83 66 C86 62 88 56 92 52 C96 48 101 45 104 40 Z"/></svg>
-  <span class="roo-sh"></span>
 </div></header>
 
-<div class="ticker">
-  <div class="ticker-tag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>AU Student Market</div>
-  <div class="ticker-vp"><div class="ticker-track"><span class="ti"><b>SOFTWARE&nbsp;ENG</b> <span class="up">▲</span> A$107K</span><span class="ti"><b>DATA&nbsp;SCI</b> <span class="up">▲</span> A$115K</span><span class="ti"><b>CYBERSEC</b> <span class="up">▲</span> A$118K</span><span class="ti"><b>REG.&nbsp;NURSE</b> <span class="neu">●</span> NAT.&nbsp;SHORTAGE</span><span class="ti"><b>485&nbsp;VISA</b> <span class="up">▲</span> UP&nbsp;TO&nbsp;4&nbsp;YRS</span><span class="ti"><b>SKILLS&nbsp;LIST&nbsp;’24</b> <span class="up">▲</span> 286&nbsp;ROLES</span><span class="ti"><b>WORK&nbsp;LIMIT</b> <span class="neu">●</span> 48&nbsp;HRS/FN</span><span class="ti"><b>OSHC</b> <span class="neu">●</span> REQUIRED</span><span class="ti"><b>LIVING&nbsp;COSTS</b> <span class="neu">●</span> A$29,710</span><span class="ti"><b>SOURCES</b> <span class="neu">●</span> JSA&nbsp;·&nbsp;ABS&nbsp;·&nbsp;HOME&nbsp;AFFAIRS</span><span class="ti"><b>SOFTWARE&nbsp;ENG</b> <span class="up">▲</span> A$107K</span><span class="ti"><b>DATA&nbsp;SCI</b> <span class="up">▲</span> A$115K</span><span class="ti"><b>CYBERSEC</b> <span class="up">▲</span> A$118K</span><span class="ti"><b>REG.&nbsp;NURSE</b> <span class="neu">●</span> NAT.&nbsp;SHORTAGE</span><span class="ti"><b>485&nbsp;VISA</b> <span class="up">▲</span> UP&nbsp;TO&nbsp;4&nbsp;YRS</span><span class="ti"><b>SKILLS&nbsp;LIST&nbsp;’24</b> <span class="up">▲</span> 286&nbsp;ROLES</span><span class="ti"><b>WORK&nbsp;LIMIT</b> <span class="neu">●</span> 48&nbsp;HRS/FN</span><span class="ti"><b>OSHC</b> <span class="neu">●</span> REQUIRED</span><span class="ti"><b>LIVING&nbsp;COSTS</b> <span class="neu">●</span> A$29,710</span><span class="ti"><b>SOURCES</b> <span class="neu">●</span> JSA&nbsp;·&nbsp;ABS&nbsp;·&nbsp;HOME&nbsp;AFFAIRS</span></div></div>
-</div>
-
 <section class="section"><div class="wrap">
-  <span class="tag">What Koott does</span>
-  <h2 class="t">Three tools, one journey.</h2>
-  <p class="lead">No agents, no commission, no upsell — just the three things that move you from “thinking about it” to landing day.</p>
-  <div class="cards">
-    <a class="nb-card" href="advisor.html">
-      <div class="nb-ico" style="background:var(--pri)"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></div><div class="nb-num">01</div>
+  <span class="eyebrow">Your people</span>
+  <h2>Talk to someone who's actually done it.</h2>
+  <p class="lead">No agents, no commission — just students and advisors who've walked the same path: course choice, the 485 visa, OSHC, your first week.</p>
+  <div class="people">
+    <div class="pcard feature">
+      <div>
+        <h3>Free 1:1 call with an advisor</h3>
+        <p>Get honest guidance on courses, universities, visa &amp; funding from people who've been through it — and ask for an arrival kit while you're at it.</p>
+      </div>
+      <button class="btn" onclick="if(window.koottConsult)koottConsult.open()" data-haptic="rigid">Book a free call →</button>
+    </div>
+    <div class="pcard">
+      <h4>Your community</h4>
+      <p class="desc">Live chat rooms for your city, university, intake &amp; field — your koott sign-in opens them all. Meet students a step ahead before you even land.</p>
+      <div class="meta">Active rooms across <b>Sydney, Melbourne, Brisbane, Perth, Adelaide</b> &amp; regional NSW.</div>
+      <div class="commlist" id="commList"></div>
+      <a href="communities.html" class="btn btn-ghost pbtn" data-haptic="light">Browse communities →</a>
+    </div>
+  </div>
+</div></section>
+
+<section class="section" style="padding-top:0"><div class="wrap">
+  <span class="eyebrow">What koott does</span>
+  <h2>Three tools, one journey.</h2>
+  <p class="lead">Everything that moves you from "thinking about it" to landing day — built on real Australian government data.</p>
+  <div class="grid3">
+    <a class="card" href="advisor.html" data-haptic="light">
+      <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></div>
       <h3>Course &amp; Career Advisor</h3>
-      <p>Tell us what you want to study, in your own words. We match you against Australia's Skills Priority List, with real salary ranges and 485 visa pathways.</p>
+      <p>Tell us what you want to study, in your own words. We match you against the Skills Priority List with real salary ranges and 485 visa pathways.</p>
       <span class="go">Find my course →</span>
     </a>
-    <a class="nb-card" href="communities.html">
-      <div class="nb-ico" style="background:var(--sec);color:#fff"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg></div><div class="nb-num">02</div>
+    <a class="card" href="communities.html" data-haptic="light">
+      <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg></div>
       <h3>City &amp; University Communities</h3>
-      <p>Focused rooms per city, university and intake. Find your cohort before you land — housing leads, visa answers, part-time jobs.</p>
+      <p>Focused chat rooms per city, university and intake. Find your cohort before you land — housing leads, visa answers, part-time jobs.</p>
       <span class="go">Browse communities →</span>
     </a>
-    <a class="nb-card" href="tools.html">
-      <div class="nb-ico" style="background:var(--ok);color:#fff"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div><div class="nb-num">03</div>
+    <a class="card" href="tools.html" data-haptic="light">
+      <div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div>
       <h3>Visa Compliance Tools</h3>
       <p>Track your 48-hour fortnightly work limit, compare living costs across eight cities, and follow your timeline from CoE to landing day.</p>
       <span class="go">Open the tools →</span>
     </a>
   </div>
+  <p class="ft note" style="margin-top:1.5rem">Sources: Jobs and Skills Australia Skills Priority List 2024 · ABS Labour Statistics · Department of Home Affairs.</p>
 </div></section>
 
-<div class="band"><section class="section"><div class="wrap">
-  <span class="tag" style="background:var(--paper)">How it works</span>
-  <h2 class="t">From a question to an offer letter.</h2>
-  <div class="steps4">
-    <div class="step4"><div class="n">STEP 01</div><h4>Tell us about you</h4><p>Qualification, score, experience, English test — the test is optional.</p></div>
-    <div class="step4"><div class="n">STEP 02</div><h4>We match your skills</h4><p>Cross-referenced against Australia's Skills Priority List 2024.</p></div>
-    <div class="step4"><div class="n">STEP 03</div><h4>Get your course plan</h4><p>Courses &amp; universities with regional options, fees, and your 485 outcome.</p></div>
-    <div class="step4"><div class="n">STEP 04</div><h4>Find your people</h4><p>Drop into the community for your city, university, and intake year.</p></div>
+<section class="section" style="padding-top:0"><div class="wrap">
+  <div class="final">
+    <h2>Find your course in three minutes.</h2>
+    <p>Free. No account needed to start. Built on data from Australian government sources — not agents.</p>
+    <div class="row">
+      <a href="advisor.html" class="btn btn-pri btn-lg" data-haptic="medium">Start the Course Advisor →</a>
+      <a href="communities.html" class="btn btn-ghost btn-lg" data-haptic="light">Browse communities</a>
+    </div>
   </div>
-</div></section></div>
-
-<section class="section"><div class="wrap">
-  <span class="tag">Why Australia, why now</span>
-  <div class="figs">
-    <div class="figbox"><div class="big">286</div><p>Occupations on the 2024 Skills Priority List with national or regional shortage status.</p></div>
-    <div class="figbox"><div class="big">4<i>yr</i></div><p>Post-study work visa (485) for graduates of regional Australian universities.</p></div>
-    <div class="figbox"><div class="big"><i>$</i>105K</div><p>Median starting salary for IT graduates in shortage roles (ABS 2024).</p></div>
-  </div>
-  <p class="mono" style="margin-top:var(--s6);font-size:.74rem;color:var(--muted)">Sources: Jobs and Skills Australia Skills Priority List 2024 · ABS Labour Statistics · Department of Home Affairs.</p>
 </div></section>
 
-<div class="band"><section class="section"><div class="wrap commrow">
-  <div>
-    <span class="tag" style="background:var(--paper)">Your people</span>
-    <h2 class="t">You're not doing this alone.</h2>
-    <p class="lead">Every city, university and intake has its own room — where students a step ahead share housing leads, visa answers, even airport pickups. Find your <b style="color:var(--sec)">കൂട്ട്</b> before you land.</p>
-    <a href="communities.html" class="nb-btn dark lg" style="margin-top:var(--s6)">Browse communities →</a>
-  </div>
-  <div class="comm-list" id="commList"></div>
-</div></section></div>
-
-<section class="section"><div class="wrap"><div class="cta">
-  <svg class="cta-skyline" viewBox="0 0 640 150" fill="none" stroke="#ffffff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <line x1="0" y1="142" x2="640" y2="142"/>
-    <path d="M58 142 V96 h14 V142"/><path d="M214 142 V96 h14 V142"/>
-    <path d="M58 100 H228"/><path d="M62 100 Q143 44 224 100"/>
-    <path d="M80 100 V77 M100 100 V67 M120 100 V61 M143 100 V58 M166 100 V61 M186 100 V67 M206 100 V77"/>
-    <path d="M300 142 C300 100 322 80 344 80 C338 104 342 122 352 142"/>
-    <path d="M344 142 C346 96 368 78 388 78 C382 104 386 122 396 142"/>
-    <path d="M388 142 C392 104 410 90 426 90 C422 110 424 126 432 142"/>
-    <path d="M470 142 V72 h24 V142"/><path d="M500 142 V92 h18 V142"/>
-    <path d="M524 142 V58 h18 V142"/><path d="M533 58 V44"/>
-    <path d="M548 142 V96 h22 V142"/><path d="M576 142 V80 h16 V142"/>
-  </svg>
-  <h2>Find your course in three minutes.</h2>
-  <p>Free. No account needed to start. Built on data from Australian government sources — not agents.</p>
-  <div class="hero-cta" style="justify-content:center">
-    <a href="advisor.html" class="nb-btn pri lg" data-haptic="medium">Start the Course Advisor →</a>
-    <a href="communities.html" class="nb-btn lg" style="background:#fff" data-haptic="light">Browse communities</a>
-  </div>
-</div></div></section>
-
-<footer class="ft"><div class="wrap">
-  <div style="display:flex;align-items:center;gap:.55rem">
-    <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><circle cx="11" cy="16" r="10" fill="#E8632A" stroke="#fff" stroke-width="2"/><circle cx="21" cy="16" r="10" fill="#fff"/></svg>
-    <span style="font-weight:900;letter-spacing:-.03em">koott</span>
-    <span class="mono" style="margin-left:.5rem;font-size:.76rem;opacity:.7">Free &amp; open · no subscription</span>
-  </div>
+<footer class="ft"><div class="ft-in">
+  <a class="logo" href="index.html" style="font-size:1.1rem">
+    <svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="11" cy="16" r="10" fill="#E8632A" stroke="#17191F" stroke-width="2"/><circle cx="21" cy="16" r="10" fill="#17191F"/></svg>
+    koott
+  </a>
   <div class="ft-links">
     <a href="advisor.html">Course Advisor</a>
     <a href="communities.html">Communities</a>
@@ -363,26 +288,32 @@
     <a href="arrival.html">Arrival</a>
     <a href="tools.html">Visa Tools</a>
   </div>
-  <span class="mono" style="font-size:.76rem;opacity:.7"><b style="color:var(--pri)">കൂട്ട്</b> — friends, in Malayalam.</span>
+  <span class="note"><b>കൂട്ട്</b> — together, in Malayalam · free &amp; open</span>
 </div></footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="koott-config.js"></script>
 <script src="koott-haptics.js"></script>
 <script src="koott-auth.js"></script>
+<script src="koott-profile.js"></script>
 <script src="koott-consult.js"></script>
 <script>
-(async function(){
-  try{
-    const { data } = await window.sb.from('communities').select('id,cat,name').order('sort');
-    if(data && data.length){
-      const labels={city:'City community',uni:'University',stage:'By stage',other:'Board'};
-      const esc=t=>String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-      const w=document.getElementById('commList');
-      if(w) w.innerHTML=data.slice(0,4).map(c=>`<a href="communities.html?c=${encodeURIComponent(c.id)}" class="comm-row" data-haptic="selection"><b>${esc(c.name)}</b><span>${labels[c.cat]||'Community'}</span></a>`).join('');
-    }
-  }catch(e){}
-})();
+  // Smart search + popular chips route into the Course Advisor with the query.
+  function koottGo(q){ if(window.koottHaptic)window.koottHaptic('medium'); location.href='advisor.html?q='+encodeURIComponent(q); }
+  function koottSearch(e){ e.preventDefault(); var v=(document.getElementById('q').value||'').trim(); location.href='advisor.html'+(v?('?q='+encodeURIComponent(v)):''); return false; }
+
+  // Real community preview (no fake data — hidden if the table is empty/unreachable).
+  (async function(){
+    try{
+      const { data } = await window.sb.from('communities').select('id,cat,name').order('sort');
+      if(data && data.length){
+        const labels={city:'City',uni:'University',stage:'By stage',field:'Field',other:'Board'};
+        const esc=t=>String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        const w=document.getElementById('commList');
+        if(w) w.innerHTML=data.slice(0,3).map(c=>`<a href="communities.html?c=${encodeURIComponent(c.id)}" class="commrow" data-haptic="selection"><b>${esc(c.name)}</b><span>${labels[c.cat]||'Community'}</span></a>`).join('');
+      }
+    }catch(e){}
+  })();
 </script>
 </body>
 </html>
