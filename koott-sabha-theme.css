@@ -1,13 +1,18 @@
-/* Koott x Sabha -- custom theme
-   Paste into: Sabha /account/custom_styles/edit
-   Stored in DB, injected into <head> on every page.
-   Applies after the layout injection's inline <style> which handles the
-   52px koott-nav offset (body padding, sidebar heights, etc).
+/* Koott x Sabha -- custom theme (v2)
+   Stored in the DB on Account.custom_styles (Sabha admin -> Custom CSS),
+   injected into <head> on every page.
+
+   v2 fixes the v1 problems:
+   - v1 had `body { color: ink !important }`, which forced text to ink even on
+     Sabha's dark hover/active buttons -> black-on-black rooms. Removed.
+   - the neobrutalist border+shadow is now scoped to room pills and primary
+     buttons instead of every button, so the UI is not cluttered.
+   - hovered/current rooms get an orange fill with ink text (always readable).
+   - the composer is a clean white field with a thin ink border.
    ------------------------------------------------------------------ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 
-/* -- Koott palette & Sabha semantic overrides -------------------- */
 :root {
   --koott-orange:    #e8632a;
   --koott-orange-dk: #c8501c;
@@ -15,138 +20,84 @@
   --koott-paper:     #faf8f4;
   --koott-paper-2:   #f4f2ec;
 
-  /* Sabha semantic vars (confirmed names) */
-  --color-link:           var(--koott-orange);
-  --color-text:           var(--koott-ink);
-  --color-text-reversed:  #ffffff;
-  --color-border:         var(--koott-ink);
-  --color-bg:             var(--koott-paper);
-  --color-selected:       var(--koott-orange);
-  --color-selected-dark:  var(--koott-orange-dk);
-  --color-contrast:       var(--koott-ink);
-
-  /* Tailwind v4 token layer */
-  --primary:             var(--koott-orange);
-  --primary-foreground:  var(--koott-ink);
-  --secondary:           var(--koott-paper-2);
-  --accent:              var(--koott-orange);
-  --accent-foreground:   var(--koott-ink);
-  --ring:                var(--koott-orange);
-  --border:              var(--koott-ink);
-  --input:               var(--koott-ink);
-  --control-border:      var(--koott-ink);
+  /* Theme Sabha through ITS OWN tokens so dark/inverted states recolor right */
+  --color-link:          var(--koott-orange);
+  --color-selected:      var(--koott-orange);
+  --color-selected-dark: var(--koott-orange-dk);
 
   --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
 }
 
-/* Pin warm light theme -- Koott has no dark mode */
-:root:not([data-theme]),
-[data-theme="dark"],
-[data-theme="dark"] :root {
-  --color-bg:     var(--koott-paper) !important;
-  --color-text:   var(--koott-ink)   !important;
-  --color-border: var(--koott-ink)   !important;
-  --color-link:   var(--koott-orange)!important;
-  color-scheme: light !important;
+/* Base: warm paper + Inter.
+   IMPORTANT: do NOT force `color !important` on body -- that is what broke the
+   dark hover/active buttons in v1. Plain inheritance lets Sabha's own
+   per-component colors (e.g. white text on a dark hovered button) win. */
+html, body { background-color: var(--koott-paper); font-family: var(--font-family); }
+body { color: var(--koott-ink); }
+
+a { color: var(--koott-orange); }
+a:hover { color: var(--koott-orange-dk); }
+
+/* Sidebar / nav surfaces */
+#nav, .sidebar__container, .sidebar__tools { background-color: var(--koott-paper); }
+
+/* Neobrutalist room pills */
+.room { border-radius: 10px; }
+.rooms .btn, .room.btn {
+  border: 2px solid var(--koott-ink);
+  box-shadow: 2px 2px 0 var(--koott-ink);
 }
 
-/* -- Base background & text ------------------------------------- */
-html, body {
-  background-color: var(--koott-paper) !important;
-  color: var(--koott-ink) !important;
-  font-family: var(--font-family) !important;
-}
-
-/* Subtle ink grid texture on content area */
-#main-content {
-  background-image:
-    linear-gradient(rgba(20,20,20,.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(20,20,20,.04) 1px, transparent 1px);
-  background-size: 28px 28px;
-}
-
-/* -- Sidebar & nav backgrounds ---------------------------------- */
-#nav, .sidebar__container, .sidebar__tools {
-  background-color: var(--koott-paper) !important;
-  border-color: var(--koott-ink) !important;
-}
-
-/* -- Links ------------------------------------------------------ */
-a { color: var(--koott-orange) !important; }
-a:hover { color: var(--koott-orange-dk) !important; }
-
-/* -- Buttons: neobrutalist ink border + hard shadow ------------- */
-button.btn, .btn, input[type="submit"], button[type="submit"],
-.btn--primary, .btn-primary {
-  border: 2px solid var(--koott-ink) !important;
-  border-radius: 10px !important;
-  box-shadow: 3px 3px 0 var(--koott-ink) !important;
-  font-weight: 700 !important;
-  transition: transform .08s, box-shadow .08s !important;
-}
-button.btn:hover, .btn:hover, input[type="submit"]:hover, button[type="submit"]:hover {
-  transform: translate(2px,2px) !important;
-  box-shadow: 1px 1px 0 var(--koott-ink) !important;
-}
-
-/* Primary / send buttons fill orange */
-.btn--primary, .btn-primary, [type="submit"].btn,
-button[type="submit"].btn--primary {
-  background: var(--koott-orange) !important;
+/* FIX black-on-black: hovered + current room -> orange fill, ink text */
+.room:hover, .room--current {
+  --btn-background: var(--koott-orange);
+  --btn-color: var(--koott-ink);
+  background-color: var(--koott-orange) !important;
   color: var(--koott-ink) !important;
 }
+.room:hover .room__contents, .room--current .room__contents,
+.room:hover .btn__text, .room--current .btn__text { color: var(--koott-ink) !important; }
 
-/* Selected / active room highlight */
-.room--current, [aria-selected="true"] {
-  background: var(--koott-orange) !important;
-  color: var(--koott-ink) !important;
-  border-radius: 8px !important;
+/* Primary / send buttons in koott orange */
+.btn--primary, [type="submit"].btn, .composer .btn--primary {
+  background: var(--koott-orange);
+  color: var(--koott-ink);
+  border: 2px solid var(--koott-ink);
 }
 
-/* -- Inputs / textareas ---------------------------------------- */
-input:not([type="submit"]):not([type="checkbox"]):not([type="radio"]),
-textarea, select {
-  border-color: var(--koott-ink) !important;
-  background-color: #fff !important;
-  color: var(--koott-ink) !important;
-  font-family: var(--font-family) !important;
-}
-
-/* -- Message composer ------------------------------------------ */
-.composer {
-  border-top: 2px solid var(--koott-ink) !important;
-  background: #fff !important;
-}
-
-/* -- Popups, dialogs, dropdowns --------------------------------- */
-dialog, .dropdown, .popover, .popup, [popover],
-[data-controller*="dropdown"] [role="menu"],
-details[open] summary ~ * {
-  background: var(--koott-paper) !important;
+/* Composer: clean white field, thin ink border, no clunky orange ring */
+.composer { background: var(--koott-paper); border-top: 2px solid var(--koott-ink); }
+.composer__input, .composer trix-editor, .composer .input {
   border: 2px solid var(--koott-ink) !important;
   border-radius: 12px !important;
-  box-shadow: 4px 4px 0 var(--koott-ink) !important;
-  color: var(--koott-ink) !important;
+  background: #fff !important;
+  box-shadow: none !important;
+}
+.composer__input:focus-within, .composer trix-editor:focus {
+  box-shadow: 2px 2px 0 var(--koott-ink) !important;
+  outline: none !important;
 }
 
-/* Dark country/emoji/language picker fix */
-[data-controller*="emoji"], .emoji-picker,
-[class*="picker"], [class*="selector"],
-[role="listbox"], [role="combobox"] + [role="option"],
-.choices__list, .select__menu {
+/* Inputs / textareas / selects */
+input:not([type="submit"]):not([type="checkbox"]):not([type="radio"]),
+textarea, select {
+  border-color: var(--koott-ink);
+  background-color: #fff;
+  color: var(--koott-ink);
+  font-family: var(--font-family);
+}
+
+/* Dropdowns / dialogs / pickers -> light & readable (kills the dark popups) */
+dialog, .popover, .popup, [popover], [role="listbox"], [role="menu"],
+[class*="picker"], [class*="selector"] {
   background: var(--koott-paper) !important;
   border: 2px solid var(--koott-ink) !important;
   color: var(--koott-ink) !important;
+  border-radius: 12px !important;
 }
 
-/* -- Scrollbars: thin orange on light track --------------------- */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--koott-orange) var(--koott-paper-2);
-}
+/* Scrollbars */
+* { scrollbar-width: thin; scrollbar-color: var(--koott-orange) var(--koott-paper-2); }
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: var(--koott-paper-2); }
 ::-webkit-scrollbar-thumb { background: var(--koott-orange); border-radius: 3px; }
-
-/* -- Flash / toast messages ------------------------------------- */
-.flash { background: var(--koott-paper-2) !important; border-color: var(--koott-ink) !important; }
