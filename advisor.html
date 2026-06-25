@@ -35,7 +35,6 @@
   <link rel="stylesheet" href="koott.css">
   <script>(function(){try{var a=localStorage.getItem('koott_accent');document.documentElement.setAttribute('data-accent',a||'coral');var s=localStorage.getItem('koott_surface');if(s)document.documentElement.setAttribute('data-palette',s);}catch(e){document.documentElement.setAttribute('data-accent','coral');}})();</script>
   <style>
-    body { background: var(--bg-sub); }
     .advisor-shell { max-width: 680px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
 
     /* Progress */
@@ -45,7 +44,7 @@
     .step-dot { width:7px; height:7px; border-radius:50%; background:var(--accent); }
 
     /* Step card */
-    .step-card { background:var(--bg); border:1px solid var(--bd); border-radius:var(--rx); padding:2rem 2rem 1.75rem; }
+    .step-card { background:var(--card); border:1px solid var(--bd); border-radius:var(--rx); box-shadow:var(--sh-sm); padding:2rem 2rem 1.75rem; }
     .step-title { font-size:1.375rem; font-weight:800; letter-spacing:-.025em; margin-bottom:.3rem; }
     .step-sub { font-size:.9rem; color:var(--mut); margin-bottom:1.75rem; }
 
@@ -54,8 +53,8 @@
     .field label { display:block; font-size:.875rem; font-weight:600; margin-bottom:.4rem; color:var(--txt); }
     .field label span { color:var(--lt); font-weight:400; font-size:.8125rem; }
     .field input, .field select, .field textarea {
-      width:100%; padding:.6rem .875rem; border:1.5px solid var(--bd);
-      border-radius:var(--r); background:var(--bg); font-size:.9rem;
+      width:100%; padding:.6rem .875rem; border:1px solid var(--bd);
+      border-radius:var(--rl); background:var(--card); font-size:.9rem;
       color:var(--txt); font-family:var(--font); transition:border-color .1s;
     }
     .field input:focus, .field select:focus, .field textarea:focus { outline:none; border-color:var(--accent); box-shadow:var(--ring); }
@@ -64,13 +63,13 @@
 
     /* Option chips */
     .chip-group { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:.4rem; }
-    .chip { padding:.4rem .875rem; border:1.5px solid var(--bd); border-radius:100px; font-size:.8125rem; font-weight:600; cursor:pointer; transition:all .1s; background:var(--bg); color:var(--mut); font-family:var(--font); }
+    .chip { padding:.4rem .875rem; border:1px solid var(--bd); border-radius:var(--rpill); font-size:.8125rem; font-weight:600; cursor:pointer; transition:all .1s; background:var(--card); color:var(--mut); font-family:var(--font); }
     .chip:hover { border-color:var(--bd-hi); color:var(--txt); }
     .chip.on { border-color:var(--accent); background:var(--accent-bg); color:var(--accent-dk); }
 
     /* Score input */
     .score-wrap { display:flex; align-items:center; gap:.75rem; }
-    .score-type-btn { padding:.4rem .75rem; border:1.5px solid var(--bd); border-radius:var(--r); font-size:.8125rem; font-weight:600; cursor:pointer; background:var(--bg); color:var(--mut); font-family:var(--font); transition:all .1s; }
+    .score-type-btn { padding:.4rem .75rem; border:1px solid var(--bd); border-radius:var(--rl); font-size:.8125rem; font-weight:600; cursor:pointer; background:var(--card); color:var(--mut); font-family:var(--font); transition:all .1s; }
     .score-type-btn.on { border-color:var(--accent); background:var(--accent-bg); color:var(--accent-dk); }
 
     /* Step navigation */
@@ -83,21 +82,21 @@
     .analyse-steps { text-align:left; max-width:320px; margin:1.5rem auto 0; }
     .analyse-step { display:flex; align-items:center; gap:.75rem; padding:.5rem 0; font-size:.875rem; color:var(--mut); }
     .analyse-step.done { color:var(--grn); }
-    .analyse-step .ast { width:18px; height:18px; border-radius:50%; border:2px solid var(--bd); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:.6rem; }
-    .analyse-step.done .ast { background:var(--grn); border-color:var(--grn); color:#fff; }
+    .analyse-step .ast { width:18px; height:18px; border-radius:50%; border:1px solid var(--bd); flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:.6rem; }
+    .analyse-step.done .ast { background:var(--grn); border-color:var(--grn); color:var(--card); }
     .analyse-step.active .ast { border-color:var(--accent); }
 
     /* ── Results ── */
     #results { display:none; }
-    .result-header { background:var(--bg); border:1px solid var(--bd); border-radius:var(--rx); padding:1.75rem; margin-bottom:1.25rem; }
+    .result-header { background:var(--card); border:1px solid var(--bd); border-radius:var(--rx); box-shadow:var(--sh-sm); padding:1.75rem; margin-bottom:1.25rem; }
     .match-bar { display:flex; align-items:center; gap:.75rem; margin:1rem 0 .5rem; }
     .match-track { flex:1; height:8px; background:var(--bd); border-radius:100px; overflow:hidden; }
     .match-fill { height:100%; background:var(--grn); border-radius:100px; transition:width 1s ease; }
     .match-label { font-size:.8125rem; font-weight:700; color:var(--grn); width:36px; text-align:right; }
 
     /* Course card */
-    .course-card { background:var(--bg); border:1px solid var(--bd); border-radius:var(--rx); padding:1.5rem; margin-bottom:.875rem; transition:border-color .1s,box-shadow .1s; }
-    .course-card:hover { border-color:var(--bd-hi); box-shadow:0 2px 8px rgba(0,0,0,.05); }
+    .course-card { background:var(--card); border:1px solid var(--bd); border-radius:var(--rx); box-shadow:var(--sh-sm); padding:1.5rem; margin-bottom:.875rem; transition:border-color .15s,box-shadow .15s,transform .15s; }
+    .course-card:hover { border-color:var(--bd-hi); box-shadow:var(--sh); transform:translateY(-1px); }
     .course-top { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:.75rem; }
     .course-name { font-size:1rem; font-weight:700; margin-bottom:.2rem; }
     .course-uni { font-size:.8125rem; color:var(--mut); }
@@ -109,7 +108,7 @@
     .course-action { margin-top:1rem; display:flex; gap:.5rem; align-items:center; }
 
     /* Job market */
-    .jm-card { background:var(--bg); border:1px solid var(--bd); border-radius:var(--rx); padding:1.5rem; margin-bottom:.875rem; }
+    .jm-card { background:var(--card); border:1px solid var(--bd); border-radius:var(--rx); box-shadow:var(--sh-sm); padding:1.5rem; margin-bottom:.875rem; }
     .salary-bar-wrap { margin:.875rem 0; }
     .salary-bar { height:10px; background:var(--bd); border-radius:100px; overflow:hidden; position:relative; }
     .salary-fill { height:100%; background:linear-gradient(90deg,var(--accent-bg) 0%,var(--accent) 100%); border-radius:100px; }
@@ -132,15 +131,15 @@
 
     /* CTA to community */
     .community-cta { background:var(--grn-bg); border:1px solid var(--grn-bd); border-radius:var(--rx); padding:1.5rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
-    .wa-btn { display:inline-flex; align-items:center; gap:.35rem; background:var(--grn); color:#fff; padding:.6rem 1.1rem; border-radius:var(--r); font-weight:700; font-size:.875rem; text-decoration:none; flex-shrink:0; transition:background .1s; }
-    .wa-btn:hover { background:#15803d; }
+    .wa-btn { display:inline-flex; align-items:center; gap:.35rem; background:var(--grn); color:var(--card); padding:.6rem 1.1rem; border-radius:var(--rpill); font-weight:700; font-size:.875rem; text-decoration:none; flex-shrink:0; transition:background .1s; }
+    .wa-btn:hover { background:var(--grn-dk); }
 
     /* Result section labels */
     .rs-label { font-size:.6875rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--lt); margin:.2rem 0 .875rem; }
 
     @media(max-width:640px) { .field-row { grid-template-columns:1fr; } .course-detail-row { grid-template-columns:1fr 1fr; } }
     .seg { border:none; background:transparent; padding:.45rem 1.1rem; border-radius:100px; font-size:.85rem; font-weight:650; color:var(--mut); cursor:pointer; font-family:var(--font); }
-    .seg-on { background:var(--bg); color:var(--txt); box-shadow:var(--sh-sm); }
+    .seg-on { background:var(--card); color:var(--txt); box-shadow:var(--sh-sm); }
   </style>
 </head>
 <body>
@@ -218,7 +217,7 @@
       <div class="field">
         <label>Field of study / background</label>
         <input type="text" id="f_field" placeholder="e.g. Computer Science, Nursing, Civil Engineering, Commerce…" autocomplete="off" oninput="fieldSuggest(this.value)">
-        <div id="fieldSuggs" style="display:none;border:1px solid var(--bd);border-top:none;border-radius:0 0 var(--r) var(--r);background:var(--bg);position:relative;z-index:10;"></div>
+        <div id="fieldSuggs" style="display:none;border:1px solid var(--bd);border-top:none;border-radius:0 0 var(--rl) var(--rl);background:var(--card);position:relative;z-index:10;"></div>
         <div class="field-hint">Be specific — this is used to match against the Skills Priority List</div>
       </div>
 

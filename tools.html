@@ -38,7 +38,7 @@
   <script>(function(){try{var a=localStorage.getItem('koott_accent');document.documentElement.setAttribute('data-accent',a||'coral');var s=localStorage.getItem('koott_surface');if(s)document.documentElement.setAttribute('data-palette',s);}catch(e){document.documentElement.setAttribute('data-accent','coral');}})();</script>
   <style>
     .tools-wrap { max-width: 840px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
-    .tool-section { background:var(--bg); border:1px solid var(--bd); border-radius:var(--rx); margin-bottom:1.5rem; overflow:hidden; }
+    .tool-section { background:var(--card); border:1px solid var(--bd); border-radius:var(--rx); margin-bottom:1.5rem; overflow:hidden; box-shadow:var(--sh-sm); }
     .tool-header { padding:1.25rem 1.5rem; border-bottom:1px solid var(--bd); display:flex; align-items:center; gap:.75rem; cursor:pointer; user-select:none; }
     .tool-header:hover { background:var(--bg-sub); }
     .tool-icon { font-size:1.25rem; }
@@ -51,8 +51,8 @@
 
     /* City cost */
     .city-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(110px,1fr)); gap:.5rem; margin-bottom:1.25rem; }
-    .cbtn { padding:.5rem .6rem; border:1.5px solid var(--bd); border-radius:var(--r); background:var(--bg); cursor:pointer; font-size:.8125rem; font-weight:600; color:var(--txt); text-align:center; line-height:1.3; transition:all .1s; font-family:var(--font); }
-    .cbtn:hover { border-color:var(--bd-hi); background:var(--bg-sub); }
+    .cbtn { padding:.5rem .6rem; border:1px solid var(--bd); border-radius:var(--rl); background:var(--card); cursor:pointer; font-size:.8125rem; font-weight:600; color:var(--txt); text-align:center; line-height:1.3; transition:all .15s; font-family:var(--font); }
+    .cbtn:hover { border-color:var(--accent-bd); background:var(--bg-sub); }
     .cbtn.on { border-color:var(--accent); background:var(--accent-bg); color:var(--accent-dk); }
     .ctag { display:block; font-size:.5875rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; margin-top:.1rem; }
     .ctag.r { color:var(--grn); } .ctag.m { color:var(--blue); }
@@ -63,20 +63,20 @@
     .cbarw { width:80px; height:4px; background:var(--bd); border-radius:2px; overflow:hidden; flex-shrink:0; }
     .cbar { height:100%; border-radius:2px; transition:width .3s; }
     .cv { font-size:.8125rem; font-weight:700; min-width:64px; text-align:right; font-variant-numeric:tabular-nums; }
-    .ctotal { display:flex; justify-content:space-between; align-items:center; padding:.875rem 1rem; background:var(--txt); color:#fff; border-radius:var(--rl); font-weight:700; }
+    .ctotal { display:flex; justify-content:space-between; align-items:center; padding:.875rem 1rem; background:var(--txt); color:var(--card); border-radius:var(--rl); font-weight:700; }
 
     /* Timeline */
     .steps { display:flex; flex-direction:column; gap:.4rem; }
-    .step { display:flex; align-items:flex-start; gap:.75rem; padding:.7rem .875rem; border:1.5px solid var(--bd); border-radius:var(--rl); cursor:pointer; transition:all .1s; user-select:none; }
-    .step:hover { border-color:var(--bd-hi); background:var(--bg-sub); }
+    .step { display:flex; align-items:flex-start; gap:.75rem; padding:.7rem .875rem; border:1px solid var(--bd); border-radius:var(--rl); cursor:pointer; transition:all .15s; user-select:none; }
+    .step:hover { border-color:var(--accent-bd); background:var(--bg-sub); }
     .step.dn { border-color:var(--grn-bd); background:var(--grn-bg); }
-    .schk { width:20px; height:20px; border-radius:50%; border:2px solid var(--bd-hi); display:flex; align-items:center; justify-content:center; font-size:.6rem; font-weight:700; flex-shrink:0; margin-top:.1rem; color:transparent; transition:all .1s; }
-    .step.dn .schk { background:var(--grn); border-color:var(--grn); color:#fff; }
+    .schk { width:20px; height:20px; border-radius:50%; border:1.5px solid var(--bd-hi); display:flex; align-items:center; justify-content:center; font-size:.6rem; font-weight:700; flex-shrink:0; margin-top:.1rem; color:transparent; transition:all .15s; }
+    .step.dn .schk { background:var(--grn); border-color:var(--grn); color:var(--card); }
     .stit { font-size:.875rem; font-weight:600; }
     .step.dn .stit { color:var(--mut); }
     .sdesc { font-size:.8125rem; color:var(--mut); line-height:1.5; }
     .stag { font-size:.6rem; font-weight:700; letter-spacing:.04em; text-transform:uppercase; padding:.15rem .4rem; border-radius:100px; margin-left:.35rem; }
-    .tn { background:var(--bg-sub); color:var(--lt); } .tc { background:#fee2e2; color:#b91c1c; } .td { background:var(--grn-bg); color:var(--grn); }
+    .tn { background:var(--bg-sub); color:var(--lt); } .tc { background:var(--red-bg); color:var(--red); } .td { background:var(--grn-bg); color:var(--grn); }
     .prow { display:flex; align-items:center; gap:.75rem; margin-bottom:1rem; }
     .ptr { flex:1; height:5px; background:var(--bd); border-radius:100px; overflow:hidden; }
     .ptf { height:100%; background:var(--grn); border-radius:100px; transition:width .3s; }
@@ -87,10 +87,10 @@
     .wcard { border:1px solid var(--bd); border-radius:var(--rl); overflow:hidden; }
     .whead { padding:.45rem .875rem; background:var(--bg-sub); border-bottom:1px solid var(--bd); font-size:.6875rem; font-weight:700; text-transform:uppercase; letter-spacing:.07em; color:var(--mut); }
     .drows { padding:.4rem; display:flex; flex-direction:column; gap:.2rem; }
-    .drow { display:flex; align-items:center; gap:.4rem; padding:.25rem .4rem; border-radius:5px; }
+    .drow { display:flex; align-items:center; gap:.4rem; padding:.25rem .4rem; border-radius:var(--r); }
     .drow:hover { background:var(--bg-sub); }
     .dname { font-size:.75rem; font-weight:600; color:var(--mut); width:28px; }
-    .dinp { flex:1; padding:.3rem .4rem; border:1.5px solid var(--bd); border-radius:5px; background:#fff; font-size:.875rem; font-weight:600; text-align:center; -moz-appearance:textfield; color:var(--txt); font-family:var(--font); }
+    .dinp { flex:1; padding:.3rem .4rem; border:1px solid var(--bd); border-radius:var(--r); background:var(--card); font-size:.875rem; font-weight:600; text-align:center; -moz-appearance:textfield; color:var(--txt); font-family:var(--font); }
     .dinp::-webkit-outer-spin-button,.dinp::-webkit-inner-spin-button { -webkit-appearance:none; }
     .dinp:focus { outline:none; border-color:var(--accent); box-shadow:var(--ring); }
     .cres { border:1px solid var(--bd); border-radius:var(--rl); padding:1.25rem; text-align:center; background:var(--bg-sub); }
@@ -105,11 +105,11 @@
 
     /* Checklist */
     .chkl { display:flex; flex-direction:column; gap:.3rem; margin-top:1.25rem; }
-    .ci { display:flex; align-items:center; gap:.65rem; padding:.55rem .75rem; border:1.5px solid var(--bd); border-radius:var(--r); cursor:pointer; font-size:.8125rem; transition:all .1s; user-select:none; }
-    .ci:hover { border-color:var(--bd-hi); background:var(--bg-sub); }
+    .ci { display:flex; align-items:center; gap:.65rem; padding:.55rem .75rem; border:1px solid var(--bd); border-radius:var(--rl); cursor:pointer; font-size:.8125rem; transition:all .15s; user-select:none; }
+    .ci:hover { border-color:var(--accent-bd); background:var(--bg-sub); }
     .ci.ck { border-color:var(--grn-bd); background:var(--grn-bg); color:var(--mut); }
-    .cbox { width:16px; height:16px; border-radius:4px; border:2px solid var(--bd-hi); display:flex; align-items:center; justify-content:center; font-size:.6rem; font-weight:700; flex-shrink:0; color:transparent; transition:all .1s; }
-    .ci.ck .cbox { background:var(--grn); border-color:var(--grn); color:#fff; }
+    .cbox { width:16px; height:16px; border-radius:var(--r); border:1.5px solid var(--bd-hi); display:flex; align-items:center; justify-content:center; font-size:.6rem; font-weight:700; flex-shrink:0; color:transparent; transition:all .15s; }
+    .ci.ck .cbox { background:var(--grn); border-color:var(--grn); color:var(--card); }
 
     @media(max-width:600px) { .fn { grid-template-columns:1fr; } }
 
@@ -117,7 +117,7 @@
     #gateWrap { position:relative; }
     #gated { transition:filter .2s; }
     #gateCard { position:absolute; inset:0; display:none; align-items:flex-start; justify-content:center; padding-top:2.5rem; }
-    #gateCard .inner { position:sticky; top:5rem; background:var(--bg); border:1px solid var(--bd); box-shadow:var(--sh-lg); border-radius:var(--rx); padding:1.9rem; max-width:380px; text-align:center; }
+    #gateCard .inner { position:sticky; top:5rem; background:var(--card); border:1px solid var(--bd); box-shadow:var(--sh-lg); border-radius:var(--rx); padding:1.9rem; max-width:380px; text-align:center; }
     .locked #gated { filter:blur(6px); pointer-events:none; user-select:none; }
     .locked #gateCard { display:flex; }
   </style>
@@ -156,7 +156,7 @@
     <div class="tool-body open" id="t1-body">
       <p style="font-size:.8125rem;color:var(--mut);margin-bottom:1rem">Select a city to see a real monthly cost breakdown. Based on <a href="https://www.abs.gov.au/statistics/economy/price-indexes-and-inflation/consumer-price-index-australia" target="_blank" style="color:var(--blue)">ABS Consumer Price Index data</a> and student accommodation averages.</p>
       <div class="city-grid" id="cityGrid"></div>
-      <div id="rNote" style="display:none;padding:.75rem 1rem;background:var(--grn-bg);border:1px solid var(--grn-bd);border-radius:8px;font-size:.8125rem;color:#166534;margin-bottom:1rem">
+      <div id="rNote" style="display:none;padding:.75rem 1rem;background:var(--grn-bg);border:1px solid var(--grn-bd);border-radius:var(--rl);font-size:.8125rem;color:var(--grn-dk);margin-bottom:1rem">
         🌿 <strong>Regional advantage:</strong> Adelaide, Newcastle &amp; Wollongong cost A$400–700/month less than Sydney — and studying here qualifies you for an extra year on the 485 Graduate Visa.
       </div>
       <div class="cost-tbl" id="costTbl"></div>

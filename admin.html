@@ -17,21 +17,22 @@
   <style>
     .admin-wrap { max-width:1100px; margin:0 auto; padding:2rem 1.5rem 4rem; }
     .tabs { display:flex; gap:.4rem; border-bottom:1px solid var(--bd); margin-bottom:1.25rem; }
-    .tab { padding:.6rem 1rem; font-size:.875rem; font-weight:600; color:var(--mut); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; }
-    .tab.on { color:var(--blue); border-bottom-color:var(--blue); }
+    .tab { padding:.6rem 1rem; font-size:.875rem; font-weight:600; color:var(--mut); cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-1px; transition:color .15s; }
+    .tab:hover { color:var(--txt); }
+    .tab.on { color:var(--accent); border-bottom-color:var(--accent); }
     .stat-row { display:flex; gap:1rem; margin-bottom:1.5rem; flex-wrap:wrap; }
-    .stat { flex:1; min-width:140px; border:1px solid var(--bd); border-radius:var(--rl); padding:1rem 1.25rem; }
-    .stat-n { font-size:1.75rem; font-weight:800; color:var(--blue); letter-spacing:-.03em; }
+    .stat { flex:1; min-width:140px; background:var(--card); border:1px solid var(--bd); border-radius:var(--rx); box-shadow:var(--sh-sm); padding:1rem 1.25rem; }
+    .stat-n { font-size:1.75rem; font-weight:800; color:var(--accent); letter-spacing:-.03em; }
     .stat-l { font-size:.75rem; color:var(--mut); text-transform:uppercase; letter-spacing:.05em; }
     table { width:100%; border-collapse:collapse; font-size:.85rem; }
     th { text-align:left; font-size:.7rem; text-transform:uppercase; letter-spacing:.05em; color:var(--lt); padding:.6rem .75rem; border-bottom:1px solid var(--bd); }
     td { padding:.7rem .75rem; border-bottom:1px solid var(--bd); vertical-align:top; }
     tr:hover td { background:var(--bg-sub); }
     .muted { color:var(--mut); }
-    .pill { display:inline-block; font-size:.7rem; font-weight:700; padding:.1rem .5rem; border-radius:100px; }
-    .pill-p { background:var(--amb-bg); color:var(--amb); border:1px solid #fde68a; }
+    .pill { display:inline-block; font-size:.7rem; font-weight:700; padding:.1rem .5rem; border-radius:var(--rpill); }
+    .pill-p { background:var(--amb-bg); color:var(--amb); border:1px solid var(--amb-bd); }
     .pill-a { background:var(--grn-bg); color:var(--grn); border:1px solid var(--grn-bd); }
-    .pill-r { background:#fef2f2; color:var(--red); border:1px solid #fecaca; }
+    .pill-r { background:var(--red-bg); color:var(--red); border:1px solid var(--red-bd); }
     .center-box { max-width:380px; margin:5rem auto; text-align:center; }
     .btn-sm { padding:.3rem .7rem; font-size:.78rem; }
   </style>
