@@ -15,10 +15,17 @@ create table if not exists public.profiles (
 
 alter table public.profiles enable row level security;
 
+-- Own-row read ONLY. `email` is PII and must never be readable by other users.
+-- (The old "profiles readable by authenticated … using (true)" policy let any
+--  signed-in user select * and harvest every user's email — a PII leak.)
+-- Cross-user name/avatar is served exclusively via the consent-gated
+-- discoverable_peers() SECURITY DEFINER RPC (see supabase-profiles.sql): it
+-- bypasses RLS and never returns email, so no broad SELECT policy is needed here.
 drop policy if exists "profiles readable by authenticated" on public.profiles;
-create policy "profiles readable by authenticated"
+drop policy if exists "read own profile" on public.profiles;
+create policy "read own profile"
   on public.profiles for select
-  to authenticated using (true);
+  to authenticated using (auth.uid() = id);
 
 drop policy if exists "users update own profile" on public.profiles;
 create policy "users update own profile"
