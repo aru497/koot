@@ -849,12 +849,15 @@ function showResults() {
     });
   });
 
-  // Sort by: regional preference, then priority
+  // Sort by: regional preference, then priority.
+  // Default tiebreak is QS world ranking (real data) so results aren't just the
+  // array order — otherwise the first university listed always surfaced on top.
+  const qs = u => parseInt(u.qsRange) || 500;
   uniCandidates.sort((a,b)=>{
     if(selectedLocation==='regional' || selectedPriority==='visa') { if(a.uni.regional&&!b.uni.regional)return-1; if(!a.uni.regional&&b.uni.regional)return 1; }
-    if(selectedPriority==='prestige') { const qa=parseInt(a.uni.qsRange)||500, qb=parseInt(b.uni.qsRange)||500; return qa-qb; }
+    if(selectedPriority==='prestige') return qs(a.uni)-qs(b.uni);
     if(selectedPriority==='affordable') return a.fee-b.fee;
-    return 0;
+    return qs(a.uni)-qs(b.uni);
   });
 
   // De-dup universities, take top 3

@@ -149,3 +149,14 @@ body {
    Drop the heavy backdrop blur and give the list a clean opaque background. */
 .sidebar__container, #sidebar { background-color: var(--koott-paper) !important; }
 body.library-collapsed #sidebar { -webkit-backdrop-filter: none !important; backdrop-filter: none !important; }
+/* Kill EVERY blur, translucency and fade-mask in the left sidebar -- the sticky
+   DM row + headers were smearing the rooms scrolling under them. */
+.sidebar, #sidebar, .sidebar *, #sidebar * {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+.directs, .sidebar__tools, .sidebar__container, .rooms, [class*="rooms"] {
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  background-color: var(--koott-paper) !important;
+}
