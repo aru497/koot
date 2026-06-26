@@ -310,6 +310,7 @@
     <li><a href="funding.html">Funding</a></li>
     <li><a href="arrival.html">Arrival</a></li>
     <li><a href="tools.html">Visa Tools</a></li>
+    <li><a href="/blog">Blog</a></li>
   </ul>
   <div class="nav-right"><span id="koottNav"></span><a href="advisor.html" class="btn btn-p" data-haptic="medium">Get started</a></div>
 </div></nav>
@@ -453,6 +454,7 @@
     <a href="funding.html">Funding</a>
     <a href="arrival.html">Arrival</a>
     <a href="tools.html">Visa Tools</a>
+    <a href="/blog">Blog</a>
   </div>
   <span class="note"><b>കൂട്ട്</b> — together, in Malayalam · free &amp; open</span>
 </div></footer>
@@ -726,5 +728,6 @@ function koottGo(q){ const i=document.getElementById('q'); if(i)i.value=q; runSe
 // Prefill from ?q= (e.g. arriving from another page) and run.
 (function(){ try{ var q=new URLSearchParams(location.search).get('q'); if(q){ var i=document.getElementById('q'); if(i)i.value=q; runSearch(q); } }catch(e){} })();
 </script>
+  <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>

@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://koott.live/</loc><lastmod>2026-06-11</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://koott.live/advisor.html</loc><lastmod>2026-06-11</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
-  <url><loc>https://koott.live/communities.html</loc><lastmod>2026-06-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://koott.live/whatsapp.html</loc><lastmod>2026-06-11</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
-  <url><loc>https://koott.live/funding.html</loc><lastmod>2026-06-11</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://koott.live/arrival.html</loc><lastmod>2026-06-11</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://koott.live/tools.html</loc><lastmod>2026-06-11</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://koott.live/</loc><lastmod>2026-06-26</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://koott.live/advisor</loc><lastmod>2026-06-26</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://koott.live/communities</loc><lastmod>2026-06-26</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://koott.live/whatsapp</loc><lastmod>2026-06-26</lastmod><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://koott.live/funding</loc><lastmod>2026-06-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://koott.live/arrival</loc><lastmod>2026-06-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://koott.live/tools</loc><lastmod>2026-06-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://koott.live/blog</loc><lastmod>2026-06-26</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://koott.live/blog/regional-universities-australia</loc><lastmod>2026-06-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://koott.live/blog/485-visa-regional-bonus</loc><lastmod>2026-06-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://koott.live/blog/jobs-regional-australia</loc><lastmod>2026-06-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://koott.live/blog/why-regional-australia</loc><lastmod>2026-06-26</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://koott.live/blog/study-in-newcastle</loc><lastmod>2026-06-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://koott.live/blog/cost-of-living-regional-australia</loc><lastmod>2026-06-26</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="/favicon.ico?v=2" sizes="any">
+  <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
+  <meta name="theme-color" content="#e8632a">
+  <title>Koott Blog — Regional Australia for Kerala & Indian Students</title>
+  <meta name="description" content="Honest guides for Indian students heading to regional Australia: regional universities, the 485 visa bonus, in-demand jobs, costs and city guides — built on real government data.">
+  <link rel="canonical" href="https://koott.live/blog">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta name="author" content="Koott">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Koott">
+  <meta property="og:title" content="Koott Blog — Regional Australia for Indian Students">
+  <meta property="og:description" content="Guides on regional universities, the 485 visa bonus, in-demand jobs and costs — for Kerala & Indian students studying in Australia.">
+  <meta property="og:url" content="https://koott.live/blog">
+  <meta property="og:image" content="https://koott.live/og-image.png">
+  <meta property="og:locale" content="en_AU">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Koott Blog — Regional Australia for Indian Students">
+  <meta name="twitter:description" content="Guides on regional universities, the 485 visa bonus, in-demand jobs and costs for international students.">
+  <meta name="twitter:image" content="https://koott.live/og-image.png">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Blog","@id":"https://koott.live/blog#blog","name":"Koott Blog","description":"Guides for Kerala and Indian students studying in regional Australia.","url":"https://koott.live/blog","publisher":{"@type":"Organization","name":"Koott","url":"https://koott.live/","logo":"https://koott.live/apple-touch-icon.png"},"inLanguage":"en-AU"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://koott.live/"},{"@type":"ListItem","position":2,"name":"Blog","item":"https://koott.live/blog"}]}</script>
+  <link rel="stylesheet" href="/koott.css">
+  <style>
+    .blog-hero{padding:clamp(2.5rem,6vw,4rem) 0 1rem}
+    .blog-hero .eyebrow{margin-bottom:.6rem}
+    .blog-hero h1{font-size:clamp(2.1rem,5vw,3.2rem);font-weight:800;letter-spacing:-.04em;line-height:1.05;max-width:18ch}
+    .blog-hero h1 em{font-style:normal;color:var(--accent)}
+    .blog-hero p{font-size:clamp(1.02rem,1.6vw,1.18rem);color:var(--mut);max-width:58ch;margin-top:1rem}
+
+    /* ── Gallery4: horizontal carousel of post cards ── */
+    .gal-head{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;margin:clamp(2rem,4vw,3rem) 0 1.2rem}
+    .gal-head h2{font-size:clamp(1.5rem,3vw,2.1rem);font-weight:800;letter-spacing:-.03em}
+    .gal-nav{display:flex;gap:.5rem;flex-shrink:0}
+    .gal-btn{width:44px;height:44px;border-radius:50%;border:1px solid var(--bd);background:var(--card);color:var(--txt);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s}
+    .gal-btn:hover{border-color:var(--txt);transform:translateY(-1px)}
+    .gal-btn:disabled{opacity:.35;cursor:default;transform:none}
+    .gal-track{display:flex;gap:1.2rem;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding-bottom:1rem;
+      scrollbar-width:none;-ms-overflow-style:none}
+    .gal-track::-webkit-scrollbar{display:none}
+    .gcard{position:relative;flex:0 0 auto;width:min(86vw,420px);height:clamp(420px,52vw,500px);border-radius:var(--rxl);overflow:hidden;
+      scroll-snap-align:start;text-decoration:none;color:#fff;box-shadow:var(--sh-sm);transition:transform .18s,box-shadow .18s}
+    .gcard:hover{transform:translateY(-4px);box-shadow:var(--sh-lg)}
+    .gcard-img{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .4s ease}
+    .gcard:hover .gcard-img{transform:scale(1.05)}
+    .gcard::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,18,15,.05) 0%,rgba(20,18,15,.45) 52%,rgba(20,18,15,.88) 100%)}
+    .gcard-in{position:absolute;inset:auto 0 0 0;z-index:1;padding:1.5rem}
+    .gcard-cat{display:inline-block;font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+      background:var(--accent);color:#fff;padding:.25rem .6rem;border-radius:var(--rpill);margin-bottom:.7rem}
+    .gcard h3{font-size:1.32rem;font-weight:800;letter-spacing:-.02em;line-height:1.18}
+    .gcard p{font-size:.88rem;color:rgba(255,255,255,.85);margin-top:.5rem;line-height:1.45;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .gcard .more{display:inline-flex;align-items:center;gap:.3rem;font-size:.86rem;font-weight:650;margin-top:.9rem}
+
+    /* ── full index grid (SEO-crawlable list of all posts) ── */
+    .post-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:1rem}
+    @media(max-width:860px){.post-grid{grid-template-columns:1fr 1fr}}
+    @media(max-width:560px){.post-grid{grid-template-columns:1fr}}
+    .post{display:flex;flex-direction:column;background:var(--card);border:1px solid var(--bd);border-radius:var(--rx);overflow:hidden;
+      box-shadow:var(--sh-sm);text-decoration:none;color:inherit;transition:transform .15s,box-shadow .15s}
+    .post:hover{transform:translateY(-3px);box-shadow:var(--sh)}
+    .post-img{height:170px;background-size:cover;background-position:center}
+    .post-body{padding:1.2rem 1.3rem 1.4rem;display:flex;flex-direction:column;flex:1}
+    .post-cat{font-family:var(--mono);font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-dk)}
+    .post h3{font-size:1.08rem;font-weight:750;letter-spacing:-.015em;margin:.4rem 0 .35rem;line-height:1.25}
+    .post p{font-size:.88rem;color:var(--mut);flex:1;line-height:1.5}
+    .post .more{margin-top:.9rem;font-weight:650;font-size:.86rem;color:var(--accent-dk)}
+
+    .blog-cta{margin:clamp(2.5rem,5vw,3.5rem) 0 1rem;background:var(--accent-bg);border:1px solid var(--accent-bd);border-radius:var(--rxl);padding:clamp(1.8rem,4vw,2.6rem);text-align:center}
+    .blog-cta h2{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:800;letter-spacing:-.02em}
+    .blog-cta p{color:var(--mut);max-width:50ch;margin:.7rem auto 1.3rem}
+    .ft{border-top:1px solid var(--bd);margin-top:2rem}
+    .ft-in{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;padding:2rem clamp(1.1rem,4vw,2rem);max-width:1080px;margin:0 auto}
+    .ft-in a{color:var(--mut);font-size:.88rem;font-weight:600}.ft-in a:hover{color:var(--accent)}
+    .ft-links{display:flex;gap:1.3rem;flex-wrap:wrap}
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="logo" href="/" aria-label="Koott home">
+    <svg width="24" height="24" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="11" cy="16" r="10" fill="#e8622c" stroke="#141215" stroke-width="2"/><circle cx="21" cy="16" r="10" fill="#141215"/></svg>
+    koott
+  </a>
+  <ul class="nav-links">
+    <li><a href="/advisor">Course Advisor</a></li>
+    <li><a href="/communities">Communities</a></li>
+    <li><a href="/funding">Funding</a></li>
+    <li><a href="/arrival">Arrival</a></li>
+    <li><a href="/tools">Visa Tools</a></li>
+    <li><a href="/blog" class="active">Blog</a></li>
+  </ul>
+  <div class="nav-right"><a href="/advisor" class="btn btn-p">Get started</a></div>
+</nav>
+
+<header class="blog-hero"><div class="wrap">
+  <div class="eyebrow">The Koott Blog</div>
+  <h1>Your guide to <em>regional Australia</em>.</h1>
+  <p>Honest, data-backed guides for Kerala &amp; Indian students — regional universities, the 485 visa bonus, in-demand jobs, real costs and city guides. No agents, no commission, no fluff.</p>
+</div></header>
+
+<section class="wrap">
+  <div class="gal-head">
+    <h2>Latest guides</h2>
+    <div class="gal-nav">
+      <button class="gal-btn" id="galPrev" aria-label="Previous"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+      <button class="gal-btn" id="galNext" aria-label="Next"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+    </div>
+  </div>
+  <div class="gal-track" id="galTrack">
+    <a class="gcard" href="/blog/regional-universities-australia"><div class="gcard-img" style="background-image:url('/images/sydney-skyline.jpg')"></div><div class="gcard-in"><span class="gcard-cat">Universities</span><h3>Regional Universities in Australia: The 2025 Guide for Indian Students</h3><p>All 10 regional unis, real fees and entry scores, and why "regional" can mean an extra visa year.</p><span class="more">Read the guide →</span></div></a>
+    <a class="gcard" href="/blog/485-visa-regional-bonus"><div class="gcard-img" style="background-image:url('/images/sydney-harbour.jpg')"></div><div class="gcard-in"><span class="gcard-cat">Visa</span><h3>The 485 Visa Regional Bonus: Your Extra Post-Study Work Years</h3><p>How studying regionally adds 1–2 years to your Temporary Graduate (485) visa — explained simply.</p><span class="more">Read the guide →</span></div></a>
+    <a class="gcard" href="/blog/jobs-regional-australia"><div class="gcard-img" style="background-image:url('/images/students-group.jpg')"></div><div class="gcard-in"><span class="gcard-cat">Careers</span><h3>Jobs in Regional Australia for International Students</h3><p>In-demand occupations from the Skills Priority List, part-time work rules, and where the jobs actually are.</p><span class="more">Read the guide →</span></div></a>
+    <a class="gcard" href="/blog/why-regional-australia"><div class="gcard-img" style="background-image:url('/images/students-campus.jpg')"></div><div class="gcard-in"><span class="gcard-cat">Why Regional</span><h3>Why Indian &amp; Kerala Students Are Choosing Regional Australia</h3><p>Lower costs, easier admission, the visa bonus, and stronger migration pathways — the regional case.</p><span class="more">Read the guide →</span></div></a>
+    <a class="gcard" href="/blog/study-in-newcastle"><div class="gcard-img" style="background-image:url('/images/sydney-skyline.jpg')"></div><div class="gcard-in"><span class="gcard-cat">City Guide</span><h3>Studying in Newcastle: A Guide for Indian Students</h3><p>The University of Newcastle, costs, the Malayali community and life an hour from Sydney — at regional rates.</p><span class="more">Read the guide →</span></div></a>
+    <a class="gcard" href="/blog/cost-of-living-regional-australia"><div class="gcard-img" style="background-image:url('/images/students-campus.jpg')"></div><div class="gcard-in"><span class="gcard-cat">Costs</span><h3>Cost of Living: Regional Australia vs Sydney &amp; Melbourne</h3><p>What you'll really spend on rent, food and transport regionally vs the big cities — with the visa savings figure.</p><span class="more">Read the guide →</span></div></a>
+  </div>
+</section>
+
+<section class="wrap section" style="padding-top:1rem">
+  <h2 class="h2" style="margin-bottom:1.4rem">All articles</h2>
+  <div class="post-grid">
+    <a class="post" href="/blog/regional-universities-australia"><div class="post-img" style="background-image:url('/images/sydney-skyline.jpg')"></div><div class="post-body"><span class="post-cat">Universities</span><h3>Regional Universities in Australia: 2025 Guide</h3><p>Every regional university, real entry scores and fees, and the visa advantage of studying outside the big cities.</p><span class="more">Read →</span></div></a>
+    <a class="post" href="/blog/485-visa-regional-bonus"><div class="post-img" style="background-image:url('/images/sydney-harbour.jpg')"></div><div class="post-body"><span class="post-cat">Visa</span><h3>The 485 Visa Regional Bonus</h3><p>How a regional university adds extra years to your post-study work visa — and which areas count.</p><span class="more">Read →</span></div></a>
+    <a class="post" href="/blog/jobs-regional-australia"><div class="post-img" style="background-image:url('/images/students-group.jpg')"></div><div class="post-body"><span class="post-cat">Careers</span><h3>Jobs in Regional Australia for International Students</h3><p>In-demand roles, the work-hour rules, and how regional shortages help your career and migration.</p><span class="more">Read →</span></div></a>
+    <a class="post" href="/blog/why-regional-australia"><div class="post-img" style="background-image:url('/images/students-campus.jpg')"></div><div class="post-body"><span class="post-cat">Why Regional</span><h3>Why Kerala Students Choose Regional Australia</h3><p>The honest case for regional study: cost, admission, the visa bonus and migration pathways.</p><span class="more">Read →</span></div></a>
+    <a class="post" href="/blog/study-in-newcastle"><div class="post-img" style="background-image:url('/images/sydney-skyline.jpg')"></div><div class="post-body"><span class="post-cat">City Guide</span><h3>Studying in Newcastle</h3><p>UON, living costs, community and what life is really like an hour north of Sydney.</p><span class="more">Read →</span></div></a>
+    <a class="post" href="/blog/cost-of-living-regional-australia"><div class="post-img" style="background-image:url('/images/students-campus.jpg')"></div><div class="post-body"><span class="post-cat">Costs</span><h3>Cost of Living: Regional vs Sydney &amp; Melbourne</h3><p>A real breakdown of rent, food and transport — and the visa savings figure you must show.</p><span class="more">Read →</span></div></a>
+  </div>
+
+  <div class="blog-cta">
+    <h2>Not sure where you fit?</h2>
+    <p>Tell the Course Advisor what you want to study — it matches you to in-demand Australian courses with real shortage data, salaries and your 485 visa, free.</p>
+    <a href="/advisor" class="btn btn-p btn-lg">Find my course →</a>
+  </div>
+</section>
+
+<footer class="ft"><div class="ft-in">
+  <a class="logo" href="/" style="font-size:1.1rem"><svg width="22" height="22" viewBox="0 0 32 32" fill="none"><circle cx="11" cy="16" r="10" fill="#e8632a" stroke="#17191F" stroke-width="2"/><circle cx="21" cy="16" r="10" fill="#17191F"/></svg> koott</a>
+  <div class="ft-links">
+    <a href="/advisor">Course Advisor</a>
+    <a href="/communities">Communities</a>
+    <a href="/funding">Funding</a>
+    <a href="/arrival">Arrival</a>
+    <a href="/tools">Visa Tools</a>
+    <a href="/blog">Blog</a>
+  </div>
+  <span class="fine"><b style="color:var(--accent)">കൂട്ട്</b> — together, in Malayalam</span>
+</div></footer>
+
+<script>
+  (function(){
+    var track=document.getElementById('galTrack'), prev=document.getElementById('galPrev'), next=document.getElementById('galNext');
+    if(!track) return;
+    function step(){ var c=track.querySelector('.gcard'); return c ? c.getBoundingClientRect().width + 19 : 360; }
+    function update(){ prev.disabled = track.scrollLeft < 8; next.disabled = track.scrollLeft + track.clientWidth >= track.scrollWidth - 8; }
+    prev.addEventListener('click', function(){ track.scrollBy({left:-step(),behavior:'smooth'}); });
+    next.addEventListener('click', function(){ track.scrollBy({left:step(),behavior:'smooth'}); });
+    track.addEventListener('scroll', update, {passive:true}); update();
+  })();
+</script>
+  <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
