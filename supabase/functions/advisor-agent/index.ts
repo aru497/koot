@@ -51,6 +51,25 @@ async function rateOk(bucket: string, max: number, win: number): Promise<boolean
   } catch (e) { console.error("rate_limit ex:", (e as Error)?.message); return true; }
 }
 
+// Verify the caller's Supabase user JWT (sent as the Bearer token). Returns the
+// signed-in user, or null if missing/invalid — searching requires a real account.
+async function getUser(req: Request): Promise<{ id: string; email: string } | null> {
+  const auth = req.headers.get("Authorization") || "";
+  const token = auth.startsWith("Bearer ") ? auth.slice(7).trim() : "";
+  if (!token) return null;
+  try {
+    // Verify via the auth REST endpoint (NOT sb.auth.* — that pulls the GoTrue
+    // module into the bundle and boot-fails in the edge runtime).
+    const r = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+      headers: { apikey: SERVICE_KEY, Authorization: `Bearer ${token}` },
+    });
+    if (!r.ok) return null;
+    const u = await r.json();
+    if (!u?.id) return null;
+    return { id: u.id, email: u.email || "" };
+  } catch (e) { console.error("getUser:", (e as Error)?.message); return null; }
+}
+
 // Calls whichever LLM is configured: Anthropic (Claude) preferred, then Gemini. Returns raw text or "".
 async function callLLM(system: string, user: string): Promise<string> {
   if (ANTHROPIC_KEY) {
@@ -93,27 +112,28 @@ Deno.serve(async (req) => {
   try { payload = await req.json(); } catch { return json({ error: "bad json" }, 400); }
 
   const answer = (payload.answer || "").trim();
-  const email  = (payload.email  || "").trim();
   const region = (payload.region || "").trim();
 
-  // ── Email gate ──
-  if (!validEmail(email)) return json({ error: "A valid email is required to get your match." }, 400);
+  // ── Auth gate: searching requires a signed-in Koott account ──
+  const authUser = await getUser(req);
+  if (!authUser) return json({ error: "Please sign in to search.", code: "auth_required" }, 401);
+  const email = authUser.email;
+
   if (!answer)            return json({ error: "Tell us what you'd like to study." }, 400);
   if (answer.length > 1500) return json({ error: "Please shorten your answer (max ~1500 characters)." }, 400);
 
-  // ── Abuse / cost guard ──
-  // Each accepted request bills a Claude call on the owner's key, so gate it:
-  // per-IP burst + sustained limits, plus a global daily ceiling (denial-of-wallet
-  // backstop). On 429 the browser falls back to on-device matching, so a genuine
-  // user who hits the limit still gets a result.
+  // ── Per-user search cap (5/day) + abuse backstops ──
+  // The per-user cap is the primary lock now that a login is required; per-IP
+  // burst + a global daily ceiling backstop many-accounts-behind-one-IP / distributed abuse.
+  if (!(await rateOk(`adv:user:${authUser.id}`, 5, 86400)))
+    return json({ error: "You've used your 5 searches for today. Please try again tomorrow.", code: "daily_limit" }, 429);
   const ip = (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() || "unknown";
   const guards = await Promise.all([
     rateOk(`adv:min:${ip}`, 6, 60),
-    rateOk(`adv:hr:${ip}`, 40, 3600),
     rateOk("adv:day:global", 2000, 86400),
   ]);
   if (guards.some((ok) => ok === false))
-    return json({ error: "You're going a bit fast — please wait a minute and try again." }, 429);
+    return json({ error: "You're going a bit fast — please wait a minute and try again.", code: "rate_limited" }, 429);
 
   // ── Grounding data: the live occupations ──
   const { data: occs, error: occErr } = await sb

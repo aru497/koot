@@ -787,6 +787,13 @@ function goStep2(){ document.getElementById('step1').style.display='none'; docum
 
 // ══ Analysis ══
 function startAnalysis() {
+  // Hard wall: searching requires sign-in — gate the form wizard too, not just AI chat.
+  var u = window.koottAuth && koottAuth.user;
+  if(!u){
+    try{ localStorage.setItem('koott_pending_analysis', JSON.stringify({field:(document.getElementById('f_field')||{}).value||''})); }catch(e){}
+    if(window.koottAuth) koottAuth.signIn(); else alert('Please sign in to see your matches.');
+    return;
+  }
   document.getElementById('wizard').style.display='none';
   document.getElementById('analysing').style.display='block';
   const steps=['as1','as2','as3','as4','as5'];
@@ -1037,6 +1044,18 @@ function clientAgentMatch(answer){
     reason: bs>0 ? ('Based on what you described, '+best.title+' looks like a strong fit — and it is in demand in Australia, which helps both your job prospects and visa outcomes.') : ('We did not catch a specific field in your answer, so here is a popular high-demand option to explore: '+(best?best.title:'')+'. Add a bit more detail to refine it.'),
     suggested_courses:(best&&best.courses||[]).slice(0,5), no_clear_interest:bs<=0 };
 }
+function restoreAgentUI(){
+  var an=document.getElementById('analysing'); if(an) an.style.display='none';
+  var ag=document.getElementById('agent'); if(ag) ag.style.display='block';
+  var mb=document.getElementById('modeBar'); if(mb) mb.style.display='';
+}
+function agentNotice(msg){
+  var host=document.getElementById('agent'); if(!host){ alert(msg); return; }
+  var ex=document.getElementById('agentNotice'); if(ex) ex.remove();
+  var d=document.createElement('div'); d.id='agentNotice';
+  d.style.cssText='background:var(--accent-bg,#fef2ec);border:1px solid var(--accent-bd,#f3c9b3);color:var(--accent-dk,#cc4f1e);padding:.8rem 1rem;border-radius:10px;margin:0 0 1rem;font-size:.9rem;font-weight:550;line-height:1.4';
+  d.textContent=msg; host.insertBefore(d, host.firstChild);
+}
 async function runAgent(email){
   var answer=document.getElementById('ag_answer').value.trim();
   var region=document.getElementById('ag_region').value.trim();
@@ -1048,12 +1067,16 @@ async function runAgent(email){
   var data=null;
   try{
     var cfg=window.KOOTT_CONFIG;
-    var res=await fetch(cfg.SUPABASE_URL+'/functions/v1/advisor-agent',{method:'POST',headers:{'content-type':'application/json','apikey':cfg.SUPABASE_KEY,'authorization':'Bearer '+cfg.SUPABASE_KEY},body:JSON.stringify({answer:answer,email:email,region:region})});
+    var sess=(await window.sb.auth.getSession()).data.session;
+    var token=sess && sess.access_token;
+    if(!token){ restoreAgentUI(); if(window.koottAuth) koottAuth.signIn(); return; }   // must be signed in
+    var res=await fetch(cfg.SUPABASE_URL+'/functions/v1/advisor-agent',{method:'POST',headers:{'content-type':'application/json','apikey':cfg.SUPABASE_KEY,'authorization':'Bearer '+token},body:JSON.stringify({answer:answer,region:region})});
+    if(res.status===401){ restoreAgentUI(); if(window.koottAuth) koottAuth.signIn(); return; }  // session expired → re-auth
+    if(res.status===429){ var je={}; try{ je=await res.json(); }catch(e){} restoreAgentUI(); agentNotice(je.error||'You have reached today’s search limit. Please try again tomorrow.'); return; }
     var j=await res.json(); if(res.ok && j.ok) data=j;
   }catch(e){}
   if(!data){
-    // Edge Function unavailable/rate-limited → on-device match (no lead written
-    // here; the advisor-agent function is the sole, service-role lead writer).
+    // genuine network/5xx failure (NOT auth/limit) → on-device match so the user still gets help
     data=clientAgentMatch(answer);
   }
   window.__forcedOcc = data.occupation_id||null;
@@ -1199,7 +1222,12 @@ window.koottAuth && koottAuth.onChange(function(u){
   var pnd=null; try{ pnd=JSON.parse(localStorage.getItem('koott_pending_advisor')||'null'); }catch(e){}
   if(pnd && pnd.answer){ try{ localStorage.removeItem('koott_pending_advisor'); }catch(e){}
     document.getElementById('ag_answer').value=pnd.answer; if(pnd.region) document.getElementById('ag_region').value=pnd.region;
-    setMode('chat'); runAgent(u.email);
+    setMode('chat'); runAgent(u.email); return;
+  }
+  var pna=null; try{ pna=JSON.parse(localStorage.getItem('koott_pending_analysis')||'null'); }catch(e){}
+  if(pna){ try{ localStorage.removeItem('koott_pending_analysis'); }catch(e){}
+    if(pna.field){ var ff=document.getElementById('f_field'); if(ff) ff.value=pna.field; }
+    setMode('form'); goStep2(); startAnalysis();
   }
 });
 setMode('chat');
