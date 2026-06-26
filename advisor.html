@@ -461,7 +461,7 @@
 
 </div><!-- /advisor-shell -->
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.108.2/dist/umd/supabase.js" integrity="sha384-nD3dwv4+ZqdYnmZKe/249ImlV04om7xTCcsoSeQYI+RO+XlKPoqAWaJR1M5SJH9p" crossorigin="anonymous"></script>
 <script src="koott-config.js"></script>
 <script src="koott-haptics.js"></script>
 <script src="koott-auth.js"></script>
@@ -1052,8 +1052,9 @@ async function runAgent(email){
     var j=await res.json(); if(res.ok && j.ok) data=j;
   }catch(e){}
   if(!data){
+    // Edge Function unavailable/rate-limited → on-device match (no lead written
+    // here; the advisor-agent function is the sole, service-role lead writer).
     data=clientAgentMatch(answer);
-    try{ await window.sb.from('leads').insert({email:email,study_interest:answer,region:region||null,matched_title:data.matched_title,matched_occupation_id:data.occupation_id,no_clear_interest:data.no_clear_interest,source:'advisor-client'}); }catch(e){}
   }
   window.__forcedOcc = data.occupation_id||null;
   window.__agentReason = data.reason||'';

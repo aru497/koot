@@ -40,6 +40,17 @@ function validEmail(e: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e || "");
 }
 
+// Fixed-window rate limit via the hit_rate_limit SQL function. Fail-open on
+// error so a DB hiccup never blocks a genuine student (the global daily cap
+// is the real backstop against abuse).
+async function rateOk(bucket: string, max: number, win: number): Promise<boolean> {
+  try {
+    const { data, error } = await sb.rpc("hit_rate_limit", { p_bucket: bucket, p_max: max, p_window_secs: win });
+    if (error) { console.error("rate_limit rpc:", error.message); return true; }
+    return data !== false;
+  } catch (e) { console.error("rate_limit ex:", (e as Error)?.message); return true; }
+}
+
 // Calls whichever LLM is configured: Anthropic (Claude) preferred, then Gemini. Returns raw text or "".
 async function callLLM(system: string, user: string): Promise<string> {
   if (ANTHROPIC_KEY) {
@@ -88,6 +99,21 @@ Deno.serve(async (req) => {
   // ── Email gate ──
   if (!validEmail(email)) return json({ error: "A valid email is required to get your match." }, 400);
   if (!answer)            return json({ error: "Tell us what you'd like to study." }, 400);
+  if (answer.length > 1500) return json({ error: "Please shorten your answer (max ~1500 characters)." }, 400);
+
+  // ── Abuse / cost guard ──
+  // Each accepted request bills a Claude call on the owner's key, so gate it:
+  // per-IP burst + sustained limits, plus a global daily ceiling (denial-of-wallet
+  // backstop). On 429 the browser falls back to on-device matching, so a genuine
+  // user who hits the limit still gets a result.
+  const ip = (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() || "unknown";
+  const guards = await Promise.all([
+    rateOk(`adv:min:${ip}`, 6, 60),
+    rateOk(`adv:hr:${ip}`, 40, 3600),
+    rateOk("adv:day:global", 2000, 86400),
+  ]);
+  if (guards.some((ok) => ok === false))
+    return json({ error: "You're going a bit fast — please wait a minute and try again." }, 429);
 
   // ── Grounding data: the live occupations ──
   const { data: occs, error: occErr } = await sb

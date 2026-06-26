@@ -21,6 +21,20 @@ const TO_EMAIL = Deno.env.get('CONSULT_TO_EMAIL') || 'aru497@gmail.com'
 const FROM_EMAIL = Deno.env.get('CONSULT_FROM_EMAIL') || 'onboarding@resend.dev'
 const KOOTT_HOST = Deno.env.get('KOOTT_HOST') || 'https://koott.live'
 
+// Fixed-window rate limit via the hit_rate_limit SQL function (PostgREST RPC).
+// Fail-open on error so a DB hiccup never blocks a genuine request.
+async function rateOk(bucket: string, max: number, win: number): Promise<boolean> {
+  try {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/hit_rate_limit`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', apikey: SERVICE_ROLE, authorization: `Bearer ${SERVICE_ROLE}` },
+      body: JSON.stringify({ p_bucket: bucket, p_max: max, p_window_secs: win }),
+    })
+    if (!r.ok) { console.error('rate_limit rpc', r.status); return true }
+    return (await r.json()) !== false
+  } catch (e) { console.error('rate_limit ex', (e as Error)?.message); return true }
+}
+
 Deno.serve(async (req: Request) => {
   const cors: Record<string, string> = {
     'Access-Control-Allow-Origin': KOOTT_HOST,
@@ -39,6 +53,17 @@ Deno.serve(async (req: Request) => {
   if (typeof body.hp_url === 'string' && body.hp_url.trim()) {
     return json({ ok: true }, 200, cors)
   }
+
+  // Per-IP rate limit — protects your Resend quota and inbox from a flood.
+  // Per-IP limits + a global daily ceiling. x-forwarded-for is spoofable, so the
+  // global cap is the real backstop against a flood exhausting the Resend quota.
+  const ip = (req.headers.get('x-forwarded-for') || '').split(',')[0].trim() || 'unknown'
+  const ipOk = await Promise.all([
+    rateOk(`consult:hr:${ip}`, 4, 3600),
+    rateOk(`consult:day:${ip}`, 12, 86400),
+    rateOk('consult:day:global', 200, 86400),
+  ])
+  if (ipOk.some((ok) => ok === false)) return json({ error: 'Too many requests. Please try again later.' }, 429, cors)
 
   // Trim + cap every field; only name + a valid email are required.
   const clean = (v: unknown, max = 2000) =>
@@ -67,6 +92,9 @@ Deno.serve(async (req: Request) => {
   if (!name) return json({ error: 'Please enter your name.' }, 400, cors)
   if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email))
     return json({ error: 'Please enter a valid email.' }, 400, cors)
+  // Per-email cap — one person can't spam-book repeatedly.
+  if (!(await rateOk(`consult:email:${email.toLowerCase()}`, 5, 86400)))
+    return json({ error: 'We already have your recent request — we will be in touch soon.' }, 429, cors)
 
   // 1. Save (service role bypasses RLS)
   const insertRes = await fetch(`${SUPABASE_URL}/rest/v1/consultations`, {
