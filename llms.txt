@@ -1,21 +1,32 @@
 # Koott (koott.live)
 
-> Koott helps Kerala and Indian students study in Australia. It matches students to in-demand courses using real Australian Government skills and occupation data, provides 485 visa and compliance tools, and connects students to city/university communities. Free to use.
+> Koott helps Kerala and Indian students study in Australia. It matches students to in-demand courses using real Australian Government skills and occupation data, provides 485 visa and compliance tools, and connects students to city/university communities. Free to use — no agents, no commission.
 
 ## Key pages
-- [Course Advisor](https://koott.live/advisor.html): AI tool that matches students to in-demand Australian courses with salary ranges and 485 visa pathways, using the Australian Skills Priority List.
-- [Communities](https://koott.live/communities.html): City, university and intake chat rooms for Kerala and Indian students in Australia.
-- [WhatsApp Groups](https://koott.live/whatsapp.html): Verified WhatsApp groups by city and intake.
-- [Funding & Insurance](https://koott.live/funding.html): Education loan options, OSHC health cover, and cost-of-living budgeting.
-- [Arrival Kit](https://koott.live/arrival.html): First-week checklist — bank account, Tax File Number (TFN), and transport by state.
-- [Visa Tools](https://koott.live/tools.html): Cost calculator, work-hours (48 hrs/fortnight) and OSHC checks, application timeline.
+- [Course Advisor](https://koott.live/advisor): AI tool that matches students to in-demand Australian courses with salary ranges and 485 visa pathways, using the Australian Skills Priority List.
+- [Communities](https://koott.live/communities): City, university and intake chat rooms for Kerala and Indian students in Australia.
+- [WhatsApp Groups](https://koott.live/whatsapp): Verified WhatsApp groups by city and intake.
+- [Funding & Insurance](https://koott.live/funding): Education loan options, OSHC health cover, and cost-of-living budgeting.
+- [Arrival Kit](https://koott.live/arrival): First-week checklist — bank account, Tax File Number (TFN), and transport by state.
+- [Visa Tools](https://koott.live/tools): Cost calculator, work-hours (48 hrs/fortnight) and OSHC checks, application timeline.
+
+## Guides (blog)
+- [Study in Australia from Kerala: The Complete 2026 Guide](https://koott.live/blog/study-in-australia-from-kerala): Costs, IELTS, step-by-step timeline, the regional advantage, 485 visa and Malayali communities.
+- [485 Visa Fee Increase 2026](https://koott.live/blog/485-visa-fee-increase): The Temporary Graduate visa fee rose to ~A$5,710 on 1 July 2026, after doubling to A$4,600 on 1 March 2026.
+- [Regional Universities in Australia](https://koott.live/blog/regional-universities-australia): All 10 regional universities with indicative fees, IELTS and QS bands.
+- [The 485 Visa Regional Bonus](https://koott.live/blog/485-visa-regional-bonus): How regional study adds 1–2 extra post-study work years.
+- [Jobs in Regional Australia](https://koott.live/blog/jobs-regional-australia): In-demand occupations from the Skills Priority List and student work rules.
+- [Why Regional Australia](https://koott.live/blog/why-regional-australia): The honest case — cost, admission, visa bonus, community.
+- [Studying in Newcastle](https://koott.live/blog/study-in-newcastle): City guide for Indian students (UON).
+- [Cost of Living: Regional vs Sydney & Melbourne](https://koott.live/blog/cost-of-living-regional-australia): Real budget comparison.
 
 ## Key facts
-- Work limit for student visa holders: 48 hours per fortnight.
+- Work limit for student visa holders: 48 hours per fortnight (verify current cap with Home Affairs).
 - Overseas Student Health Cover (OSHC) is required for a student visa.
-- 485 (Temporary Graduate) visa allows post-study work, up to several years depending on qualification.
+- 485 (Temporary Graduate) visa allows post-study work; regional graduates can get 1–2 extra years. Primary fee ~A$5,710 as of 1 July 2026.
 - Cost-of-living financial requirement: approximately A$29,710 per year (Australian Department of Home Affairs).
+- Regional cities for migration purposes include Adelaide, Newcastle, Wollongong, Hobart, Townsville and Darwin.
 
 ## Notes
 - Audience: Kerala and Indian students planning to study in Australia.
-- Data sources: Jobs and Skills Australia (JSA), ABS, Department of Home Affairs.
+- Data sources: Jobs and Skills Australia (JSA), ABS, Department of Home Affairs, CRICOS.
