@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Koott — brag</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #fdfcfa; }
+      :root {
+        --bg: #fdfcfa; --bg-sub: #f6f3ee; --card: #fffdfb;
+        --bd: #ece7df; --bd-hi: #ddd6ca;
+        --txt: #1a1714; --txt-2: #3a3530; --mut: #6f675d; --lt: #9c948a; --xlt: #c7c0b5;
+        --accent: #e8622c; --accent-dk: #cc4f1e; --accent-dd: #a23f12;
+        --accent-bg: #fef2ec; --accent-bd: #f7d2bf;
+        --ink: #141215;
+        --grn: #1c8a4e; --grn-bg: #e7f4ec; --amb: #b8730a; --amb-bg: #fbf0dd; --blue: #2563eb;
+        --rl: 14px; --rx: 20px; --rxl: 28px; --rpill: 100px;
+        --sh-sm: 0 2px 4px rgba(20,18,15,.04), 0 8px 24px -14px rgba(20,18,15,.16);
+        --sh: 0 4px 12px rgba(20,18,15,.05), 0 26px 56px -22px rgba(20,18,15,.22);
+        --sh-lg: 0 8px 20px rgba(20,18,15,.06), 0 34px 80px -20px rgba(13,13,15,.26);
+        --sans: "Inter", sans-serif;
+        --mono: "JetBrains Mono", monospace;
+      }
+      .scene { position: absolute; inset: 0; overflow: hidden; font-family: "Inter", sans-serif; }
+      .grain { position: absolute; inset: 0; pointer-events: none;
+        background-image: radial-gradient(circle at 1px 1px, rgba(26,23,20,.05) 1px, transparent 2px);
+        background-size: 30px 30px; }
+      .center { display: grid; place-items: center; }
+
+      .eyebrow { font-family: "JetBrains Mono", monospace; font-weight: 700; letter-spacing: .18em;
+        text-transform: uppercase; color: var(--accent-dk); font-size: 26px; }
+      .pill-tag { display: inline-flex; align-items: center; gap: 14px; background: var(--card);
+        border: 1.5px solid var(--bd); border-radius: var(--rpill); padding: 16px 34px;
+        font-size: 30px; font-weight: 600; color: var(--mut); box-shadow: var(--sh-sm); }
+      .pill-tag .dot { width: 16px; height: 16px; border-radius: 50%; background: var(--accent);
+        box-shadow: 0 0 0 6px var(--accent-bg); }
+
+      /* ---------- Scene 1: hook ---------- */
+      #s1 { background: var(--bg); }
+      #s1 .glow { position: absolute; width: 1500px; height: 1500px; left: 50%; top: 40%;
+        transform: translate(-50%,-50%);
+        background: radial-gradient(circle, rgba(232,98,44,.22), rgba(247,166,96,.10) 42%, transparent 66%); }
+      #s1 .wrap { position: relative; width: 1500px; text-align: center; display: flex;
+        flex-direction: column; align-items: center; gap: 44px; }
+      #s1 h1 { font-family: "Inter", sans-serif; font-weight: 800; font-size: 132px; line-height: 1.04;
+        letter-spacing: -.04em; color: var(--txt); max-width: 18ch; }
+      #s1 h1 .grad { color: var(--accent); }
+
+      /* ---------- Scene 2: what it is ---------- */
+      #s2 { background: var(--bg-sub); }
+      #s2 .wrap { width: 1500px; text-align: center; display: flex; flex-direction: column;
+        align-items: center; gap: 36px; }
+      #s2 .big { font-family: "Inter", sans-serif; font-weight: 800; font-size: 76px; line-height: 1.14;
+        letter-spacing: -.03em; color: var(--txt); max-width: 24ch; }
+      #s2 .big .c { color: var(--accent); }
+      #s2 .flags { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+      #s2 .flag { font-family: "JetBrains Mono", monospace; font-size: 26px; font-weight: 600;
+        color: var(--txt-2); background: var(--card); border: 1.5px solid var(--bd);
+        border-radius: var(--rpill); padding: 14px 28px; box-shadow: var(--sh-sm); }
+
+      /* ---------- Scene 3: recreated search UI ---------- */
+      #s3 { background: var(--bg); }
+      .uiwrap { width: 1180px; }
+      .search { display: flex; align-items: center; gap: 18px; background: var(--card);
+        border: 2.5px solid var(--accent); border-radius: var(--rpill);
+        box-shadow: 0 0 0 8px var(--accent-bg), var(--sh); padding: 16px 16px 16px 36px; }
+      .search .mag { width: 40px; height: 40px; flex-shrink: 0; }
+      .search .field { flex: 1; font-size: 36px; color: var(--txt); font-family: "Inter", sans-serif;
+        white-space: nowrap; overflow: hidden; }
+      .search .field .ph { color: var(--lt); }
+      .search .caret { display: inline-block; width: 3px; height: 40px; background: var(--accent);
+        vertical-align: -7px; margin-left: 2px; border-radius: 2px; }
+      .search .go { background: var(--accent); color: #fff; font-family: "Inter", sans-serif;
+        font-weight: 700; font-size: 32px; padding: 22px 40px; border-radius: var(--rpill);
+        box-shadow: 0 10px 26px -10px rgba(232,98,44,.7); white-space: nowrap; transform-origin: center; }
+      .chips { display: flex; align-items: center; gap: 16px; margin-top: 30px; flex-wrap: wrap; }
+      .chips .lbl { font-family: "JetBrains Mono", monospace; font-size: 22px; font-weight: 600;
+        letter-spacing: .08em; text-transform: uppercase; color: var(--lt); }
+      .chip { background: var(--card); border: 1.5px solid var(--bd); border-radius: var(--rpill);
+        padding: 14px 30px; font-size: 28px; font-weight: 600; color: var(--txt-2); }
+      .chip.hot { border-color: var(--accent); color: var(--accent-dk); background: var(--accent-bg); }
+      .prog { margin-top: 44px; }
+      .prog-track { height: 14px; border-radius: var(--rpill); background: var(--bg-sub);
+        border: 1.5px solid var(--bd); overflow: hidden; }
+      .prog-fill { height: 100%; width: 100%; border-radius: var(--rpill); transform-origin: left center;
+        background: linear-gradient(90deg, var(--accent), #f0894e); }
+      .prog-row { display: flex; justify-content: space-between; align-items: center; margin-top: 18px;
+        font-size: 28px; color: var(--mut); }
+      .prog-row .pl { font-weight: 600; }
+      .prog-row .pp { font-family: "JetBrains Mono", monospace; font-weight: 800; color: var(--accent-dk); }
+      #s3 .cap { text-align: center; margin-top: 50px; font-family: "JetBrains Mono", monospace;
+        font-size: 26px; color: var(--mut); }
+      #s3 .cap b { color: var(--txt-2); font-weight: 700; }
+
+      /* ---------- Scene 4: match card ---------- */
+      #s4 { background: var(--bg-sub); }
+      #s4 .col { display: flex; flex-direction: column; align-items: center; gap: 30px; }
+      #s4 .kicker { font-family: "JetBrains Mono", monospace; font-size: 26px; font-weight: 700;
+        letter-spacing: .12em; text-transform: uppercase; color: var(--accent-dk); }
+      .rcard { width: 1240px; background: var(--card); border: 1.5px solid var(--bd);
+        border-radius: var(--rxl); box-shadow: var(--sh-lg); overflow: hidden; }
+      .rhead { padding: 36px 44px 30px; border-bottom: 1.5px solid var(--bd); }
+      .rhead .rk { font-family: "JetBrains Mono", monospace; font-size: 22px; letter-spacing: .14em;
+        text-transform: uppercase; color: var(--lt); }
+      .rhead h3 { font-family: "Inter", sans-serif; font-size: 56px; font-weight: 800;
+        letter-spacing: -.025em; margin-top: 8px; color: var(--txt); }
+      .rhead .anz { font-family: "JetBrains Mono", monospace; font-size: 24px; color: var(--lt); margin-top: 10px; }
+      .demand { display: flex; gap: 18px; padding: 28px 44px; background: var(--bg-sub);
+        border-bottom: 1.5px solid var(--bd); }
+      .dchip { display: inline-flex; flex-direction: column; gap: 6px; padding: 16px 26px;
+        border-radius: var(--rl); background: var(--card); border: 1.5px solid var(--bd); transform-origin: left center; }
+      .dchip .dt { font-family: "JetBrains Mono", monospace; font-size: 18px; letter-spacing: .08em;
+        text-transform: uppercase; color: var(--lt); font-weight: 700; }
+      .sev { display: inline-flex; align-items: center; gap: 12px; font-size: 30px; font-weight: 700; color: var(--grn); }
+      .sev .sd { width: 14px; height: 14px; border-radius: 50%; background: var(--grn); }
+      .dchip b { font-family: "JetBrains Mono", monospace; font-size: 34px; font-weight: 800;
+        letter-spacing: -.02em; color: var(--txt); }
+      .dchip small { font-size: 18px; color: var(--mut); font-weight: 500; }
+      .rbody { padding: 34px 44px 40px; }
+      .rstats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-bottom: 30px; }
+      .rstat .v { font-family: "JetBrains Mono", monospace; font-size: 46px; font-weight: 800;
+        letter-spacing: -.02em; color: var(--txt); }
+      .rstat .k { font-size: 24px; color: var(--mut); margin-top: 6px; }
+      .rsec-t { font-family: "JetBrains Mono", monospace; font-size: 20px; letter-spacing: .12em;
+        text-transform: uppercase; color: var(--lt); margin: 26px 0 16px; }
+      .tagrow { display: flex; flex-wrap: wrap; gap: 12px; }
+      .tag { background: var(--bg-sub); border: 1.5px solid var(--bd); border-radius: var(--rpill);
+        padding: 12px 24px; font-size: 26px; color: var(--txt-2); }
+      .tag.v { background: var(--accent-bg); border-color: var(--accent-bd); color: var(--accent-dd); font-weight: 700; }
+
+      /* ---------- Scene 5: stat strip ---------- */
+      #s5 { background: var(--bg); }
+      #s5 .col { display: flex; flex-direction: column; align-items: center; gap: 56px; }
+      #s5 .heading { font-family: "Inter", sans-serif; font-weight: 800; font-size: 70px;
+        letter-spacing: -.03em; color: var(--txt); text-align: center; }
+      #s5 .heading .c { color: var(--accent); }
+      .stats { display: flex; gap: 32px; }
+      .stat { width: 420px; background: var(--card); border: 1.5px solid var(--bd);
+        border-radius: var(--rx); padding: 44px 40px; box-shadow: var(--sh-sm); }
+      .stat .n { font-family: "JetBrains Mono", monospace; font-size: 88px; font-weight: 800;
+        letter-spacing: -.03em; line-height: 1; color: var(--txt); }
+      .stat .n.free { color: var(--accent); }
+      .stat .l { font-size: 28px; color: var(--mut); margin-top: 22px; line-height: 1.4; }
+
+      /* ---------- Scene 6: three tools ---------- */
+      #s6 { background: var(--bg-sub); }
+      #s6 .col { display: flex; flex-direction: column; align-items: center; gap: 50px; }
+      #s6 .heading { font-family: "Inter", sans-serif; font-weight: 800; font-size: 72px;
+        letter-spacing: -.03em; color: var(--txt); text-align: center; }
+      #s6 .heading .c { color: var(--accent); }
+      .grid3 { display: flex; gap: 30px; }
+      .fcard { width: 480px; background: var(--card); border: 1.5px solid var(--bd);
+        border-radius: var(--rx); padding: 44px 40px; box-shadow: var(--sh-sm);
+        display: flex; flex-direction: column; }
+      .fcard .ico { width: 80px; height: 80px; border-radius: 20px; display: grid; place-items: center;
+        background: var(--accent-bg); color: var(--accent-dk); margin-bottom: 28px; }
+      .fcard h3 { font-family: "Inter", sans-serif; font-size: 38px; font-weight: 700;
+        letter-spacing: -.02em; color: var(--txt); margin-bottom: 18px; line-height: 1.1; }
+      .fcard p { font-size: 27px; color: var(--mut); line-height: 1.5; }
+
+      /* ---------- Scene 7: your people ---------- */
+      #s7 { background: var(--bg); }
+      #s7 .wrap { width: 1500px; display: grid; grid-template-columns: 1.15fr 1fr; gap: 32px;
+        align-items: stretch; }
+      #s7 .featpanel { background: linear-gradient(150deg, var(--accent) 0%, var(--accent-dk) 100%);
+        color: #fff; border-radius: var(--rxl); padding: 64px 56px; box-shadow: var(--sh);
+        display: flex; flex-direction: column; justify-content: center; }
+      #s7 .featpanel .ey { font-family: "JetBrains Mono", monospace; font-size: 24px; letter-spacing: .14em;
+        text-transform: uppercase; color: rgba(255,255,255,.82); margin-bottom: 22px; }
+      #s7 .featpanel h2 { font-family: "Inter", sans-serif; font-size: 68px; font-weight: 800;
+        letter-spacing: -.03em; line-height: 1.08; }
+      #s7 .featpanel h2 em { font-style: normal; color: #ffe2d3; }
+      #s7 .featpanel p { font-size: 30px; color: rgba(255,255,255,.9); margin-top: 26px; line-height: 1.45; }
+      #s7 .side { display: flex; flex-direction: column; gap: 20px; }
+      #s7 .scard { background: var(--card); border: 1.5px solid var(--bd); border-radius: var(--rx);
+        padding: 36px 40px; box-shadow: var(--sh-sm); }
+      #s7 .scard h4 { font-family: "Inter", sans-serif; font-size: 34px; font-weight: 700; color: var(--txt); }
+      #s7 .scard p { font-size: 26px; color: var(--mut); margin-top: 12px; line-height: 1.45; }
+      #s7 .scard .meta { font-size: 24px; color: var(--lt); margin-top: 16px; }
+      #s7 .scard .meta b { color: var(--txt-2); font-weight: 700; }
+
+      /* ---------- Scene 8: payoff ---------- */
+      #s8 { background: var(--ink); }
+      #s8 .glow { position: absolute; width: 1400px; height: 1400px; left: 50%; top: 50%;
+        transform: translate(-50%,-50%);
+        background: radial-gradient(circle, rgba(232,98,44,.28), transparent 62%); }
+      #s8 .wrap { position: relative; width: 1500px; text-align: center; display: flex;
+        flex-direction: column; align-items: center; gap: 34px; }
+      #s8 .big { font-family: "Inter", sans-serif; font-weight: 800; font-size: 104px; line-height: 1.06;
+        letter-spacing: -.035em; color: #fff; }
+      #s8 .big em { font-style: normal; color: #f0894e; }
+      #s8 .sub { font-size: 36px; color: rgba(255,255,255,.78); font-family: "Inter", sans-serif; }
+
+      /* ---------- Scene 9: outro lockup ---------- */
+      #s9 { background: var(--bg); }
+      #s9 .glow { position: absolute; width: 1300px; height: 1300px; left: 50%; top: 44%;
+        transform: translate(-50%,-50%);
+        background: radial-gradient(circle, rgba(232,98,44,.16), transparent 64%); }
+      #s9 .wrap { position: relative; text-align: center; display: flex; flex-direction: column;
+        align-items: center; gap: 34px; }
+      #s9 .mark { display: flex; align-items: center; gap: 28px; }
+      #s9 .wordmark { font-family: "Inter", sans-serif; font-weight: 800; font-size: 184px;
+        letter-spacing: -.05em; color: var(--txt); line-height: .9; }
+      #s9 .mal { font-family: "Inter", sans-serif; font-weight: 700; font-size: 64px; color: var(--accent); }
+      #s9 .tagline { font-family: "Inter", sans-serif; font-size: 50px; font-weight: 500; color: var(--mut); }
+      #s9 .url { font-family: "JetBrains Mono", monospace; font-size: 46px; font-weight: 700;
+        color: var(--accent-dk); letter-spacing: .02em; }
+      #s9 .cta { display: inline-flex; align-items: center; gap: 12px; background: var(--accent);
+        color: #fff; font-family: "Inter", sans-serif; font-weight: 700; font-size: 38px;
+        padding: 28px 56px; border-radius: var(--rpill); box-shadow: 0 14px 34px -12px rgba(232,98,44,.7);
+        transform-origin: center; }
+      #s9 .note { font-family: "JetBrains Mono", monospace; font-size: 26px; color: var(--lt); }
+      #s9 .note b { color: var(--accent-dk); font-weight: 700; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="37" data-width="1920" data-height="1080">
+
+      <!-- ============ Scene 1 — hook (0–3.5) ============ -->
+      <section id="s1" class="scene clip center" data-start="0" data-duration="3.5" data-track-index="1">
+        <div class="grain"></div>
+        <div class="glow" id="s1glow"></div>
+        <div class="wrap">
+          <span class="pill-tag" id="s1pill"><span class="dot"></span>Built by students who've done it</span>
+          <h1 id="s1h1">Find the course Australia is <span class="grad">actually hiring</span> for.</h1>
+        </div>
+      </section>
+
+      <!-- ============ Scene 2 — what it is (3.5–7.5) ============ -->
+      <section id="s2" class="scene clip center" data-start="3.5" data-duration="5" data-track-index="2">
+        <div class="grain"></div>
+        <div class="wrap">
+          <span class="eyebrow" id="s2ey">For Kerala &amp; Indian students · Study in Australia</span>
+          <div class="big" id="s2big">Describe what you want to study, in your own words — matched to in-demand Australian occupations using <span class="c">real government shortage data.</span></div>
+          <div class="flags" id="s2flags">
+            <span class="flag">🇦🇺 Jobs &amp; Skills Australia</span>
+            <span class="flag">Home Affairs</span>
+            <span class="flag">CRICOS</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Scene 3 — the search (recreated UI) (7.5–12) ============ -->
+      <section id="s3" class="scene clip center" data-start="8.5" data-duration="4.5" data-track-index="3">
+        <div class="grain"></div>
+        <div class="uiwrap">
+          <div class="search" id="s3search">
+            <svg class="mag" viewBox="0 0 24 24" fill="none" stroke="#9c948a" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <div class="field"><span id="s3typed">B.Sc nurse — what's in demand?</span><span class="caret" id="s3caret"></span></div>
+            <span class="go" id="s3go">Find my course →</span>
+          </div>
+          <div class="chips" id="s3chips">
+            <span class="lbl">Popular</span>
+            <span class="chip hot">Nursing</span>
+            <span class="chip">Data &amp; AI</span>
+            <span class="chip">Cybersecurity</span>
+            <span class="chip">Civil Engineering</span>
+          </div>
+          <div class="prog" id="s3prog">
+            <div class="prog-track"><div class="prog-fill" id="s3fill"></div></div>
+            <div class="prog-row"><span class="pl">Building your match…</span><span class="pp" id="s3pct">100%</span></div>
+          </div>
+          <div class="cap" id="s3cap">Free · <b>no agents, no commission, ever</b></div>
+        </div>
+      </section>
+
+      <!-- ============ Scene 4 — the match card (12–18) ============ -->
+      <section id="s4" class="scene clip center" data-start="13" data-duration="6" data-track-index="4">
+        <div class="grain"></div>
+        <div class="col">
+          <span class="kicker" id="s4kick">Your match · built on real data</span>
+          <div class="rcard" id="s4card">
+            <div class="rhead">
+              <div class="rk">Your match</div>
+              <h3>Registered Nurse</h3>
+              <div class="anz">ANZSCO 254499 · Registered Nurses (2544)</div>
+            </div>
+            <div class="demand">
+              <div class="dchip" id="s4shortage"><span class="dt">Shortage status</span><span class="sev"><span class="sd"></span>In shortage</span></div>
+              <div class="dchip"><span class="dt">Skilled places · 2025–26</span><b>13,929/yr</b><small>national cap · subclass 189/491</small></div>
+              <div class="dchip"><span class="dt">Projected growth</span><b>+16%</b></div>
+            </div>
+            <div class="rbody">
+              <div class="rstats">
+                <div class="rstat"><div class="v">A$76K</div><div class="k">median salary / yr</div></div>
+                <div class="rstat"><div class="v">+16%</div><div class="k">projected job growth</div></div>
+                <div class="rstat"><div class="v">2–4 yrs</div><div class="k">485 post-study stay</div></div>
+              </div>
+              <div class="rsec-t">Courses that get you there</div>
+              <div class="tagrow">
+                <span class="tag v">Bachelor of Nursing</span>
+                <span class="tag v">Master of Nursing (Graduate Entry)</span>
+                <span class="tag v">Master of Midwifery</span>
+              </div>
+              <div class="rsec-t">Visa &amp; PR pathways</div>
+              <div class="tagrow">
+                <span class="tag">485 Graduate</span>
+                <span class="tag">189 Skilled Independent</span>
+                <span class="tag">190 State Nominated</span>
+                <span class="tag">482 Employer Sponsored</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Scene 5 — stat strip (18–21.5) ============ -->
+      <section id="s5" class="scene clip center" data-start="19" data-duration="3.5" data-track-index="5">
+        <div class="grain"></div>
+        <div class="col">
+          <div class="heading" id="s5h">Real numbers. <span class="c">No agents.</span></div>
+          <div class="stats">
+            <div class="stat" id="s5a"><div class="n">293</div><div class="l">occupations in shortage on the 2025 Occupation Shortage List</div></div>
+            <div class="stat" id="s5b"><div class="n">4&nbsp;yrs</div><div class="l">post-study work (485) at regional universities</div></div>
+            <div class="stat" id="s5c"><div class="n free">Free</div><div class="l">no agents, no commission, ever</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Scene 6 — three tools (21.5–26.5) ============ -->
+      <section id="s6" class="scene clip center" data-start="22.5" data-duration="6" data-track-index="6">
+        <div class="grain"></div>
+        <div class="col">
+          <div class="heading" id="s6h">Three tools, <span class="c">one journey.</span></div>
+          <div class="grid3">
+            <div class="fcard" id="s6a">
+              <div class="ico"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg></div>
+              <h3>Course &amp; Career Advisor</h3>
+              <p>Tell us what you want to study, in your own words. We match you against the shortage list with real salary ranges and 485 visa pathways.</p>
+            </div>
+            <div class="fcard" id="s6b">
+              <div class="ico"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 9a2 2 0 0 1-2 2H6l-4 4V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2z"/><path d="M18 9h2a2 2 0 0 1 2 2v11l-4-4h-6a2 2 0 0 1-2-2v-1"/></svg></div>
+              <h3>City &amp; University Communities</h3>
+              <p>Focused chat rooms per city, university and intake. Find your cohort before you land — housing leads, visa answers, part-time jobs.</p>
+            </div>
+            <div class="fcard" id="s6c">
+              <div class="ico"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg></div>
+              <h3>Visa Compliance Tools</h3>
+              <p>Track your fortnightly work limit, compare living costs across eight cities, and follow your timeline from CoE to landing day.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Scene 7 — your people (26.5–29.5) ============ -->
+      <section id="s7" class="scene clip center" data-start="28.5" data-duration="3" data-track-index="7">
+        <div class="grain"></div>
+        <div class="wrap">
+          <div class="featpanel" id="s7feat">
+            <div class="ey">Your people</div>
+            <h2>Talk to someone who's <em>actually done it.</em></h2>
+            <p>No agents, no commission — just students and advisors who've walked the same path.</p>
+          </div>
+          <div class="side">
+            <div class="scard" id="s7c1">
+              <h4>Free 1:1 call with an advisor</h4>
+              <p>Honest guidance on courses, universities, visa &amp; funding from people who've been through it.</p>
+            </div>
+            <div class="scard" id="s7c2">
+              <h4>Your community</h4>
+              <p>Live chat rooms for your city, university &amp; intake.</p>
+              <div class="meta">Active rooms across <b>Sydney, Melbourne, Brisbane, Perth, Adelaide</b> &amp; regional NSW.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Scene 8 — payoff (29.5–32) ============ -->
+      <section id="s8" class="scene clip center" data-start="31.5" data-duration="2.5" data-track-index="8">
+        <div class="glow"></div>
+        <div class="wrap">
+          <div class="big" id="s8big">Find your course in <em>three minutes.</em></div>
+          <div class="sub" id="s8sub">Built on Australian government data — not agents.</div>
+        </div>
+      </section>
+
+      <!-- ============ Scene 9 — outro lockup (32–35) ============ -->
+      <section id="s9" class="scene clip center" data-start="34" data-duration="3" data-track-index="9">
+        <div class="grain"></div>
+        <div class="glow"></div>
+        <div class="wrap">
+          <div class="mark" id="s9mark">
+            <svg width="120" height="120" viewBox="0 0 32 32" fill="none" aria-hidden="true"><circle cx="11" cy="16" r="10" fill="#e8622c" stroke="#141215" stroke-width="2"/><circle cx="21" cy="16" r="10" fill="#141215"/></svg>
+            <span class="wordmark">koott</span>
+            <span class="mal">കൂട്ട്</span>
+          </div>
+          <div class="tagline" id="s9tag">Your Australia plan, built around you.</div>
+          <div class="url" id="s9url">koott.live</div>
+          <div class="cta" id="s9cta">Start the Course Advisor →</div>
+          <div class="note" id="s9note"><b>കൂട്ട്</b> — together, in Malayalam · free &amp; open · no agents</div>
+        </div>
+      </section>
+
+      <!-- ============ audio ============ -->
+      <audio id="bgm" data-start="0" data-duration="37" data-track-index="10" data-volume="0.3" src="assets/music/happy-beats-business-moves-vol-1-by-ende-dot-app.mp3"></audio>
+      <audio id="sfx-tap" data-start="10.507" data-duration="0.1" data-track-index="11" data-volume="0.6" src="assets/sfx/interface/click_001.ogg"></audio>
+      <audio id="sfx-prog" data-start="10.8" data-duration="0.11" data-track-index="12" data-volume="0.55" src="assets/sfx/interface/drop_001.ogg"></audio>
+      <audio id="sfx-card" data-start="13.2" data-duration="0.183" data-track-index="13" data-volume="0.5" src="assets/sfx/impact/impactSoft_medium_001.ogg"></audio>
+      <audio id="sfx-shortage" data-start="13.502" data-duration="1.48" data-track-index="14" data-volume="0.55" src="assets/sfx/impact/impactBell_heavy_000.ogg"></audio>
+      <audio id="sfx-st1" data-start="19.493" data-duration="0.11" data-track-index="15" data-volume="0.5" src="assets/sfx/interface/drop_001.ogg"></audio>
+      <audio id="sfx-st2" data-start="19.992" data-duration="0.11" data-track-index="16" data-volume="0.5" src="assets/sfx/interface/drop_001.ogg"></audio>
+      <audio id="sfx-st3" data-start="20.491" data-duration="0.11" data-track-index="17" data-volume="0.5" src="assets/sfx/interface/drop_001.ogg"></audio>
+      <audio id="sfx-t1" data-start="23.486" data-duration="0.183" data-track-index="18" data-volume="0.45" src="assets/sfx/impact/impactSoft_medium_001.ogg"></audio>
+      <audio id="sfx-t2" data-start="24.485" data-duration="0.183" data-track-index="19" data-volume="0.45" src="assets/sfx/impact/impactSoft_medium_001.ogg"></audio>
+      <audio id="sfx-t3" data-start="25.483" data-duration="0.183" data-track-index="20" data-volume="0.45" src="assets/sfx/impact/impactSoft_medium_001.ogg"></audio>
+      <audio id="sfx-outro" data-start="34.469" data-duration="1.48" data-track-index="21" data-volume="0.62" src="assets/sfx/impact/impactBell_heavy_000.ogg"></audio>
+    </div>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      // later full-frame scenes start hidden so they never cover earlier frames
+      tl.set(["#s2", "#s3", "#s4", "#s5", "#s6", "#s7", "#s8", "#s9"], { opacity: 0 }, 0);
+
+      /* ---- Scene 1: hook (0–3.5) ---- */
+      tl.from("#s1", { opacity: 0, duration: 0.3, ease: "power1.out" }, 0);
+      tl.from("#s1glow", { opacity: 0, scale: 0.7, duration: 1.0, ease: "power2.out" }, 0);
+      tl.from("#s1pill", { opacity: 0, y: -20, duration: 0.5, ease: "power2.out" }, 0.2);
+      tl.from("#s1h1", { opacity: 0, y: 40, scale: 1.04, duration: 0.7, ease: "power3.out" }, 0.45);
+
+      /* ---- Scene 2: what it is (3.5–8.5) ---- */
+      tl.from("#s2", { opacity: 0, duration: 0.35, ease: "power1.out" }, 3.5);
+      tl.from("#s2ey", { opacity: 0, y: -16, duration: 0.45, ease: "power2.out" }, 3.6);
+      tl.from("#s2big", { opacity: 0, y: 30, duration: 0.6, ease: "power3.out" }, 3.85);
+      tl.from("#s2flags", { opacity: 0, y: 20, duration: 0.5, ease: "power2.out" }, 5.027); // beat-grid: 5.027s
+
+      /* ---- Scene 3: the search UI (8.5–13) ---- */
+      tl.from("#s3", { opacity: 0, duration: 0.35, ease: "power1.out" }, 8.5);
+      tl.from("#s3search", { opacity: 0, y: 28, duration: 0.5, ease: "power3.out" }, 8.6);
+      // typed query reveals via a clip mask (clipPath wipe — non-animated props are fine to set)
+      tl.set("#s3typed", { clipPath: "inset(0 100% 0 0)", display: "inline-block" }, 8.5);
+      tl.to("#s3typed", { clipPath: "inset(0 0% 0 0)", duration: 1.3, ease: "none" }, 9.0);
+      tl.to("#s3caret", { opacity: 0.2, duration: 0.28, repeat: 4, yoyo: true, ease: "steps(1)" }, 9.0);
+      tl.from("#s3chips", { opacity: 0, y: 18, duration: 0.45, ease: "power2.out" }, 9.509); // beat-grid
+      // simulated tap on "Find my course" then progress completes
+      tl.to("#s3go", { scale: 0.92, duration: 0.12, ease: "power2.in" }, 10.507);   // beat-grid tap
+      tl.to("#s3go", { scale: 1, duration: 0.18, ease: "back.out(2.2)" }, 10.63);
+      tl.set("#s3caret", { opacity: 0 }, 10.507);
+      tl.from("#s3prog", { opacity: 0, y: 14, duration: 0.35, ease: "power2.out" }, 10.7);
+      tl.from("#s3fill", { scaleX: 0, duration: 0.9, ease: "power2.out" }, 10.8);   // progress fills
+      tl.from("#s3cap", { opacity: 0, duration: 0.5, ease: "power1.out" }, 11.99); // beat-grid
+
+      /* ---- Scene 4: the match card (13–19) ---- */
+      tl.from("#s4", { opacity: 0, duration: 0.35, ease: "power1.out" }, 13.0);
+      tl.from("#s4kick", { opacity: 0, y: -14, duration: 0.4, ease: "power2.out" }, 13.05);
+      tl.from("#s4card", { opacity: 0, y: 46, scale: 0.97, duration: 0.6, ease: "power3.out" }, 13.2); // card reveal sfx @13.2
+      // beat-locked: the "In shortage" badge pops on the strong beat (payoff bell)
+      tl.from("#s4shortage", { scale: 0, opacity: 0, duration: 0.5, ease: "back.out(2.0)" }, 13.502); // beat-locked: 13.502s
+
+      /* ---- Scene 5: stat strip (19–22.5) — snapped to the beat lift ---- */
+      tl.from("#s5", { opacity: 0, duration: 0.35, ease: "power1.out" }, 19.0);
+      tl.from("#s5h", { opacity: 0, y: -18, duration: 0.4, ease: "power2.out" }, 19.0);
+      tl.from("#s5a", { opacity: 0, y: 30, scale: 0.95, duration: 0.4, ease: "back.out(1.6)" }, 19.493); // beat-grid (lift)
+      tl.from("#s5b", { opacity: 0, y: 30, scale: 0.95, duration: 0.4, ease: "back.out(1.6)" }, 19.992); // beat-grid
+      tl.from("#s5c", { opacity: 0, y: 30, scale: 0.95, duration: 0.4, ease: "back.out(1.6)" }, 20.491); // beat-grid
+
+      /* ---- Scene 6: three tools (22.5–28.5) ---- */
+      tl.from("#s6", { opacity: 0, duration: 0.35, ease: "power1.out" }, 22.5);
+      tl.from("#s6h", { opacity: 0, y: -18, duration: 0.45, ease: "power2.out" }, 22.55);
+      tl.from("#s6a", { opacity: 0, y: 34, duration: 0.5, ease: "power3.out" }, 23.486); // beat-grid
+      tl.from("#s6b", { opacity: 0, y: 34, duration: 0.5, ease: "power3.out" }, 24.485); // beat-grid
+      tl.from("#s6c", { opacity: 0, y: 34, duration: 0.5, ease: "power3.out" }, 25.483); // beat-grid
+
+      /* ---- Scene 7: your people (28.5–31.5) ---- */
+      tl.from("#s7", { opacity: 0, duration: 0.35, ease: "power1.out" }, 28.5);
+      tl.from("#s7feat", { opacity: 0, x: -40, duration: 0.55, ease: "power3.out" }, 28.6);
+      tl.from("#s7c1", { opacity: 0, x: 40, duration: 0.5, ease: "power3.out" }, 28.977); // beat-grid
+      tl.from("#s7c2", { opacity: 0, x: 40, duration: 0.5, ease: "power3.out" }, 29.477); // beat-grid
+
+      /* ---- Scene 8: payoff (31.5–34) ---- */
+      tl.from("#s8", { opacity: 0, duration: 0.35, ease: "power1.out" }, 31.5);
+      tl.from("#s8big", { opacity: 0, y: 36, scale: 1.03, duration: 0.6, ease: "power3.out" }, 31.6);
+      tl.from("#s8sub", { opacity: 0, y: 18, duration: 0.5, ease: "power2.out" }, 32.2);
+
+      /* ---- Scene 9: outro lockup (34–37) ---- */
+      tl.from("#s9", { opacity: 0, duration: 0.35, ease: "power1.out" }, 34.0);
+      tl.from("#s9mark", { opacity: 0, scale: 0.8, duration: 0.6, ease: "back.out(1.7)" }, 34.469); // beat-locked: 34.469s (logo slam)
+      tl.from("#s9tag", { opacity: 0, y: 18, duration: 0.5, ease: "power2.out" }, 34.95);
+      tl.from("#s9url", { opacity: 0, y: 14, duration: 0.45, ease: "power2.out" }, 35.35);
+      tl.from("#s9cta", { opacity: 0, scale: 0.9, duration: 0.45, ease: "back.out(2.0)" }, 35.7);
+      tl.from("#s9note", { opacity: 0, duration: 0.5, ease: "power1.out" }, 36.1);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
